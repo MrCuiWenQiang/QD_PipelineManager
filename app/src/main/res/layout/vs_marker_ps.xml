@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout style="@style/edit_ll">
+
+        <TextView
+            style="@style/edit_title"
+            android:text="所在河道" />
+
+        <EditText
+            android:id="@+id/tv_szhd"
+            style="@style/edit_view_edit" />
+    </LinearLayout>
+
+    <LinearLayout style="@style/edit_ll">
+
+        <TextView
+            style="@style/edit_title"
+            android:text="排水户名称" />
+
+        <EditText
+            android:id="@+id/tv_gshmc"
+            style="@style/edit_view_edit" />
+    </LinearLayout>
+
+    <LinearLayout style="@style/edit_ll">
+
+        <TextView
+            style="@style/edit_title"
+            android:text="影像资料文件编号" />
+
+        <EditText
+            android:id="@+id/tv_wjbh"
+            style="@style/edit_view_edit" />
+    </LinearLayout>
+
+    <LinearLayout style="@style/edit_ll">
+
+        <TextView
+            style="@style/edit_title"
+            android:text="隐患情况说明" />
+
+        <EditText
+            android:id="@+id/tv_yhqksm"
+            style="@style/edit_view_edit" />
+    </LinearLayout>
+
+
+</LinearLayout>

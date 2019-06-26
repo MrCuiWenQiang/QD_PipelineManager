@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/ll_lx"
+        style="@style/edit_ll">
+
+        <TextView
+            style="@style/edit_title"
+            android:text="流向" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:layout_weight="0.6"
+            android:gravity="center_vertical">
+
+            <EditText
+                android:id="@+id/tv_lx"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/edit_style"
+                android:textSize="18sp" />
+
+            <ImageView
+                android:id="@+id/iv_load_lx"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:src="@mipmap/load" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_qdyj"
+        style="@style/edit_ll">
+
+        <TextView
+            style="@style/edit_title"
+            android:text="起点淤积" />
+
+        <EditText
+            android:id="@+id/tv_qdyj"
+            style="@style/edit_view_edit" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_zdyj"
+        style="@style/edit_ll">
+
+        <TextView
+            style="@style/edit_title"
+            android:text="终点淤积" />
+
+        <EditText
+            android:id="@+id/tv_zdyj"
+            style="@style/edit_view_edit" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_dhgd"
+
+        style="@style/edit_ll">
+
+        <TextView
+            style="@style/edit_title"
+            android:text="倒虹管段" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:layout_weight="0.6"
+            android:gravity="center_vertical">
+
+            <EditText
+                android:id="@+id/tv_dhgd"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/edit_style"
+                android:textSize="18sp" />
+
+            <ImageView
+                android:id="@+id/iv_load_dhgd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:src="@mipmap/load" />
+        </LinearLayout>
+    </LinearLayout>
+
+
+    <LinearLayout
+
+        style="@style/edit_ll">
+
+        <TextView
+            style="@style/edit_title"
+            android:text="设施运行状态" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:layout_weight="0.6"
+            android:gravity="center_vertical">
+
+            <EditText
+                android:id="@+id/ntv_yxzt"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/edit_style"
+                android:textSize="18sp" />
+
+            <ImageView
+                android:id="@+id/niv_load_yxzt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:src="@mipmap/load" />
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+        style="@style/edit_ll">
+
+        <TextView
+            style="@style/edit_title"
+            android:text="管线质量" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:layout_weight="0.6"
+            android:gravity="center_vertical">
+
+            <EditText
+                android:id="@+id/tv_gxzl"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/edit_style"
+                android:textSize="18sp" />
+
+            <ImageView
+                android:id="@+id/iv_load_gxzl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:src="@mipmap/load" />
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+
+        style="@style/edit_ll">
+
+        <TextView
+            style="@style/edit_title"
+            android:text="管道等级" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:layout_weight="0.6"
+            android:gravity="center_vertical">
+
+            <EditText
+                android:id="@+id/tv_gddj"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/edit_style"
+                android:textSize="18sp" />
+
+            <ImageView
+                android:id="@+id/iv_load_gddj"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:src="@mipmap/load" />
+        </LinearLayout>
+    </LinearLayout>
+
+
+    <LinearLayout style="@style/edit_ll">
+
+        <TextView
+            style="@style/edit_title"
+            android:text="隐患情况说明" />
+
+        <EditText
+            android:id="@+id/tv_yhqk"
+            style="@style/edit_view_edit" />
+    </LinearLayout>
+</LinearLayout>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="bt_radius_value">12dp</dimen>
+    <dimen name="bt_paddint_left_right_value">5dp</dimen>
+    <dimen name="bt_paddint_top_bottom_value">3dp</dimen>
+
+    <dimen name="bt_text_size">18sp</dimen>
+</resources>

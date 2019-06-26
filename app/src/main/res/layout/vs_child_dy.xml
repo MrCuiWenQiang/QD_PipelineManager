@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+    <LinearLayout
+        style="@style/edit_ll">
+
+        <TextView
+            style="@style/edit_title"
+            android:text="总孔数" />
+
+        <EditText
+            android:id="@+id/tv_zks"
+            style="@style/edit_view_edit" />
+    </LinearLayout>
+    <LinearLayout
+        style="@style/edit_ll">
+
+        <TextView
+            style="@style/edit_title"
+            android:text="已用孔数" />
+
+        <EditText
+            android:id="@+id/tv_yyks"
+            style="@style/edit_view_edit" />
+    </LinearLayout>
+    <LinearLayout
+        style="@style/edit_ll">
+
+        <TextView
+            style="@style/edit_title"
+            android:text="条数" />
+
+        <EditText
+            android:id="@+id/tv_ts"
+            style="@style/edit_view_edit" />
+    </LinearLayout>
+    <LinearLayout style="@style/edit_ll">
+
+        <TextView
+            style="@style/edit_title"
+            android:text="电压" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:gravity="center_vertical"
+            android:layout_weight="0.6">
+
+            <EditText
+                android:id="@+id/tv_dy"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/edit_style"
+                android:textSize="18sp" />
+
+            <ImageView
+                android:id="@+id/iv_load_dy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:src="@mipmap/load" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

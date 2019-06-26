@@ -1,0 +1,438 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            style="@style/ll_base"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <LinearLayout
+                style="@style/edit_ll"
+                android:visibility="gone">
+
+                <TextView
+                    style="@style/edit_title"
+                    android:text="管线类型" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="35dp"
+                    android:layout_weight="0.6"
+                    android:gravity="center_vertical">
+
+                    <EditText
+                        android:id="@+id/tv_gxlx"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/edit_style"
+                        android:textSize="18sp" />
+
+                    <ImageView
+                        android:id="@+id/iv_load_gxlx"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:src="@mipmap/load" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout style="@style/edit_ll">
+
+                <TextView
+                    style="@style/edit_title"
+                    android:text="起点点号" />
+
+                <EditText
+                    android:id="@+id/tv_qswh"
+                    style="@style/edit_view_edit" />
+            </LinearLayout>
+
+            <LinearLayout style="@style/edit_ll">
+
+                <TextView
+                    style="@style/edit_title"
+                    android:text="终点点号" />
+
+                <EditText
+                    android:id="@+id/tv_zzwh"
+                    style="@style/edit_view_edit" />
+            </LinearLayout>
+
+            <LinearLayout style="@style/edit_ll">
+
+                <TextView
+                    style="@style/edit_title"
+                    android:text="起点埋深" />
+
+                <EditText
+                    android:id="@+id/tv_qdms"
+                    style="@style/edit_view_edit" />
+            </LinearLayout>
+
+            <LinearLayout style="@style/edit_ll">
+
+                <TextView
+                    style="@style/edit_title"
+                    android:text="终点埋深" />
+
+                <EditText
+                    android:id="@+id/tv_zzms"
+                    style="@style/edit_view_edit" />
+            </LinearLayout>
+
+            <LinearLayout style="@style/edit_ll">
+
+                <TextView
+                    style="@style/edit_title"
+                    android:text="埋设方式" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="35dp"
+                    android:layout_weight="0.6"
+                    android:gravity="center_vertical">
+
+                    <EditText
+                        android:id="@+id/tv_msfs"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/edit_style"
+                        android:textSize="18sp" />
+
+                    <ImageView
+                        android:id="@+id/iv_load_msfs"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:src="@mipmap/load" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout style="@style/edit_ll">
+
+                <TextView
+                    style="@style/edit_title"
+                    android:text="线型" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="35dp"
+                    android:layout_weight="0.6"
+                    android:gravity="center_vertical">
+
+                    <EditText
+                        android:id="@+id/tv_xx"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/edit_style"
+                        android:textSize="18sp" />
+
+                    <ImageView
+                        android:id="@+id/iv_load_xx"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:src="@mipmap/load" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout style="@style/edit_ll">
+
+                <TextView
+                    style="@style/edit_title"
+                    android:text="管径" />
+
+                <EditText
+                    android:id="@+id/tv_gjdm"
+                    style="@style/edit_view_edit" />
+            </LinearLayout>
+
+
+
+            <LinearLayout style="@style/edit_ll">
+
+                <TextView
+                    style="@style/edit_title"
+                    android:text="材质" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="35dp"
+                    android:layout_weight="0.6"
+                    android:gravity="center_vertical">
+
+                    <EditText
+                        android:id="@+id/tv_gxcl"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/edit_style"
+                        android:textSize="18sp" />
+
+                    <ImageView
+                        android:id="@+id/iv_load_gxcl"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:src="@mipmap/load" />
+                </LinearLayout>
+            </LinearLayout>
+
+
+            <LinearLayout style="@style/edit_ll"
+                android:visibility="gone">
+
+                <TextView
+                    style="@style/edit_title"
+                    android:text="运行状态" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="35dp"
+                    android:layout_weight="0.6"
+                    android:gravity="center_vertical">
+
+                    <EditText
+                        android:id="@+id/tv_yxzt"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/edit_style"
+                        android:textSize="18sp" />
+
+                    <ImageView
+                        android:id="@+id/iv_load_yxzt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:src="@mipmap/load" />
+                </LinearLayout>
+            </LinearLayout>
+
+
+            <LinearLayout style="@style/edit_ll">
+
+                <TextView
+                    style="@style/edit_title"
+                    android:text="套管材质" />
+
+                <EditText
+                    android:id="@+id/tv_tgcz"
+                    style="@style/edit_view_edit" />
+            </LinearLayout>
+            <LinearLayout style="@style/edit_ll">
+
+                <TextView
+                    style="@style/edit_title"
+                    android:text="建设日期" />
+
+                <EditText
+                    android:id="@+id/tv_jsnd"
+                    style="@style/edit_view_edit" />
+            </LinearLayout>
+
+            <LinearLayout style="@style/edit_ll">
+
+                <TextView
+                    style="@style/edit_title"
+                    android:text="权属单位" />
+
+                <EditText
+                    android:id="@+id/tv_qsdw"
+                    style="@style/edit_view_edit" />
+            </LinearLayout>
+
+            <LinearLayout style="@style/edit_ll">
+
+                <TextView
+                    style="@style/edit_title"
+                    android:text="所在位置" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="35dp"
+                    android:layout_weight="0.6"
+                    android:gravity="center_vertical">
+
+                    <EditText
+                        android:id="@+id/tv_szwz"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/edit_style"
+                        android:textSize="18sp" />
+
+                    <ImageView
+                        android:id="@+id/iv_load_szwz"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:src="@mipmap/load" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout style="@style/edit_ll">
+
+                <TextView
+                    style="@style/edit_title"
+                    android:text="使用状况" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="35dp"
+                    android:layout_weight="0.6"
+                    android:gravity="center_vertical">
+
+                    <EditText
+                        android:id="@+id/tv_syzt"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/edit_style"
+                        android:textSize="18sp" />
+
+                    <ImageView
+                        android:id="@+id/iv_load_syzt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:src="@mipmap/load" />
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout style="@style/edit_ll">
+
+                <TextView
+                    style="@style/edit_title"
+                    android:text="是否利用" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="35dp"
+                    android:layout_weight="0.6"
+                    android:gravity="center_vertical">
+
+                    <EditText
+                        android:id="@+id/tv_sfly"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/edit_style"
+                        android:textSize="18sp" />
+
+                    <ImageView
+                        android:id="@+id/iv_load_sfly"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:src="@mipmap/load" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout style="@style/edit_ll" android:visibility="gone">
+
+                <TextView
+                    style="@style/edit_title"
+                    android:text="探测方式" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="35dp"
+                    android:layout_weight="0.6"
+                    android:gravity="center_vertical">
+
+                    <EditText
+                        android:id="@+id/tv_tcfs"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/edit_style"
+                        android:textSize="18sp" />
+
+                    <ImageView
+                        android:id="@+id/iv_load_tcfs"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:src="@mipmap/load" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <ViewStub
+                android:id="@+id/vs_dx_gd"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout="@layout/vs_dx_gd" />
+
+            <ViewStub
+                android:id="@+id/vs_rq"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout="@layout/vs_rq" />
+
+            <ViewStub
+                android:id="@+id/vs_dy"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout="@layout/vs_child_dy" />
+
+            <ViewStub
+                android:id="@+id/vs_dx_dx"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout="@layout/vs_child_dx" />
+
+            <LinearLayout style="@style/edit_ll">
+
+                <TextView
+                    style="@style/edit_title"
+                    android:text="备注" />
+
+                <EditText
+                    android:id="@+id/tv_remarks"
+                    style="@style/edit_view_edit" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+
+    <View style="@style/tab_w_view" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:background="@color/white"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_save"
+            style="@style/bottom_open"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="保存" />
+
+        <View style="@style/tab_h_view" />
+
+        <TextView
+            android:id="@+id/tv_exit"
+            style="@style/bottom_open"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="退出" />
+    </LinearLayout>
+</LinearLayout>

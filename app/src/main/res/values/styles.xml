@@ -1,0 +1,120 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="QMUI.Compat">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+    <style name="list_base">
+        <item name="android:paddingTop">12dp</item>
+        <item name="android:paddingBottom">12dp</item>
+        <item name="android:paddingLeft">8dp</item>
+        <item name="android:paddingRight">6dp</item>
+        <item name="android:background">@color/lacteus</item>
+    </style>
+    <style name="top_operate_ll">
+        <item name="android:background">@drawable/click_bacground</item>
+        <item name="android:gravity">center</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="open_icon_ll">
+
+    </style>
+
+    <style name="ll_base">
+        <item name="android:paddingTop">12dp</item>
+        <item name="android:paddingBottom">12dp</item>
+        <item name="android:paddingLeft">3dp</item>
+        <item name="android:paddingRight">3dp</item>
+        <item name="android:background">@color/lacteus</item>
+    </style>
+    <style name="edit_ll">
+        <item name="android:weightSum">1</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">5dp</item>
+    </style>
+    <style name="edit_title">
+        <item name="android:layout_weight">0.3</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_width">0dp</item>
+    </style>
+    <style name="tv_view_select">
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingRight">10dp</item>
+        <item name="android:paddingTop">13dp</item>
+        <item name="android:paddingBottom">13dp</item>
+    </style>
+    <style name="edit_view_edit" parent="base_edit_value">
+            <item name="android:background">@drawable/edit_style</item>
+            <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="base_edit_value">
+        <item name="android:layout_weight">0.6</item>
+        <item name="android:layout_height">match_parent</item>
+        <!--<item name="android:gravity">center</item>-->
+        <item name="android:layout_width">0dp</item>
+    </style>
+    <style name="bottom_open">
+        <item name="android:textSize">16sp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingBottom">8dp</item>
+    </style>
+
+    <style name="tab_w_view">
+        <item name="android:background">@color/d_rule</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+    </style>
+
+    <style name="bt">
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@color/white</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingBottom">8dp</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="tab_h_view">
+        <item name="android:background">@color/d_rule</item>
+        <item name="android:layout_width">1dp</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+    <style name="bt_confirm">
+        <item name="android:background">@drawable/bt_confirm_bg</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/bt_text_size</item>
+        <item name="android:gravity">center</item>
+    </style>
+    <style name="bt_login" parent="bt_confirm">
+        <item name="android:background">@drawable/bt_login_bg</item>
+    </style>
+    <style name="edittext_style">
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:drawablePadding">10dp</item>
+        <item name="android:minHeight">33dp</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+    <style name="login_ll_base">
+        <item name="android:paddingTop">12dp</item>
+        <item name="android:paddingBottom">12dp</item>
+        <item name="android:paddingLeft">8dp</item>
+        <item name="android:paddingRight">8dp</item>
+        <item name="android:background">@color/white</item>
+    </style>
+
+</resources>

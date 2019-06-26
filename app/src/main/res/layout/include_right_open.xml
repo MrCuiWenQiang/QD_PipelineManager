@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_alignParentRight="true"
+    android:layout_marginRight="8dp"
+    android:layout_marginTop="12dp"
+    android:layout_below="@+id/ll_top"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    <TextView
+        android:id="@+id/ib_open"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/item_l"
+        android:text="菜单"
+        android:gravity="center"
+        android:layout_width="50dp"
+        android:layout_height="50dp" />
+    <TextView
+        android:id="@+id/ib_bz"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/item_l"
+        android:text="标注"
+        android:gravity="center"
+        android:layout_width="50dp"
+        android:layout_height="50dp" />
+    <ImageView
+        android:id="@+id/ib_local"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/item_l"
+        android:src="@mipmap/dingweipng"
+        android:gravity="center"
+        android:layout_width="50dp"
+        android:layout_height="50dp" />
+
+
+
+</LinearLayout>

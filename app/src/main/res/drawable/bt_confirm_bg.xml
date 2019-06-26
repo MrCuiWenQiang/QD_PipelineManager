@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="false">
+        <shape>
+            <solid android:color="@color/blue_1" />
+            <stroke android:width="0.5dp" android:color="@color/lacteus_1" />
+            <corners android:bottomLeftRadius="@dimen/bt_radius_value" android:bottomRightRadius="@dimen/bt_radius_value" android:topLeftRadius="@dimen/bt_radius_value" android:topRightRadius="@dimen/bt_radius_value" />
+            <padding android:bottom="@dimen/bt_paddint_top_bottom_value" android:left="@dimen/bt_paddint_left_right_value" android:right="@dimen/bt_paddint_left_right_value" android:top="@dimen/bt_paddint_top_bottom_value" />
+        </shape>
+    </item>
+    <item android:state_pressed="true">
+        <shape>
+            <solid android:color="@color/blue_2" />
+            <stroke android:width="0.5dp" android:color="@color/lacteus_1" />
+            <corners android:bottomLeftRadius="@dimen/bt_radius_value" android:bottomRightRadius="@dimen/bt_radius_value" android:topLeftRadius="@dimen/bt_radius_value" android:topRightRadius="@dimen/bt_radius_value" />
+            <padding android:bottom="@dimen/bt_paddint_top_bottom_value" android:left="@dimen/bt_paddint_left_right_value" android:right="@dimen/bt_paddint_left_right_value" android:top="@dimen/bt_paddint_top_bottom_value" />
+        </shape>
+    </item>
+</selector>

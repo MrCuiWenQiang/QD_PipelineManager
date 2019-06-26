@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            style="@style/ll_base"
+            android:background="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <LinearLayout style="@style/edit_ll">
+
+                <TextView
+                    style="@style/edit_title"
+                    android:text="图上点号" />
+
+                <EditText
+                    android:id="@+id/tv_dh"
+                    style="@style/edit_view_edit" />
+            </LinearLayout>
+
+            <LinearLayout style="@style/edit_ll">
+
+                <TextView
+                    style="@style/edit_title"
+                    android:text="物探点号" />
+
+                <EditText
+                    android:id="@+id/tv_wtdh"
+                    style="@style/edit_view_edit" />
+            </LinearLayout>
+
+            <LinearLayout style="@style/edit_ll">
+
+                <TextView
+                    style="@style/edit_title"
+                    android:text="特征" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="35dp"
+                    android:gravity="center_vertical"
+                    android:layout_weight="0.6">
+
+                    <EditText
+                        android:id="@+id/tv_tz"
+                        android:layout_width="0dp"
+                        android:textSize="18sp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/edit_style" />
+
+                    <ImageView
+                        android:layout_marginLeft="5dp"
+                        android:id="@+id/iv_load_tzd"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@mipmap/load" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout style="@style/edit_ll">
+
+                <TextView
+                    style="@style/edit_title"
+                    android:text="附属物" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="35dp"
+                    android:gravity="center_vertical"
+                    android:layout_weight="0.6">
+
+                    <EditText
+                        android:id="@+id/tv_fsw"
+                        android:layout_width="0dp"
+                        android:textSize="18sp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/edit_style" />
+
+                    <ImageView
+                        android:layout_marginLeft="5dp"
+                        android:id="@+id/iv_load_fsw"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@mipmap/load" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout style="@style/edit_ll">
+
+                <TextView
+                    style="@style/edit_title"
+                    android:text="X坐标" />
+
+                <EditText
+                    android:id="@+id/tv_x"
+                    style="@style/edit_view_edit" />
+            </LinearLayout>
+
+            <LinearLayout style="@style/edit_ll">
+
+                <TextView
+                    style="@style/edit_title"
+                    android:text="Y坐标" />
+
+                <EditText
+                    android:id="@+id/tv_y"
+                    style="@style/edit_view_edit" />
+            </LinearLayout>
+
+            <LinearLayout style="@style/edit_ll">
+
+                <TextView
+                    style="@style/edit_title"
+                    android:text="地面高程" />
+
+                <EditText
+                    android:id="@+id/tv_dmgc"
+                    style="@style/edit_view_edit" />
+            </LinearLayout>
+
+            <LinearLayout style="@style/edit_ll">
+
+                <TextView
+                    style="@style/edit_title"
+                    android:text="偏心井位" />
+
+                <EditText
+                    android:id="@+id/tv_pxjw"
+                    style="@style/edit_view_edit" />
+            </LinearLayout>
+
+            <LinearLayout style="@style/edit_ll">
+
+                <TextView
+                    style="@style/edit_title"
+                    android:text="道路代码" />
+
+                <EditText
+                    android:id="@+id/tv_dldm"
+                    style="@style/edit_view_edit" />
+            </LinearLayout>
+
+            <LinearLayout style="@style/edit_ll">
+
+                <TextView
+                    style="@style/edit_title"
+                    android:text="埋设年代" />
+
+                <EditText
+                    android:id="@+id/tv_msnd"
+                    style="@style/edit_view_edit" />
+            </LinearLayout>
+
+            <LinearLayout style="@style/edit_ll">
+
+                <TextView
+                    style="@style/edit_title"
+                    android:text="图幅号" />
+
+                <EditText
+                    android:id="@+id/tv_tfh"
+                    style="@style/edit_view_edit" />
+            </LinearLayout>
+
+            <LinearLayout style="@style/edit_ll">
+
+                <TextView
+                    style="@style/edit_title"
+                    android:text="辅助类型" />
+
+                <EditText
+                    android:id="@+id/tv_fzlx"
+                    style="@style/edit_view_edit" />
+            </LinearLayout>
+
+            <LinearLayout style="@style/edit_ll">
+
+                <TextView
+                    style="@style/edit_title"
+                    android:text="备注" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="35dp"
+                    android:gravity="center_vertical"
+                    android:layout_weight="0.6">
+
+                    <EditText
+                        android:id="@+id/tv_remarks"
+                        android:textSize="18sp"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/edit_style" />
+
+                    <ImageView
+                        android:id="@+id/iv_load_remarks"
+                        android:layout_marginLeft="5dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@mipmap/load" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+
+    <View style="@style/tab_w_view" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:background="@color/white"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_save"
+            style="@style/bottom_open"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="保存" />
+
+        <View style="@style/tab_h_view" />
+
+        <TextView
+            android:id="@+id/tv_exit"
+            style="@style/bottom_open"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="退出" />
+    </LinearLayout>
+</LinearLayout>
