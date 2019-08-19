@@ -74,7 +74,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/top_open_image_delete" />
-
+                <ImageButton
+                    android:id="@+id/ib_draw_measure"
+                    style="@style/open_icon_ll"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/top_open_image_measure" />
             </LinearLayout>
         </HorizontalScrollView>
 

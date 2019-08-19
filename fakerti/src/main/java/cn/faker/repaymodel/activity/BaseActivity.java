@@ -111,7 +111,7 @@ public abstract class BaseActivity extends BaseManagerActivity implements BasicA
     }
 
     protected void showDialog(String msg, boolean iscan, QMUIDialogAction.ActionListener actionListener) {
-        new QMUIDialog.MessageDialogBuilder(this).setMessage(msg).setCancelable(iscan).addAction("确定", actionListener).show();
+        new QMUIDialog.MessageDialogBuilder(this).setMessage(msg).setCancelable(iscan).setCanceledOnTouchOutside(false).addAction("确定", actionListener).show();
     }
 
     protected void showCanaelDialog(String msg, boolean iscan, QMUIDialogAction.ActionListener actionListener) {

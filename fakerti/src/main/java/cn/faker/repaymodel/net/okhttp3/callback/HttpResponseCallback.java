@@ -103,7 +103,7 @@ public abstract class HttpResponseCallback extends BasicCallback {
 
                             @Override
                             public void run() {
-                                if (baseResultBean.isSuccess()) {
+                                if (baseResultBean.getCode()==200) {
                                     onSuccess(baseResultBean.getData());
                                     onMessage(baseResultBean.getMsg());
                                 } else {

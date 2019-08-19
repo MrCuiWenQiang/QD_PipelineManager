@@ -55,22 +55,27 @@ import com.zt.map.R;
 import com.zt.map.contract.MainContract;
 import com.zt.map.entity.db.TaggingEntiiy;
 import com.zt.map.entity.db.system.Sys_Color;
+import com.zt.map.entity.db.system.Sys_RegisterInfo;
 import com.zt.map.entity.db.tab.Tab_Line;
 import com.zt.map.entity.db.tab.Tab_Marker;
 import com.zt.map.entity.db.tab.Tab_Project;
 import com.zt.map.presenter.MainPresenter;
 import com.zt.map.util.Base64Util;
+import com.zt.map.util.BitmapUtil;
 import com.zt.map.util.LocalUtil;
 import com.zt.map.util.LocalUtils;
 import com.zt.map.util.MapUtil;
 import com.zt.map.view.widget.AutoCaseTransformationMethod;
 import com.zt.map.view.widget.CreateDialog;
+import com.zt.map.view.widget.MeasureDialog;
 import com.zt.map.view.widget.ProjectDialog;
+import com.zt.map.view.widget.RegistDialog;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.faker.repaymodel.activity.manager.ActivityManager;
 import cn.faker.repaymodel.mvp.BaseMVPAcivity;
 import cn.faker.repaymodel.util.ToastUtility;
 
@@ -98,6 +103,7 @@ public class MainActivity extends BaseMVPAcivity<MainContract.View, MainPresente
     private ImageButton ibDrawInsert;
     private ImageButton ibDrawInfo;
     private ImageButton ibDrawDelete;
+    private ImageButton ib_draw_measure;
 
     private TextView ib_open;
     private ImageView ib_local;
@@ -148,8 +154,9 @@ public class MainActivity extends BaseMVPAcivity<MainContract.View, MainPresente
         ibDrawInsert = findViewById(R.id.ib_draw_insert);
         ibDrawInfo = findViewById(R.id.ib_draw_info);
         ibDrawDelete = findViewById(R.id.ib_draw_delete);
+        ib_draw_measure = findViewById(R.id.ib_draw_measure);
         opens = new View[]{ibDrawPan, ibDrawPoint, ibDrawLine,
-                ibDrawInsert, ibDrawInfo, ibDrawDelete};
+                ibDrawInsert, ibDrawInfo, ibDrawDelete, ib_draw_measure};
         ibDrawPan.setSelected(true);
         ib_open = findViewById(R.id.ib_open);
         ib_local = findViewById(R.id.ib_local);
@@ -186,8 +193,8 @@ public class MainActivity extends BaseMVPAcivity<MainContract.View, MainPresente
         ibDrawInsert.setOnClickListener(this);
         ibDrawInfo.setOnClickListener(this);
         ibDrawDelete.setOnClickListener(this);
+        ib_draw_measure.setOnClickListener(this);
         ib_bz.setOnClickListener(this);
-
 
         v_canval.setOnDrawListener(new CanvalView.onDrawListener() {
             @Override
@@ -293,6 +300,9 @@ public class MainActivity extends BaseMVPAcivity<MainContract.View, MainPresente
         } else if (isDelete()) {
             showLoading();
             mPresenter.delete(makerId, 1);
+        } else if (isMeasure()) {
+            showLoading();
+            mPresenter.queryMarker(makerId);
         }
         return true;
     }
@@ -350,7 +360,7 @@ public class MainActivity extends BaseMVPAcivity<MainContract.View, MainPresente
     @Override
     protected void onDestroy() {
         bmapView.onDestroy();
-        if (mLocationClient!=null){
+        if (mLocationClient != null) {
             mLocationClient.stop();
             baiduMap.setMyLocationEnabled(false);
         }
@@ -385,6 +395,17 @@ public class MainActivity extends BaseMVPAcivity<MainContract.View, MainPresente
                 selectindex(5);
                 break;
             }
+            case R.id.ib_draw_measure: {
+                selectindex(6);
+                if (isMeasure()) {
+                    showLoading();
+                    baiduMap.clear();
+                    mPresenter.queryMeasureProject(projectId);
+                } else {
+                    mPresenter.queryProject(projectId);
+                }
+                break;
+            }
             case R.id.tv_type: {
                 showTypeList();
                 break;
@@ -402,9 +423,20 @@ public class MainActivity extends BaseMVPAcivity<MainContract.View, MainPresente
                 showTaggings();
                 break;
             }
+
         }
     }
-
+    private boolean isMeasure() {
+        if (projectId <= 0) {
+            ToastUtility.showToast("请选择工程");
+            return false;
+        }
+        if (ib_draw_measure.getTag() == null) {
+            return false;
+        } else {
+            return (boolean) ib_draw_measure.getTag();
+        }
+    }
     private final String[] taggings = new String[]{"不使用标注", "埋深", "管线材质", "管径断面"};
 
     /**
@@ -471,7 +503,7 @@ public class MainActivity extends BaseMVPAcivity<MainContract.View, MainPresente
             if (!permision || ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                     || ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 //请求权限
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.WRITE_EXTERNAL_STORAGE,
                         Manifest.permission.ACCESS_COARSE_LOCATION}, 63);
                 return false;
             }
@@ -486,10 +518,10 @@ public class MainActivity extends BaseMVPAcivity<MainContract.View, MainPresente
             boolean permision = (perm == PackageManager.PERMISSION_GRANTED);
             int rperm = checkCallingOrSelfPermission("android.permission.READ_EXTERNAL_STORAGE");
             boolean rpermision = (rperm == PackageManager.PERMISSION_GRANTED);
-            if (!rpermision||!permision || ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
+            if (!rpermision || !permision || ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
                     ) {
                 //请求权限
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE}, 63);
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}, 63);
                 return false;
             }
         }
@@ -612,7 +644,7 @@ public class MainActivity extends BaseMVPAcivity<MainContract.View, MainPresente
                 pdialog.dismiss();
                 mPresenter.queryProject(id);
             }
-        }).show(getSupportFragmentManager(),"gg");
+        }).show(getSupportFragmentManager(), "gg");
 /*        new QMUIDialog.CheckableDialogBuilder(getContext())
                 .addItems(projects, new DialogInterface.OnClickListener() {
                     @Override
@@ -706,10 +738,29 @@ public class MainActivity extends BaseMVPAcivity<MainContract.View, MainPresente
     }
 
     @Override
-    public void queryMarker(Tab_Marker data) {
+    public void queryMarker(final Tab_Marker data) {
         dimiss();
         if (data == null) {
             ToastUtility.showToast("未查询到该点号");
+            return;
+        } else if (isMeasure()) {
+            final MeasureDialog dialog = new MeasureDialog();
+            dialog.setListener(new MeasureDialog.onIconListener() {
+                @Override
+                public void onIntext(Editable name) {
+                    if (name != null) {
+                        data.setCldh(name.toString());
+                    } else {
+                        data.setCldh(null);
+                    }
+                    mPresenter.updateMaker(data);
+                    dialog.dismiss();
+                }
+
+            });
+            dialog.setDH(data.getWtdh());
+            dialog.setCL(data.getCldh());
+            dialog.show(getSupportFragmentManager(), "ds");
             return;
         }
 
@@ -787,6 +838,61 @@ public class MainActivity extends BaseMVPAcivity<MainContract.View, MainPresente
         mPresenter.queryProjects();
     }
 
+    private RegistDialog registDialog;
+
+    //显示注册
+    @Override
+    public void shoWregister(String msg) {
+        if (!TextUtils.isEmpty(msg)){//显示审核中
+            showDialog(msg, false,new QMUIDialogAction.ActionListener() {
+                @Override
+                public void onClick(QMUIDialog dialog, int index) {
+                    dialog.dismiss();
+                    ActivityManager.exit(getContext());
+                }
+            });
+            return;
+        }
+        registDialog = new RegistDialog().setRegisListener(new RegistDialog.onRegisListener() {
+            @Override
+            public void onRegistInfo(Sys_RegisterInfo info) {
+                showLoading();
+                mPresenter.toregister(info);
+            }
+        });
+        registDialog.setCancelable(false);
+        // TODO: 2019/8/16  测试中不显示此对话
+        registDialog.show(getSupportFragmentManager(), "4");
+    }
+
+    @Override
+    public void registerSuccess() {
+
+    }
+
+    @Override
+    public void finsh(String msg) {
+        dimiss();
+        registDialog.dismiss();
+        registDialog = null;
+        showDialog(msg, false,new QMUIDialogAction.ActionListener() {
+            @Override
+            public void onClick(QMUIDialog dialog, int index) {
+                dialog.dismiss();
+                ActivityManager.exit(getContext());
+            }
+        });
+
+//        finish();
+    }
+
+    @Override
+    public void fail(String msg) {
+        dimiss();
+        ToastUtility.showToast(msg);
+//        finish();
+    }
+
     private void drawMarker(double latitude, double longitude, long marerId, Bitmap icon, String name) {
         drawMarker(latitude, longitude, marerId, typeColor, icon, name);
     }
@@ -815,6 +921,7 @@ public class MainActivity extends BaseMVPAcivity<MainContract.View, MainPresente
         if (color == -1) {
             color = 0xAAFF0000;
         }
+        image = BitmapUtil.replaceBitmapColor(image, color);
         tv.setTextColor(color);
         iv.setImageBitmap(image);
         return ll;
@@ -853,7 +960,29 @@ public class MainActivity extends BaseMVPAcivity<MainContract.View, MainPresente
             }
         });
     }
+    @Override
+    public void queryMeasure(List<Tab_Marker> markers) {
+        dimiss();
+        if (markers != null && markers.size() > 0) {
+            for (Tab_Marker item : markers) {
+                int color = -1;
+                Sys_Color c1 = item.getSys_color();
+                if (c1 != null) {
+                    color = Color.rgb(Integer.valueOf(c1.getR()), Integer.valueOf(c1.getG()),
+                            Integer.valueOf(c1.getB()));
+                }
 
+                String base64 = item.getIconBase();
+                if (!TextUtils.isEmpty(base64)) {
+                    Bitmap icon = Base64Util.stringtoBitmap(base64);
+                    drawMarker(item.getLatitude(), item.getLongitude(), item.getId(), color, icon, item.getWtdh());
+                } else {
+                    BitmapDescriptor bitmap = BitmapDescriptorFactory.fromResource(R.mipmap.makericon);
+                    drawMarker(item.getLatitude(), item.getLongitude(), item.getId(), color, bitmap.getBitmap(), item.getWtdh());
+                }
+            }
+        }
+    }
     /**
      * 底部菜单
      */

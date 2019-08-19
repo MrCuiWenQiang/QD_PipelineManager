@@ -112,29 +112,33 @@ public class HttpHelper {
      */
     public static void post(String path, Object object, BasicCallback callback) {
         callback.setOnFailedAll(onFailedAll);
+        Call call = getPostCall(path, object);
+        callback.setUrl(path);
+        HttpManager.addCall(path, call);
+        call.enqueue(callback);
+    }
 
+    public static Call getPostCall(String path, Object object) {
         String json = JsonUtil.convertObjectToJson(object);
         byte[] data = null;
-        try {
+      /*  try {
             data = RSAUtils.encryptByPublicKey(json.getBytes("utf-8"), RSAKeys.publicClientKey);
             String result = Base64.encode(data);
             data = result.getBytes();
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
 //        String base64data= Base64.encode(data);
         RequestBody body = RequestBody.create(MediaType.parse(contentType), json.getBytes());
 
         Request request = new Request.Builder().url(path)
-                .addHeader("Content-Length", String.valueOf(data.length))
+                .addHeader("Content-Length", String.valueOf(json.length()))
                 .post(body).build();
         if (httpHelper == null) {
             httpHelper = new HttpHelper();
         }
         Call call = okHttpClient.newCall(request);
-        callback.setUrl(path);
-        HttpManager.addCall(path, call);
-        call.enqueue(callback);
+        return call;
     }
 
     public static void put(String path, Object object, BasicCallback callback) {
@@ -265,11 +269,11 @@ public class HttpHelper {
         call.enqueue(callback);
     }
 
-    public static void get(@NonNull String url,HashMap<String,Object> params, @NonNull HttpResponseCallback callback) {
-        if (params!=null&&params.size()>0){
+    public static void get(@NonNull String url, HashMap<String, Object> params, @NonNull HttpResponseCallback callback) {
+        if (params != null && params.size() > 0) {
             String paramData = getRequestData(params);
-            if (!TextUtils.isEmpty(paramData)){
-                url=url+"?"+paramData;
+            if (!TextUtils.isEmpty(paramData)) {
+                url = url + "?" + paramData;
             }
         }
         callback.setOnFailedAll(onFailedAll);
@@ -326,7 +330,6 @@ public class HttpHelper {
         }
         return null;
     }
-
 
 
     public static void setOnFailedAll(HttpResponseCallback.OnFailedAll onFailedAll) {

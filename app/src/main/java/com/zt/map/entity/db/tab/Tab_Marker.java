@@ -89,7 +89,8 @@ public class Tab_Marker extends LitePalSupport {
     private String Sjly;
     @ExcelCount(order = 28, name = "是否利用")
     private String Sfly;
-
+    @ExcelCount(order = 29, name = "测量点号")
+    private String cldh;
     @ExcelCount(order = 30, name = "备注")
     private String remarks;//备注
 
@@ -142,7 +143,9 @@ public class Tab_Marker extends LitePalSupport {
         }
         return iconBase;
     }
-
+    public void setColor(Sys_Color sys_color){
+        this.sys_color = sys_color;
+    }
     public String getGxlx() {
         Sys_Type type = LitPalUtils.selectsoloWhere(Sys_Type.class, "id=?", String.valueOf(typeId));
         if (type != null) {
@@ -174,7 +177,13 @@ public class Tab_Marker extends LitePalSupport {
     public void setSzhd(String szhd) {
         this.szhd = szhd;
     }
+    public String getCldh() {
+        return cldh;
+    }
 
+    public void setCldh(String cldh) {
+        this.cldh = cldh;
+    }
     public String getPshmc() {
         return pshmc;
     }

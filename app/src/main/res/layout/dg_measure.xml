@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout style="@style/edit_ll">
+
+        <TextView
+            style="@style/edit_title"
+            android:text="物探点号" />
+
+        <TextView
+            android:id="@+id/tv_name"
+            style="@style/edit_view_edit" />
+    </LinearLayout>
+    <LinearLayout style="@style/edit_ll">
+
+        <TextView
+            style="@style/edit_title"
+            android:text="测量点号" />
+
+        <EditText
+            android:id="@+id/tv_fh"
+            style="@style/edit_view_edit" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_marginTop="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/tv_clean"
+            android:text="取消"
+            style="@style/bt" />
+        <TextView
+            android:id="@+id/tv_nice"
+            android:text="确定"
+            style="@style/bt"  />
+        </LinearLayout>
+</LinearLayout>

@@ -42,6 +42,7 @@ public class MarkerPresenter extends BaseMVPPresenter<MarkerContract.View> imple
 
             @Override
             protected BaseMVPModel.MessageEntity jobContent() throws Exception {
+                tab.setWtdh(tab.getWtdh().toUpperCase());
                 if (tab.getId() <= 0) {
                     boolean isHave = LitPalUtils.selectCount(Tab_Marker.class,
                             "projectId = ? AND wtdh=?", String.valueOf(tab.getProjectId()), tab.getWtdh()) > 0;
@@ -177,6 +178,7 @@ public class MarkerPresenter extends BaseMVPPresenter<MarkerContract.View> imple
 
             @Override
             protected BaseMVPModel.MessageEntity jobContent() throws Exception {
+                tab.setWtdh(tab.getWtdh().toUpperCase());
                 //冗余代码
                 boolean isHave = LitPalUtils.selectCount(Tab_Marker.class,
                         "projectId = ? AND wtdh=?", String.valueOf(tab.getProjectId()), tab.getWtdh()) > 0;

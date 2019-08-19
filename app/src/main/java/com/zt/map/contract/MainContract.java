@@ -4,6 +4,7 @@ import android.content.Context;
 import android.text.Editable;
 
 import com.zt.map.entity.db.TaggingEntiiy;
+import com.zt.map.entity.db.system.Sys_RegisterInfo;
 import com.zt.map.entity.db.tab.Tab_Line;
 import com.zt.map.entity.db.tab.Tab_Marker;
 import com.zt.map.entity.db.tab.Tab_Project;
@@ -32,14 +33,24 @@ public class MainContract {
 
         void outExcel(String msg);
         void delete_Project();
+
+        void shoWregister(String msg);
+        void registerSuccess();//已注册
+
+        void finsh(String msg);
+        void fail(String msg);
+        void queryMeasure(List<Tab_Marker> datas);
     }
 
     public interface Presenter {
+        public void updateMaker(final Tab_Marker marker);
+
+        void queryMarker(long id);
         void queryType();
         void queryProjects();
         void createProject(Editable name,boolean isPhoto);
         void queryProject(long projectId);
-
+        void queryMeasureProject(long projectId);
         void delete(long id, int type);// 1 删除点 2删除线
         void update_MakerLocal(long makerId, double latitude, double longitude);
 
@@ -50,6 +61,9 @@ public class MainContract {
          void outAccess(Long projectId, final Context mContext);
 
         void delete_Project(long id);
+
+        void isregister();//检测是否注册
+        void toregister(Sys_RegisterInfo sys_registerInfo);//发生注册 1.单独发送注册码 2.发送注册信息
     }
 
     public interface Model {
