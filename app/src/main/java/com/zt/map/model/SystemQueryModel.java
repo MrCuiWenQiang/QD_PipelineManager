@@ -4,6 +4,7 @@ import com.zt.map.entity.db.system.Sys_Appendages;
 import com.zt.map.entity.db.system.Sys_Direction;
 import com.zt.map.entity.db.system.Sys_Embedding;
 import com.zt.map.entity.db.system.Sys_Features;
+import com.zt.map.entity.db.system.Sys_LineFC;
 import com.zt.map.entity.db.system.Sys_LineType;
 import com.zt.map.entity.db.system.Sys_Line_Manhole;
 import com.zt.map.entity.db.system.Sys_Manhole;
@@ -230,7 +231,30 @@ public class SystemQueryModel extends BaseMVPModel {
             }
         });
     }
+    /**
+     * 查询管线范畴
+     * @param code
+     * @param listener
+     */
+    public void queryLinefc(final String code,final CommotListener<List<Sys_LineFC>> listener) {
+        DBThreadHelper.startThreadInPool(new DBThreadHelper.ThreadCallback<List<Sys_LineFC>>() {
 
+            @Override
+            protected List<Sys_LineFC> jobContent() throws Exception {
+                Sys_Table tables = LitPalUtils.selectsoloWhere(Sys_Table.class,"id = ?",code);
+                if (tables!=null){
+                    List<Sys_LineFC> datas = LitPalUtils.selectWhere(Sys_LineFC.class,"fatherCode = ?",tables.getCode());
+                    return datas;
+                }
+                return null;
+            }
+
+            @Override
+            protected void jobEnd(List<Sys_LineFC> sysQualityTables) {
+                listener.result(sysQualityTables);
+            }
+        });
+    }
     /**
      * 井盖材质
      * @param code

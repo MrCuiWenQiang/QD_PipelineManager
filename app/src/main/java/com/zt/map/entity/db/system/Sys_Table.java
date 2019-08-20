@@ -26,7 +26,16 @@ public class Sys_Table extends LitePalSupport {
     private List<Sys_UseStatus> useStatuses = new ArrayList<>();//使用状况
     private List<Sys_Pressure> pressures = new ArrayList<>();//压力
     private List<Sys_TGCL> tgcls = new ArrayList<>();//套管材料
+    private List<Sys_LineFC> fvs = new ArrayList<>();//管线范畴
     private List<Sys_Color> colors = new ArrayList<>();
+
+    public List<Sys_LineFC> getFvs() {
+        return fvs;
+    }
+
+    public void setFvs(List<Sys_LineFC> fvs) {
+        this.fvs = fvs;
+    }
 
     public long getId() {
         return id;

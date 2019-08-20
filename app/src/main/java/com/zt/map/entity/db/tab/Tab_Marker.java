@@ -47,8 +47,10 @@ public class Tab_Marker extends LitePalSupport {
 
     @ExcelCount(order = 9, name = "地面高程")
     private String dmgc;//高程
-//    @ExcelCount(order = 10, name = "偏心井点号")
+   @ExcelCount(order = 10, name = "偏心井点号")
     private String pxjw;//偏心井点号
+     @ExcelCount(order = 11, name = "偏距")
+    private String pj;//偏距
 //    @ExcelCount(order = 11, name = "井类型")
     private String jlx;//井类型
 //    @ExcelCount(order = 12, name = "井直径")
@@ -83,6 +85,8 @@ public class Tab_Marker extends LitePalSupport {
 
     @ExcelCount(order = 25, name = "权属单位")
     private String qsdw;
+    @ExcelCount(order = 23, name = "管点范畴")
+    private String fc;
     @ExcelCount(order = 26, name = "建设日期")
     private String Jsrq;
     @ExcelCount(order = 27, name = "数据来源")
@@ -115,6 +119,13 @@ public class Tab_Marker extends LitePalSupport {
         return sys_color;
     }
 
+    public String getFc() {
+        return fc;
+    }
+
+    public void setFc(String fc) {
+        this.fc = fc;
+    }
 
     public String getIconBase() {
         if (iconBase != null) {
@@ -164,6 +175,14 @@ public class Tab_Marker extends LitePalSupport {
 
     public double getChlongitude() {
         return chlongitude;
+    }
+
+    public String getPj() {
+        return pj;
+    }
+
+    public void setPj(String pj) {
+        this.pj = pj;
     }
 
     public void setChlongitude(double chlongitude) {

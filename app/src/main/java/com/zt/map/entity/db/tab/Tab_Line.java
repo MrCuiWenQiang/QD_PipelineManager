@@ -38,6 +38,10 @@ public class Tab_Line extends LitePalSupport {
     private double end_longitude;
 
     private int color =-1;
+    @ExcelCount(order = 0,name = "管类")
+    private String Gxlx;//管线类型
+    @ExcelCount(order = 1,name = "管线类型")
+    private String Gxoutlx;//管线类型输出
 
     // TODO: 2019/5/29 起始物号和终止物号 用markerID去查
     @ExcelCount(order = 2,name = "起点点号")
@@ -45,8 +49,7 @@ public class Tab_Line extends LitePalSupport {
     @ExcelCount(order = 3,name = "终点点号")
     private String Zzwh;
 
-    @ExcelCount(order = 1,name = "管线类型")
-    private String Gxlx;//管线类型
+
     @ExcelCount(order = 4,name = "起点埋深")
     private String Qdms;
     @ExcelCount(order = 5,name = "终点埋深")
@@ -107,6 +110,8 @@ public class Tab_Line extends LitePalSupport {
     private String tgcz;
     @ExcelCount(order = 31,name = "是否利用")
     private String sfly;
+    @ExcelCount(order = 32,name = "管线范畴")
+    private String gxfc;
 
     @ExcelCount(order = 100,name = "备注")
     private String Remarks;
@@ -123,6 +128,22 @@ public class Tab_Line extends LitePalSupport {
             Qswh = marker.getWtdh();
             return Qswh;
         }
+    }
+
+    public String getGxfc() {
+        return gxfc;
+    }
+
+    public String getGxoutlx() {
+        return Gxoutlx;
+    }
+
+    public void setGxoutlx(String gxoutlx) {
+        Gxoutlx = gxoutlx;
+    }
+
+    public void setGxfc(String gxfc) {
+        this.gxfc = gxfc;
     }
 
     public void setQswh(String qswh) {

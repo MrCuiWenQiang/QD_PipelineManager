@@ -91,6 +91,8 @@ public class MarkerNowActivity extends BaseMVPAcivity<MarkerContract.View, Marke
     private EditText tvY;
     private EditText tvDmgc;
     private EditText tvPxjw;
+    private EditText tv_gdfc;
+    private EditText tv_pj;
     private EditText tvJlx;
     private EditText tvJzj;
     private EditText tvJbs;
@@ -157,6 +159,8 @@ public class MarkerNowActivity extends BaseMVPAcivity<MarkerContract.View, Marke
         tvY = findViewById(R.id.tv_y);
         tvDmgc = findViewById(R.id.tv_dmgc);
         tvPxjw = findViewById(R.id.tv_pxjw);
+        tv_gdfc = findViewById(R.id.tv_gdfc);
+        tv_pj = findViewById(R.id.tv_pj);
         tvJlx = findViewById(R.id.tv_jlx);
         tvJzj = findViewById(R.id.tv_jzj);
         tvJbs = findViewById(R.id.tv_jbs);
@@ -264,6 +268,8 @@ public class MarkerNowActivity extends BaseMVPAcivity<MarkerContract.View, Marke
         tab.setLongitude(getLong(tvY));
         tab.setDmgc(getValue(tvDmgc));
         tab.setPxjw(getValue(tvPxjw));
+        tab.setFc(getValue(tv_gdfc));
+        tab.setPj(getValue(tv_pj));
         tab.setJlx(getValue(tvJlx));
         tab.setJzj(getValue(tvJzj));
         tab.setJbs(getValue(tvJbs));
@@ -396,6 +402,8 @@ public class MarkerNowActivity extends BaseMVPAcivity<MarkerContract.View, Marke
         tvY.setText(String.valueOf(marker.getLongitude()));
         tvDmgc.setText(marker.getDmgc());
         tvPxjw.setText(marker.getPxjw());
+        tv_gdfc.setText(marker.getFc());
+        tv_pj.setText(marker.getPj());
         tv_ch_x.setText(String.valueOf(tab.getChlatitude()));
         tv_ch_y.setText(String.valueOf(tab.getChlongitude()));
         tvJlx.setText(marker.getJlx());
@@ -442,6 +450,8 @@ public class MarkerNowActivity extends BaseMVPAcivity<MarkerContract.View, Marke
         tvFsw.setText(marker.getFsw());
         tvDmgc.setText(marker.getDmgc());
         tvPxjw.setText(marker.getPxjw());
+        tv_gdfc.setText(marker.getFc());
+        tv_pj.setText(marker.getPj());
         tvJlx.setText(marker.getJlx());
         tvJzj.setText(marker.getJzj());
         tvJbs.setText(marker.getJbs());

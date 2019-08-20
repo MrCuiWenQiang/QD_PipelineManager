@@ -174,7 +174,7 @@
             </LinearLayout>
 
             <LinearLayout style="@style/edit_ll"
-                android:visibility="gone">
+                >
 
                 <TextView
                     style="@style/edit_title"
@@ -182,6 +182,28 @@
 
                 <EditText
                     android:id="@+id/tv_pxjw"
+                    style="@style/edit_view_edit" />
+            </LinearLayout>
+            <LinearLayout style="@style/edit_ll"
+                >
+
+                <TextView
+                    style="@style/edit_title"
+                    android:text="偏距" />
+
+                <EditText
+                    android:id="@+id/tv_pj"
+                    style="@style/edit_view_edit" />
+            </LinearLayout>
+
+            <LinearLayout style="@style/edit_ll">
+
+                <TextView
+                    style="@style/edit_title"
+                    android:text="管点范畴" />
+
+                <EditText
+                    android:id="@+id/tv_gdfc"
                     style="@style/edit_view_edit" />
             </LinearLayout>
 

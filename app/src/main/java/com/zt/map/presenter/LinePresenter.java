@@ -10,6 +10,7 @@ import com.zt.map.constant.TypeConstant;
 import com.zt.map.contract.LineContract;
 import com.zt.map.entity.db.system.Sys_Direction;
 import com.zt.map.entity.db.system.Sys_Embedding;
+import com.zt.map.entity.db.system.Sys_LineFC;
 import com.zt.map.entity.db.system.Sys_LineType;
 import com.zt.map.entity.db.system.Sys_Line_Data;
 import com.zt.map.entity.db.system.Sys_Line_Manhole;
@@ -108,6 +109,32 @@ public class LinePresenter extends BaseMVPPresenter<LineContract.View> implement
                 }
             }
         });
+    }
+    private String[] gxfc;
+    @Override
+    public void queryGXFC(long id) {
+        if (gxfc != null) {
+            getView().queryGXFC(gxfc);
+            return;
+        }
+            queryModel.queryLinefc(String.valueOf(id), new BaseMVPModel.CommotListener<List<Sys_LineFC>>() {
+                @Override
+                public void result(List<Sys_LineFC> sys_lineFCS) {
+                    if (getView() == null) {
+                        return;
+                    }
+                    if (sys_lineFCS == null || sys_lineFCS.size() <= 0) {
+                        getView().fail("未获取到选择数据");
+                    } else {
+                        List<String> datas = new ArrayList<>();
+                        for (Sys_LineFC item : sys_lineFCS) {
+                            datas.add(item.getName());
+                        }
+                        gxfc = datas.toArray(new String[datas.size()]);
+                        getView().queryGXFC(gxfc);
+                    }
+                }
+            });
     }
 
     private String[] czs;

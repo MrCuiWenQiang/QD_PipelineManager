@@ -41,6 +41,8 @@ public class LineContract {
         void querySfly(String[] items);
         void queryXX(String[] items);
 
+        void queryGXFC(String[] items);
+
         void fail(String msg);
 
         void queryStartAndEndMarer(Tab_Marker sm,Tab_Marker em);
@@ -51,6 +53,7 @@ public class LineContract {
         void save(Tab_Line tab);
 
         void queryLine(long id);
+        void queryGXFC(long id);
 
         void queryType(long typeid);
         void queryXX();

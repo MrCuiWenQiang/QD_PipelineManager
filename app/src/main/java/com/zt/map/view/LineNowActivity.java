@@ -81,6 +81,9 @@ public class LineNowActivity extends BaseMVPAcivity<LineContract.View, LinePrese
     private TextView tvSave;
     private TextView tvExit;
 
+    private EditText tv_gxfc;
+    private ImageView iv_load_gxfc;
+
     private long projectId;
     private long typeId;
 
@@ -149,6 +152,9 @@ public class LineNowActivity extends BaseMVPAcivity<LineContract.View, LinePrese
         vs_rq = findViewById(R.id.vs_rq);
         vs_dy = findViewById(R.id.vs_dy);
 
+        tv_gxfc = findViewById(R.id.tv_gxfc);
+        iv_load_gxfc = findViewById(R.id.iv_load_gxfc);
+
 
         tvSave = findViewById(R.id.tv_save);
         tvExit = findViewById(R.id.tv_exit);
@@ -198,6 +204,7 @@ public class LineNowActivity extends BaseMVPAcivity<LineContract.View, LinePrese
         ivLoadSyzt.setOnClickListener(this);
         ivLoadGxcl.setOnClickListener(this);
         ivLoadXx.setOnClickListener(this);
+        iv_load_gxfc.setOnClickListener(this);
     }
 
     @Override
@@ -232,6 +239,10 @@ public class LineNowActivity extends BaseMVPAcivity<LineContract.View, LinePrese
                 mPresenter.queryXX();
                 break;
             }
+            case R.id.iv_load_gxfc: {
+                mPresenter.queryGXFC(typeId);
+                break;
+            }
 
             case R.id.tv_save: {
                 save();
@@ -263,6 +274,8 @@ public class LineNowActivity extends BaseMVPAcivity<LineContract.View, LinePrese
         tab_line.setEnd_longitude(end_longitude);
 
         tab_line.setGxlx(getValue(tvGxlx));
+        tab_line.setGxoutlx(getValue(tvGxlx));
+        tab_line.setGxfc(getValue(tv_gxfc));
         tab_line.setQdms(getValue(tvQdms));
         tab_line.setZzms(getValue(tvZzms));
         tab_line.setMsfs(getValue(tvMsfs));
@@ -345,6 +358,8 @@ public class LineNowActivity extends BaseMVPAcivity<LineContract.View, LinePrese
         tvZzwh.setTag(tabLine.getEndMarkerId());
 
         tvQdms.setText(tabLine.getQdms());
+        tvGxlx.setText(tabLine.getGxoutlx());
+        tv_gxfc.setText(tabLine.getGxfc());
         tvZzms.setText(tabLine.getZzms());
         tvMsfs.setText(tabLine.getMsfs());
         tvGjdm.setText(tabLine.getGjdm());
@@ -590,6 +605,11 @@ public class LineNowActivity extends BaseMVPAcivity<LineContract.View, LinePrese
     @Override
     public void queryXX(String[] items) {
         selectValue(tvXx, items);
+    }
+
+    @Override
+    public void queryGXFC(String[] items) {
+        selectValue(tv_gxfc, items);
     }
 
     @Override

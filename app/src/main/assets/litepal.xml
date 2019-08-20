@@ -3,9 +3,10 @@
     <dbname value="mapmanager" />
 
     <!--数据库版本号，用于更新数据库-->
-    <version value="2" />
+    <version value="3" />
 
     <list>
+        <mapping class="com.zt.map.entity.db.system.Sys_LineFC"/>
         <mapping class="com.zt.map.entity.db.system.Sys_Appendages"/>
         <mapping class="com.zt.map.entity.db.system.Sys_Direction"/>
         <mapping class="com.zt.map.entity.db.system.Sys_Embedding"/>
