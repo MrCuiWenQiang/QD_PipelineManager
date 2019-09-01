@@ -54,6 +54,7 @@ public class LineNowActivity extends BaseMVPAcivity<LineContract.View, LinePrese
     private EditText tvGjdm;
     private EditText tvGxcl;
     private ImageView ivLoadGxcl;
+    private ImageView iv_load_tgcz;
 
     private EditText tvYxzt;
     private ImageView ivLoadYxzt;
@@ -138,6 +139,7 @@ public class LineNowActivity extends BaseMVPAcivity<LineContract.View, LinePrese
         ivLoadGxcl = findViewById(R.id.iv_load_gxcl);
         tvYxzt = findViewById(R.id.tv_yxzt);
         ivLoadYxzt = findViewById(R.id.iv_load_yxzt);
+        iv_load_tgcz = findViewById(R.id.iv_load_tgcz);
         tvJsnd = findViewById(R.id.tv_jsnd);
         tvQsdw = findViewById(R.id.tv_qsdw);
         tvSzwz = findViewById(R.id.tv_szwz);
@@ -205,6 +207,7 @@ public class LineNowActivity extends BaseMVPAcivity<LineContract.View, LinePrese
         ivLoadGxcl.setOnClickListener(this);
         ivLoadXx.setOnClickListener(this);
         iv_load_gxfc.setOnClickListener(this);
+        iv_load_tgcz.setOnClickListener(this);
     }
 
     @Override
@@ -250,6 +253,9 @@ public class LineNowActivity extends BaseMVPAcivity<LineContract.View, LinePrese
             }
             case R.id.tv_exit: {
                 finish();
+                break;
+            }
+            case R.id.iv_load_tgcz: {//套管材质
                 break;
             }
         }
@@ -414,6 +420,8 @@ public class LineNowActivity extends BaseMVPAcivity<LineContract.View, LinePrese
         topLine = tabLine;
 
         if (tabLine == null) return;
+
+        tvGxlx.setText(tabLine.getGxoutlx());
         //上一条线的终点埋深默认为下一条线的起点埋深
         tvQdms.setText(tabLine.getZzms());
 //        tvZzms.setText(tabLine.getZzms());

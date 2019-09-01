@@ -83,9 +83,9 @@ public class MarkerNowActivity extends BaseMVPAcivity<MarkerContract.View, Marke
 
     private EditText tvGxlx;
     private EditText tvWtdh;
-    private EditText tvTz;
+    private TextView tvTz;
     private ImageView ivLoadTzd;
-    private EditText tvFsw;
+    private TextView tvFsw;
     private ImageView ivLoadFsw;
     private EditText tvX;
     private EditText tvY;
@@ -398,6 +398,7 @@ public class MarkerNowActivity extends BaseMVPAcivity<MarkerContract.View, Marke
         tvWtdh.setText(marker.getWtdh());
         tvTz.setText(marker.getTzd());
         tvFsw.setText(marker.getFsw());
+
         tvX.setText(String.valueOf(marker.getLatitude()));
         tvY.setText(String.valueOf(marker.getLongitude()));
         tvDmgc.setText(marker.getDmgc());
@@ -600,11 +601,18 @@ public class MarkerNowActivity extends BaseMVPAcivity<MarkerContract.View, Marke
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         tv.setText(items[position]);
                         mListPopup.dismiss();
+                        if (tv.getId()==R.id.tv_tz){
+                            tvFsw.setText(null);
+                        }else if (tv.getId()==R.id.tv_fsw){
+                            tvTz.setText(null);
+                        }
                     }
                 });
         mListPopup.setAnimStyle(QMUIPopup.ANIM_GROW_FROM_CENTER);
         mListPopup.show(tv);
     }
+
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

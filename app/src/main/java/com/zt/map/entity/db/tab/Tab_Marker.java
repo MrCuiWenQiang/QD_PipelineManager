@@ -30,45 +30,63 @@ public class Tab_Marker extends LitePalSupport {
 
     @ExcelCount(order = 1, name = "管线类型")
     private String gxlx;//管线类型
-    @ExcelCount(order = 2, name = "管点编号")
+    @ExcelCount(order = 2, name = "物探点号")
     private String wtdh;//管点编号
     @ExcelCount(order = 3, name = "特征点")
     private String tzd;//特征点
     @ExcelCount(order = 4, name = "附属物")
     private String fsw;//附属物
-    @ExcelCount(order = 5, name = "横坐标")
+    @ExcelCount(order = 5, name = "埋深")
+    private String jds;//井底深
+    @ExcelCount(order = 6, name = "数据来源")
+    private String Sjly;
+
+    @ExcelCount(order = 7, name = "横坐标")
     private double latitude;//x
-    @ExcelCount(order = 6, name = "纵坐标")
+    @ExcelCount(order = 8, name = "纵坐标")
     private double longitude;//y
-    @ExcelCount(order = 7, name = "测绘横坐标")
+    @ExcelCount(order = 9, name = "测绘横坐标")
     private double chlatitude;//x
-    @ExcelCount(order = 8, name = "测绘纵坐标")
+    @ExcelCount(order = 10, name = "测绘纵坐标")
     private double chlongitude;//y
 
-    @ExcelCount(order = 9, name = "地面高程")
+    @ExcelCount(order = 11, name = "地面高程")
     private String dmgc;//高程
-   @ExcelCount(order = 10, name = "偏心井点号")
+    @ExcelCount(order = 12, name = "备注")
+    private String remarks;//备注
+
+    @ExcelCount(order = 13, name = "井盖类型")
+    private String jglx;//井盖类型
+    @ExcelCount(order = 14, name = "井盖规格")
+    private String jggg;//井盖规格
+    @ExcelCount(order = 15, name = "井盖材质")
+    private String jgcz;//井盖材质
+    @ExcelCount(order = 16, name = "权属单位")
+    private String qsdw;
+    @ExcelCount(order = 17, name = "建设日期")
+    private String Jsrq;
+
+    @ExcelCount(order = 18, name = "偏心井点号")
     private String pxjw;//偏心井点号
-     @ExcelCount(order = 11, name = "偏距")
+    @ExcelCount(order = 19, name = "偏距")
     private String pj;//偏距
+    @ExcelCount(order = 20, name = "所在位置")
+    private String szwz;//所在位置
+    @ExcelCount(order = 21, name = "管点范畴")
+    private String fc;
+
+
+
 //    @ExcelCount(order = 11, name = "井类型")
     private String jlx;//井类型
 //    @ExcelCount(order = 12, name = "井直径")
     private String jzj;//井直径
 //    @ExcelCount(order = 13, name = "井脖深")
     private String jbs;//井脖深
-    @ExcelCount(order = 14, name = "井底深")
-    private String jds;//井底深
-    @ExcelCount(order = 15, name = "井盖类型")
-    private String jglx;//井盖类型
-    @ExcelCount(order = 16, name = "井盖规格")
-    private String jggg;//井盖规格
-    @ExcelCount(order = 17, name = "井盖材质")
-    private String jgcz;//井盖材质
+
 //    @ExcelCount(order = 18, name = "井盖状态")
     private String jgzt;
-    @ExcelCount(order = 19, name = "所在位置")
-    private String szwz;//所在位置
+
 //    @ExcelCount(order = 20, name = "使用状态")
     private String syzt;//使用状态
 //    @ExcelCount(order = 21, name = "探测方式")
@@ -78,25 +96,17 @@ public class Tab_Marker extends LitePalSupport {
     private String szhd;
 //    @ExcelCount(order = 23, name = "排水户名称")
     private String pshmc;
-    @ExcelCount(order = 24, name = "影像资料文件编号")
+    @ExcelCount(order = 22, name = "影像资料文件编号")
     private String wjbh;
 //    @ExcelCount(order = 25, name = "隐患情况说明")
     private String qksm;
 
-    @ExcelCount(order = 25, name = "权属单位")
-    private String qsdw;
-    @ExcelCount(order = 23, name = "管点范畴")
-    private String fc;
-    @ExcelCount(order = 26, name = "建设日期")
-    private String Jsrq;
-    @ExcelCount(order = 27, name = "数据来源")
-    private String Sjly;
-    @ExcelCount(order = 28, name = "是否利用")
+
+    @ExcelCount(order = 23, name = "是否利用")
     private String Sfly;
-    @ExcelCount(order = 29, name = "测量点号")
+    @ExcelCount(order = 24, name = "测量点号")
     private String cldh;
-    @ExcelCount(order = 30, name = "备注")
-    private String remarks;//备注
+
 
     public String getJgzt() {
         return jgzt;
@@ -158,9 +168,14 @@ public class Tab_Marker extends LitePalSupport {
         this.sys_color = sys_color;
     }
     public String getGxlx() {
-        Sys_Type type = LitPalUtils.selectsoloWhere(Sys_Type.class, "id=?", String.valueOf(typeId));
-        if (type != null) {
-            return type.getName();
+
+
+        Sys_Table table = LitPalUtils.selectsoloWhere(Sys_Table.class, "id=?", String.valueOf(typeId));
+        if(table==null) return null;
+
+//        Sys_Type_Child type = LitPalUtils.selectsoloWhere(Sys_Type_Child.class, "value=?", table.getCode());
+        if (table != null) {
+            return table.getCode();
         } else {
             return null;
         }

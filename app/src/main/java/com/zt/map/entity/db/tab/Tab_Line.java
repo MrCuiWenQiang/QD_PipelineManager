@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import com.zt.map.entity.db.system.Sys_Color;
 import com.zt.map.entity.db.system.Sys_Table;
 import com.zt.map.entity.db.system.Sys_Type;
+import com.zt.map.entity.db.system.Sys_Type_Child;
 import com.zt.map.util.out.AccessTableName;
 import com.zt.map.util.out.ExcelCount;
 import com.zt.map.util.out.ExcelName;
@@ -54,64 +55,72 @@ public class Tab_Line extends LitePalSupport {
     private String Qdms;
     @ExcelCount(order = 5,name = "终点埋深")
     private String Zzms;
-    @ExcelCount(order = 6,name = "埋设方式")
-    private String Msfs;
-    @ExcelCount(order = 7,name = "管径")
-    private String Gjdm;//管径
-    @ExcelCount(order = 8,name = "材质")
+    @ExcelCount(order = 6,name = "材质")
     private String Gxcl;//材质
-    @ExcelCount(order = 9,name = "流向")
+    @ExcelCount(order = 7,name = "埋设方式")
+    private String Msfs;
+    @ExcelCount(order = 8,name = "管径")
+    private String Gjdm;//管径
+    @ExcelCount(order = 9,name = "线型")
+    private String xx;
+    @ExcelCount(order = 10,name = "流向")
     private String lx;//流向
-    @ExcelCount(order = 10,name = "起点淤积")
-    private String Qdyj;//起点淤积
-    @ExcelCount(order = 11,name = "终点淤积")
-    private String Zdyj;//终点淤积
-    @ExcelCount(order = 12,name = "运行状态")
-    private String Yxzt;//运行状态
-    @ExcelCount(order = 13,name = "倒虹管段")
-    private String Dhgd;//倒虹管段
-    @ExcelCount(order = 14,name = "建设日期")
-    private String Jsnd;//建设年代
-    @ExcelCount(order = 15,name = "权属单位")
-    private String Qsdw;//权属单位
-    @ExcelCount(order = 16,name = "所在位置")
+    @ExcelCount(order = 11,name = "套管材质")
+    private String tgcz;
+    @ExcelCount(order = 12,name = "条数")
+    private String Ts;
+    @ExcelCount(order = 13,name = "压力")
+    private String yl;
+    @ExcelCount(order = 14,name = "电压")
+    private String dy;
+    @ExcelCount(order = 15,name = "总孔数")
+    private String Zks;
+    @ExcelCount(order = 16,name = "已用孔数")
+    private String Yyks;
+    @ExcelCount(order = 17,name = "所在位置")
     private String Szwz;//所在位置
-    @ExcelCount(order = 17,name = "使用状态")
+    @ExcelCount(order = 18,name = "管线范畴")
+    private String gxfc;
+
+    @ExcelCount(order = 19,name = "起点淤积")
+    private String Qdyj;//起点淤积
+    @ExcelCount(order = 20,name = "终点淤积")
+    private String Zdyj;//终点淤积
+    @ExcelCount(order = 21,name = "运行状态")
+    private String Yxzt;//运行状态
+    @ExcelCount(order = 22,name = "倒虹管段")
+    private String Dhgd;//倒虹管段
+    @ExcelCount(order = 23,name = "建设日期")
+    private String Jsnd;//建设年代
+    @ExcelCount(order = 24,name = "权属单位")
+    private String Qsdw;//权属单位
+
+    @ExcelCount(order = 25,name = "使用状态")
     private String Syzt;//使用状态
 //    @ExcelCount(order = 18,name = "探测方式")
     private String tcfs;//探测方式
 
 
-    @ExcelCount(order = 19,name = "总孔数")
-    private String Zks;
-    @ExcelCount(order = 20,name = "已用孔数")
-    private String Yyks;
-    @ExcelCount(order = 21,name = "条数")
-    private String Ts;
 
-    @ExcelCount(order = 22,name = "设施运行状态")
+
+
+    @ExcelCount(order = 26,name = "设施运行状态")
     private String ssyxzt;
-    @ExcelCount(order = 23,name = "管线质量")
+    @ExcelCount(order = 27,name = "管线质量")
     private String gxzl;
-    @ExcelCount(order = 24,name = "管道等级")
+    @ExcelCount(order = 28,name = "管道等级")
     private String gddj;
-    @ExcelCount(order = 25,name = "隐患情况说明")
+    @ExcelCount(order = 29,name = "隐患情况说明")
     private String yhqk;
 
-    @ExcelCount(order = 26,name = "压力")
-    private String yl;
-    @ExcelCount(order = 27,name = "电压")
-    private String dy;
 
-    @ExcelCount(order = 28,name = "线型")
-    private String xx;
 
-    @ExcelCount(order = 30,name = "套管材质")
-    private String tgcz;
-    @ExcelCount(order = 31,name = "是否利用")
+
+
+
+    @ExcelCount(order = 30,name = "是否利用")
     private String sfly;
-    @ExcelCount(order = 32,name = "管线范畴")
-    private String gxfc;
+
 
     @ExcelCount(order = 100,name = "备注")
     private String Remarks;
@@ -452,11 +461,17 @@ public class Tab_Line extends LitePalSupport {
     }
 
 
+
     public String getGxlx() {
-        Sys_Type type = LitPalUtils.selectsoloWhere(Sys_Type.class,"id=?",String.valueOf(typeId));
-        if (type!=null){
-            return type.getName();
-        }else {
+
+
+        Sys_Table table = LitPalUtils.selectsoloWhere(Sys_Table.class, "id=?", String.valueOf(typeId));
+        if(table==null) return null;
+
+//        Sys_Type_Child type = LitPalUtils.selectsoloWhere(Sys_Type_Child.class, "value=?", table.getCode());
+        if (table != null) {
+            return table.getCode();
+        } else {
             return null;
         }
     }

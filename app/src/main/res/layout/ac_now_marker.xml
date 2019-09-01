@@ -70,7 +70,7 @@
                     android:layout_weight="0.6"
                     android:gravity="center_vertical">
 
-                    <EditText
+                    <TextView
                         android:id="@+id/tv_tz"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
@@ -99,7 +99,7 @@
                     android:layout_weight="0.6"
                     android:gravity="center_vertical">
 
-                    <EditText
+                    <TextView
                         android:id="@+id/tv_fsw"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
@@ -109,6 +109,80 @@
 
                     <ImageView
                         android:id="@+id/iv_load_fsw"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:src="@mipmap/load" />
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout style="@style/edit_ll" android:visibility="gone">
+
+                <TextView
+                    style="@style/edit_title"
+                    android:text="井类型" />
+
+                <EditText
+                    android:id="@+id/tv_jlx"
+                    style="@style/edit_view_edit" />
+            </LinearLayout>
+
+            <LinearLayout style="@style/edit_ll"
+                android:visibility="gone">
+
+                <TextView
+                    style="@style/edit_title"
+                    android:text="井直径" />
+
+                <EditText
+                    android:id="@+id/tv_jzj"
+                    style="@style/edit_view_edit" />
+            </LinearLayout>
+
+            <LinearLayout style="@style/edit_ll"
+                android:visibility="gone">
+
+                <TextView
+                    style="@style/edit_title"
+                    android:text="井脖深" />
+
+                <EditText
+                    android:id="@+id/tv_jbs"
+                    style="@style/edit_view_edit" />
+            </LinearLayout>
+
+            <LinearLayout style="@style/edit_ll">
+
+                <TextView
+                    style="@style/edit_title"
+                    android:text="埋深" />
+
+                <EditText
+                    android:inputType="numberDecimal"
+                    android:id="@+id/tv_jds"
+                    style="@style/edit_view_edit" />
+            </LinearLayout>
+            <LinearLayout style="@style/edit_ll">
+
+                <TextView
+                    style="@style/edit_title"
+                    android:text="数据来源" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="35dp"
+                    android:layout_weight="0.6"
+                    android:gravity="center_vertical">
+
+                    <EditText
+                        android:id="@+id/tv_sjly"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/edit_style"
+                        android:textSize="18sp" />
+
+                    <ImageView
+                        android:id="@+id/iv_load_sjly"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
@@ -173,86 +247,16 @@
                     style="@style/edit_view_edit" />
             </LinearLayout>
 
-            <LinearLayout style="@style/edit_ll"
-                >
-
-                <TextView
-                    style="@style/edit_title"
-                    android:text="偏心井点号" />
-
-                <EditText
-                    android:id="@+id/tv_pxjw"
-                    style="@style/edit_view_edit" />
-            </LinearLayout>
-            <LinearLayout style="@style/edit_ll"
-                >
-
-                <TextView
-                    style="@style/edit_title"
-                    android:text="偏距" />
-
-                <EditText
-                    android:id="@+id/tv_pj"
-                    style="@style/edit_view_edit" />
-            </LinearLayout>
-
             <LinearLayout style="@style/edit_ll">
 
                 <TextView
                     style="@style/edit_title"
-                    android:text="管点范畴" />
+                    android:text="备注" />
 
                 <EditText
-                    android:id="@+id/tv_gdfc"
+                    android:id="@+id/tv_remarks"
                     style="@style/edit_view_edit" />
             </LinearLayout>
-
-            <LinearLayout style="@style/edit_ll" android:visibility="gone">
-
-                <TextView
-                    style="@style/edit_title"
-                    android:text="井类型" />
-
-                <EditText
-                    android:id="@+id/tv_jlx"
-                    style="@style/edit_view_edit" />
-            </LinearLayout>
-
-            <LinearLayout style="@style/edit_ll"
-                android:visibility="gone">
-
-                <TextView
-                    style="@style/edit_title"
-                    android:text="井直径" />
-
-                <EditText
-                    android:id="@+id/tv_jzj"
-                    style="@style/edit_view_edit" />
-            </LinearLayout>
-
-            <LinearLayout style="@style/edit_ll"
-                android:visibility="gone">
-
-                <TextView
-                    style="@style/edit_title"
-                    android:text="井脖深" />
-
-                <EditText
-                    android:id="@+id/tv_jbs"
-                    style="@style/edit_view_edit" />
-            </LinearLayout>
-
-            <LinearLayout style="@style/edit_ll">
-
-                <TextView
-                    style="@style/edit_title"
-                    android:text="井底埋深" />
-
-                <EditText
-                    android:id="@+id/tv_jds"
-                    style="@style/edit_view_edit" />
-            </LinearLayout>
-
             <LinearLayout style="@style/edit_ll">
 
                 <TextView
@@ -435,34 +439,33 @@
                     android:id="@+id/tv_jsrq"
                     style="@style/edit_view_edit" />
             </LinearLayout>
-            <LinearLayout style="@style/edit_ll">
+
+            <LinearLayout style="@style/edit_ll"
+                >
 
                 <TextView
                     style="@style/edit_title"
-                    android:text="数据来源" />
+                    android:text="偏心井点号" />
 
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="35dp"
-                    android:layout_weight="0.6"
-                    android:gravity="center_vertical">
-
-                    <EditText
-                        android:id="@+id/tv_sjly"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:background="@drawable/edit_style"
-                        android:textSize="18sp" />
-
-                    <ImageView
-                        android:id="@+id/iv_load_sjly"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:src="@mipmap/load" />
-                </LinearLayout>
+                <EditText
+                    android:id="@+id/tv_pxjw"
+                    style="@style/edit_view_edit" />
             </LinearLayout>
+            <LinearLayout style="@style/edit_ll"
+                >
+
+                <TextView
+                    style="@style/edit_title"
+                    android:text="偏距" />
+
+                <EditText
+                    android:id="@+id/tv_pj"
+                    style="@style/edit_view_edit" />
+            </LinearLayout>
+
+
+
+
             <LinearLayout style="@style/edit_ll"  >
 
                 <TextView
@@ -491,6 +494,19 @@
                         android:src="@mipmap/load" />
                 </LinearLayout>
             </LinearLayout>
+
+            <LinearLayout style="@style/edit_ll">
+
+                <TextView
+                    style="@style/edit_title"
+                    android:text="管点范畴" />
+
+                <EditText
+                    android:id="@+id/tv_gdfc"
+                    style="@style/edit_view_edit" />
+            </LinearLayout>
+
+
             <LinearLayout style="@style/edit_ll"  >
 
                 <TextView
@@ -520,16 +536,7 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <LinearLayout style="@style/edit_ll">
 
-                <TextView
-                    style="@style/edit_title"
-                    android:text="备注" />
-
-                <EditText
-                    android:id="@+id/tv_remarks"
-                    style="@style/edit_view_edit" />
-            </LinearLayout>
 
 
         </LinearLayout>
