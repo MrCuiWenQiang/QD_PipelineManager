@@ -17,13 +17,13 @@ public class MainContract {
     public interface View {
         void queryType(String[] tabNames, Long[] typeIds,Integer[] colors);
 
-        void queryProjects(List<Tab_Project> tab_projects);
+        void queryProjects(int type,List<Tab_Project> tab_projects);
         void queryProjects_fail(String msg);
 
         void createProject_success(String msg,long projectId);
         void createProject_fail(String msg);
 
-        void queryProject(List<Tab_Marker> markers, List<Tab_Line> lines,long projectId);
+        void queryProject(boolean isclean,List<Tab_Marker> markers, List<Tab_Line> lines,long projectId);
         void delete_success(String msg,int type);
         void delete_fail(String msg);
         void update();
@@ -40,6 +40,8 @@ public class MainContract {
         void finsh(String msg);
         void fail(String msg);
         void queryMeasure(List<Tab_Marker> datas);
+
+        void updateProject(Tab_Project project);
     }
 
     public interface Presenter {
@@ -47,7 +49,8 @@ public class MainContract {
 
         void queryMarker(long id);
         void queryType();
-        void queryProjects();
+        //0为打开项目  1为导出项目
+        void queryProjects(int type);
         void createProject(Editable name,boolean isPhoto);
         void queryProject(long projectId);
         void queryMeasureProject(long projectId);
@@ -58,7 +61,6 @@ public class MainContract {
 
         void queryMarker(long projectId, String text);
          void outExcel(Long projectId, final Context mContext);
-         void outAccess(Long projectId, final Context mContext);
 
         void delete_Project(long id);
 

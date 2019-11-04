@@ -1,5 +1,6 @@
 package com.zt.map.view;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
@@ -14,6 +15,7 @@ import com.zt.map.R;
 import com.zt.map.constant.OutFileContract;
 import com.zt.map.entity.FileBean;
 import com.zt.map.presenter.OutFilePresenter;
+import com.zt.map.util.share.WXShareUtil;
 import com.zt.map.view.adapter.FileAdapter;
 
 import java.io.File;
@@ -30,7 +32,7 @@ import cn.faker.repaymodel.util.error.ErrorUtil;
 public class OutFileListActivity extends BaseMVPAcivity<OutFileContract.View, OutFilePresenter> implements OutFileContract.View {
     private RecyclerView rv_list;
     private FileAdapter adapter = new FileAdapter();
-
+    private String[] items = {"打开","分享到微信"};
     @Override
     protected int getLayoutContentId() {
         return R.layout.ac_outfiles;
@@ -56,8 +58,21 @@ public class OutFileListActivity extends BaseMVPAcivity<OutFileContract.View, Ou
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 try {
-                    FileBean fileBean = adapter.getFiles(i);
-                    openFile(fileBean.getPath());
+                    final FileBean fileBean = adapter.getFiles(i);
+                    showListDialog(items, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            switch (which){
+                                case 0:{
+                                    openFile(fileBean.getPath());
+                                    break;}
+                                case 1:{
+                                    share(fileBean.getPath());
+                                    break;}
+                            }
+                            dialog.dismiss();
+                        }
+                    });
                 }catch (Exception e){
                     ErrorUtil.showError(e);
                     ToastUtility.showToast("手机没有可打开该文件的应用程序");
@@ -66,6 +81,16 @@ public class OutFileListActivity extends BaseMVPAcivity<OutFileContract.View, Ou
             }
         });
     }
+    private void share(String path){
+        String name ;
+        try {
+            name = path.substring(path.lastIndexOf("/")+1,path.length());
+        }catch (Exception e){
+            name = "文档";
+        }
+        WXShareUtil.ShareFileToWeiXin(name,path,name);
+    }
+
     private void openFile(String path) {
         Intent intent = new Intent();
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

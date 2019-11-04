@@ -1,9 +1,12 @@
 package com.zt.map.presenter;
 
+import android.text.TextUtils;
+
 import com.zt.map.contract.MarkerContract;
 import com.zt.map.entity.db.PhotoInfo;
 import com.zt.map.entity.db.system.Sys_Appendages;
 import com.zt.map.entity.db.system.Sys_Features;
+import com.zt.map.entity.db.system.Sys_HQSJ;
 import com.zt.map.entity.db.system.Sys_LineType;
 import com.zt.map.entity.db.system.Sys_Manhole;
 import com.zt.map.entity.db.system.Sys_Table;
@@ -16,6 +19,7 @@ import com.zt.map.entity.db.tab.Tab_Project;
 import com.zt.map.entity.db.tab.Tab_marker_photo;
 import com.zt.map.model.MarkerModel;
 import com.zt.map.model.SystemQueryModel;
+import com.zt.map.util.EventDrive;
 import com.zt.map.util.out.ExcelUtil;
 
 import java.util.ArrayList;
@@ -43,7 +47,9 @@ public class MarkerPresenter extends BaseMVPPresenter<MarkerContract.View> imple
             @Override
             protected BaseMVPModel.MessageEntity jobContent() throws Exception {
                 tab.setWtdh(tab.getWtdh().toUpperCase());
-                if (tab.getId() <= 0) {
+                boolean isOld = tab.getId() < 0;
+                boolean status;
+                if (isOld) {
                     boolean isHave = LitPalUtils.selectCount(Tab_Marker.class,
                             "projectId = ? AND wtdh=?", String.valueOf(tab.getProjectId()), tab.getWtdh()) > 0;
                     if (isHave) {
@@ -58,15 +64,24 @@ public class MarkerPresenter extends BaseMVPPresenter<MarkerContract.View> imple
                     count.setProjectId(tab.getProjectId());
                     count.setTypeId(tab.getTypeId());
                     count.save();
+                    status = tab.save();
+                }else {
+                    status = tab.update(tab.getId())>0;
                 }
 
-                boolean status = tab.save();
+
+
                 long makerId = tab.getId();
                 long projectId = tab.getProjectId();
                 int count = LitPalUtils.selectCount(Tab_marker_photo.class, "markerId=? AND projectId=?", String.valueOf(makerId),
                         String.valueOf(projectId));
-
-                if (resultList != null && status) {
+//不分新旧数据一律更新
+//                if (isOld){
+                    List<Long> ids = new ArrayList<>();
+                    ids.add(makerId);
+                    EventDrive.addMarker(ids);
+//                }
+                    if (resultList != null && status) {
                     List<Tab_marker_photo> pos = new ArrayList<>();
                     int i = 1;
                     for (PhotoInfo info : resultList) {
@@ -124,7 +139,7 @@ public class MarkerPresenter extends BaseMVPPresenter<MarkerContract.View> imple
 
             @Override
             protected Tab_Marker jobContent() throws Exception {
-                List<Tab_Marker> tab_line = LitPalUtils.selectorderWhere("updateTime DESC", Tab_Marker.class, "projectId=? AND typeId = ?", String.valueOf(project), String.valueOf(typeId));
+                List<Tab_Marker> tab_line = LitPalUtils.selectorderWhere("updateTime DESC LIMIT 1", Tab_Marker.class, "projectId=? AND typeId = ?", String.valueOf(project), String.valueOf(typeId));
                 if (tab_line != null && tab_line.size() > 0) {
                     return tab_line.get(0);
                 }
@@ -241,7 +256,31 @@ public class MarkerPresenter extends BaseMVPPresenter<MarkerContract.View> imple
             }
         });
     }
-
+    private String[] hqsj;
+    public void queryHQSJ(long projectId){
+        if (hqsj != null) {
+            getView().queryhqsj(hqsj);
+            return;
+        }
+        queryModel.queryHQSJ(projectId, new BaseMVPModel.CommotListener<List<Sys_HQSJ>>() {
+            @Override
+            public void result(List<Sys_HQSJ> sys_hqsjs) {
+                if (getView() == null) {
+                    return;
+                }
+                if (sys_hqsjs == null || sys_hqsjs.size() <= 0) {
+                    getView().fail("未获取到选择数据");
+                } else {
+                    List<String> datas = new ArrayList<>();
+                    for (Sys_HQSJ item : sys_hqsjs) {
+                        datas.add(item.getName());
+                    }
+                    hqsj = datas.toArray(new String[datas.size()]);
+                    getView().queryhqsj(hqsj);
+                }
+            }
+        });
+    }
     @Override
     public void queryIsPhoto(final long projectId) {
         DBThreadHelper.startThreadInPool(new DBThreadHelper.ThreadCallback<Boolean>() {

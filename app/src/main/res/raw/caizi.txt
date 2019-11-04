@@ -8,7 +8,9 @@
 [JS]
 铸铁
 砼
-钢PE  PVC
+钢
+PE
+PVC
 [PS]
 砼
 陶瓷

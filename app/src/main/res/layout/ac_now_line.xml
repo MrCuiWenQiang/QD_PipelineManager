@@ -30,7 +30,7 @@
                     android:layout_weight="0.6"
                     android:gravity="center_vertical">
 
-                    <EditText
+                    <TextView
                         android:id="@+id/tv_gxlx"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
@@ -53,7 +53,7 @@
                     style="@style/edit_title"
                     android:text="起点点号" />
 
-                <EditText
+                <TextView
                     android:id="@+id/tv_qswh"
                     style="@style/edit_view_edit" />
             </LinearLayout>
@@ -64,7 +64,7 @@
                     style="@style/edit_title"
                     android:text="终点点号" />
 
-                <EditText
+                <TextView
                     android:id="@+id/tv_zzwh"
                     style="@style/edit_view_edit" />
             </LinearLayout>
@@ -76,6 +76,7 @@
                     android:text="起点埋深" />
 
                 <EditText
+                    android:inputType="numberDecimal"
                     android:id="@+id/tv_qdms"
                     style="@style/edit_view_edit" />
             </LinearLayout>
@@ -87,6 +88,7 @@
                     android:text="终点埋深" />
 
                 <EditText
+                    android:inputType="numberDecimal"
                     android:id="@+id/tv_zzms"
                     style="@style/edit_view_edit" />
             </LinearLayout>
@@ -102,7 +104,7 @@
                     android:layout_weight="0.6"
                     android:gravity="center_vertical">
 
-                    <EditText
+                    <TextView
                         android:id="@+id/tv_gxcl"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
@@ -131,7 +133,7 @@
                     android:layout_weight="0.6"
                     android:gravity="center_vertical">
 
-                    <EditText
+                    <TextView
                         android:id="@+id/tv_msfs"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
@@ -169,7 +171,7 @@
                     android:layout_weight="0.6"
                     android:gravity="center_vertical">
 
-                    <EditText
+                    <TextView
                         android:id="@+id/tv_xx"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
@@ -235,7 +237,7 @@
                     android:layout_weight="0.6"
                     android:gravity="center_vertical">
 
-                    <EditText
+                    <TextView
                         android:id="@+id/tv_tgcz"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
@@ -276,7 +278,8 @@
                 android:layout_height="wrap_content"
                 android:layout="@layout/vs_child_dx" />
 
-            <LinearLayout style="@style/edit_ll">
+            <LinearLayout style="@style/edit_ll"
+                android:visibility="gone">
 
                 <TextView
                     style="@style/edit_title"
@@ -306,6 +309,7 @@
             </LinearLayout>
             <LinearLayout
                 style="@style/edit_ll"
+                android:visibility="gone"
                 >
                 <TextView
                     style="@style/edit_title"
@@ -333,7 +337,8 @@
                         android:src="@mipmap/load" />
                 </LinearLayout>
             </LinearLayout>
-            <LinearLayout style="@style/edit_ll">
+            <LinearLayout style="@style/edit_ll"
+                android:visibility="gone">
 
                 <TextView
                     style="@style/edit_title"
@@ -344,7 +349,8 @@
                     style="@style/edit_view_edit" />
             </LinearLayout>
 
-            <LinearLayout style="@style/edit_ll">
+            <LinearLayout style="@style/edit_ll"
+                android:visibility="gone">
 
                 <TextView
                     style="@style/edit_title"
@@ -368,7 +374,7 @@
                     android:layout_weight="0.6"
                     android:gravity="center_vertical">
 
-                    <EditText
+                    <TextView
                         android:id="@+id/tv_syzt"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
@@ -384,7 +390,8 @@
                         android:src="@mipmap/load" />
                 </LinearLayout>
             </LinearLayout>
-            <LinearLayout style="@style/edit_ll">
+            <LinearLayout style="@style/edit_ll"
+                android:visibility="gone">
 
                 <TextView
                     style="@style/edit_title"

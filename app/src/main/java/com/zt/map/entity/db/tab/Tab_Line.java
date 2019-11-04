@@ -24,7 +24,7 @@ import cn.faker.repaymodel.util.db.litpal.LitPalUtils;
 @AccessTableName(name = "JS_LINE")
 @ExcelName(TabName = "管线表")
 public class Tab_Line extends LitePalSupport {
-    private long id;
+    private long id =-1;
     private long projectId;
 
     private long typeId;
@@ -32,108 +32,105 @@ public class Tab_Line extends LitePalSupport {
 
     private long startMarkerId;
     private long endMarkerId;
-
+    @ExcelCount(order = 101, name = "起点纬度")
     private double start_latitude;
+    @ExcelCount(order = 102, name = "起点经度")
     private double start_longitude;
+    @ExcelCount(order = 103, name = "终点纬度")
     private double end_latitude;
+    @ExcelCount(order = 104, name = "终点经度")
     private double end_longitude;
 
-    private int color =-1;
-    @ExcelCount(order = 0,name = "管类")
+    private int color = -1;
+    @ExcelCount(order = 0, name = "管类")
     private String Gxlx;//管线类型
-    @ExcelCount(order = 1,name = "管线类型")
+    @ExcelCount(order = 1, name = "管线类型")
     private String Gxoutlx;//管线类型输出
 
     // TODO: 2019/5/29 起始物号和终止物号 用markerID去查
-    @ExcelCount(order = 2,name = "起点点号")
+    @ExcelCount(order = 2, name = "起点点号")
     private String Qswh;
-    @ExcelCount(order = 3,name = "终点点号")
+    @ExcelCount(order = 3, name = "终点点号")
     private String Zzwh;
 
 
-    @ExcelCount(order = 4,name = "起点埋深")
+    @ExcelCount(order = 4, name = "起点埋深")
     private String Qdms;
-    @ExcelCount(order = 5,name = "终点埋深")
+    @ExcelCount(order = 5, name = "终点埋深")
     private String Zzms;
-    @ExcelCount(order = 6,name = "材质")
+    @ExcelCount(order = 6, name = "材质")
     private String Gxcl;//材质
-    @ExcelCount(order = 7,name = "埋设方式")
+    @ExcelCount(order = 7, name = "埋设方式")
     private String Msfs;
-    @ExcelCount(order = 8,name = "管径")
+    @ExcelCount(order = 8, name = "管径")
     private String Gjdm;//管径
-    @ExcelCount(order = 9,name = "线型")
+    @ExcelCount(order = 9, name = "线型")
     private String xx;
-    @ExcelCount(order = 10,name = "流向")
+    @ExcelCount(order = 10, name = "流向")
     private String lx;//流向
-    @ExcelCount(order = 11,name = "套管材质")
+    @ExcelCount(order = 11, name = "套管材质")
     private String tgcz;
-    @ExcelCount(order = 12,name = "条数")
+    @ExcelCount(order = 12, name = "条数")
     private String Ts;
-    @ExcelCount(order = 13,name = "压力")
+    @ExcelCount(order = 13, name = "压力值")
     private String yl;
-    @ExcelCount(order = 14,name = "电压")
-    private String dy;
-    @ExcelCount(order = 15,name = "总孔数")
+    /*    @ExcelCount(order = 14,name = "电压")
+        private String dy;*/
+    @ExcelCount(order = 15, name = "总孔数")
     private String Zks;
-    @ExcelCount(order = 16,name = "已用孔数")
+    @ExcelCount(order = 16, name = "已用孔数")
     private String Yyks;
-    @ExcelCount(order = 17,name = "所在位置")
+    //    @ExcelCount(order = 17,name = "所在位置")
     private String Szwz;//所在位置
-    @ExcelCount(order = 18,name = "管线范畴")
+    //    @ExcelCount(order = 18,name = "管线范畴")
     private String gxfc;
 
-    @ExcelCount(order = 19,name = "起点淤积")
+    //    @ExcelCount(order = 19,name = "起点淤积")
     private String Qdyj;//起点淤积
-    @ExcelCount(order = 20,name = "终点淤积")
+    //    @ExcelCount(order = 20,name = "终点淤积")
     private String Zdyj;//终点淤积
-    @ExcelCount(order = 21,name = "运行状态")
+    //    @ExcelCount(order = 21,name = "运行状态")
     private String Yxzt;//运行状态
-    @ExcelCount(order = 22,name = "倒虹管段")
+    //    @ExcelCount(order = 22,name = "倒虹管段")
     private String Dhgd;//倒虹管段
-    @ExcelCount(order = 23,name = "建设日期")
+    //    @ExcelCount(order = 23,name = "建设日期")
     private String Jsnd;//建设年代
-    @ExcelCount(order = 24,name = "权属单位")
+    //    @ExcelCount(order = 24,name = "权属单位")
     private String Qsdw;//权属单位
 
-    @ExcelCount(order = 25,name = "使用状态")
+    @ExcelCount(order = 25, name = "使用状况")
     private String Syzt;//使用状态
-//    @ExcelCount(order = 18,name = "探测方式")
+    //    @ExcelCount(order = 18,name = "探测方式")
     private String tcfs;//探测方式
 
 
-
-
-
-    @ExcelCount(order = 26,name = "设施运行状态")
+    //    @ExcelCount(order = 26,name = "设施运行状态")
     private String ssyxzt;
-    @ExcelCount(order = 27,name = "管线质量")
+    //    @ExcelCount(order = 27,name = "管线质量")
     private String gxzl;
-    @ExcelCount(order = 28,name = "管道等级")
+    //    @ExcelCount(order = 28,name = "管道等级")
     private String gddj;
-    @ExcelCount(order = 29,name = "隐患情况说明")
+    //    @ExcelCount(order = 29,name = "隐患情况说明")
     private String yhqk;
 
 
-
-
-
-
-    @ExcelCount(order = 30,name = "是否利用")
+    //    @ExcelCount(order = 30,name = "是否利用")
     private String sfly;
 
 
-    @ExcelCount(order = 100,name = "备注")
+    @ExcelCount(order = 100, name = "备注")
     private String Remarks;
     private Date updateTime;
     private Date createTime;
+
     public String getQswh() {
-        if (!TextUtils.isEmpty(Qswh)){
+        if (!TextUtils.isEmpty(Qswh)) {
             return Qswh;
         }
-        Tab_Marker marker = LitPalUtils.selectsoloWhere(Tab_Marker.class,"id = ?",String.valueOf(startMarkerId));
-        if (marker==null){
+        Tab_Marker marker = LitPalUtils.selectsoloWhere(Tab_Marker.class, "id = ?", String.valueOf(startMarkerId));
+        if (marker == null) {
             return null;
-        }else {
+        } else {
             Qswh = marker.getWtdh();
             return Qswh;
         }
@@ -149,18 +146,30 @@ public class Tab_Line extends LitePalSupport {
 
     public void setGxoutlx(String gxoutlx) {
         Gxoutlx = gxoutlx;
+        if (TextUtils.isEmpty(Gxoutlx)){
+            setToDefault("Gxoutlx");
+        }
     }
 
     public void setGxfc(String gxfc) {
         this.gxfc = gxfc;
+        if (TextUtils.isEmpty(gxfc)){
+            setToDefault("gxfc");
+        }
     }
 
     public void setQswh(String qswh) {
         Qswh = qswh;
+        if (TextUtils.isEmpty(Qswh)){
+            setToDefault("Qswh");
+        }
     }
 
     public void setZzwh(String zzwh) {
         Zzwh = zzwh;
+        if (TextUtils.isEmpty(Zzwh)){
+            setToDefault("Zzwh");
+        }
     }
 
     public String getZks() {
@@ -169,6 +178,9 @@ public class Tab_Line extends LitePalSupport {
 
     public void setZks(String zks) {
         Zks = zks;
+        if (TextUtils.isEmpty(Zks)){
+            setToDefault("Zks");
+        }
     }
 
     public String getYyks() {
@@ -177,6 +189,9 @@ public class Tab_Line extends LitePalSupport {
 
     public void setYyks(String yyks) {
         Yyks = yyks;
+        if (TextUtils.isEmpty(Yyks)){
+            setToDefault("Yyks");
+        }
     }
 
     public String getTs() {
@@ -185,6 +200,9 @@ public class Tab_Line extends LitePalSupport {
 
     public void setTs(String ts) {
         Ts = ts;
+        if (TextUtils.isEmpty(Ts)){
+            setToDefault("Ts");
+        }
     }
 
 
@@ -194,6 +212,9 @@ public class Tab_Line extends LitePalSupport {
 
     public void setSsyxzt(String ssyxzt) {
         this.ssyxzt = ssyxzt;
+        if (TextUtils.isEmpty(ssyxzt)){
+            setToDefault("ssyxzt");
+        }
     }
 
     public String getGxzl() {
@@ -202,6 +223,9 @@ public class Tab_Line extends LitePalSupport {
 
     public void setGxzl(String gxzl) {
         this.gxzl = gxzl;
+        if (TextUtils.isEmpty(gxzl)){
+            setToDefault("gxzl");
+        }
     }
 
     public String getGddj() {
@@ -210,6 +234,9 @@ public class Tab_Line extends LitePalSupport {
 
     public void setGddj(String gddj) {
         this.gddj = gddj;
+        if (TextUtils.isEmpty(gddj)){
+            setToDefault("gddj");
+        }
     }
 
     public String getYhqk() {
@@ -218,6 +245,9 @@ public class Tab_Line extends LitePalSupport {
 
     public void setYhqk(String yhqk) {
         this.yhqk = yhqk;
+        if (TextUtils.isEmpty(yhqk)){
+            setToDefault("yhqk");
+        }
     }
 
     public String getYl() {
@@ -226,24 +256,27 @@ public class Tab_Line extends LitePalSupport {
 
     public void setYl(String yl) {
         this.yl = yl;
+        if (TextUtils.isEmpty(yl)){
+            setToDefault("yl");
+        }
     }
-
+/*
     public String getDy() {
         return dy;
     }
 
     public void setDy(String dy) {
         this.dy = dy;
-    }
+    }*/
 
     public String getZzwh() {
-        if (!TextUtils.isEmpty(Zzwh)){
+        if (!TextUtils.isEmpty(Zzwh)) {
             return Zzwh;
         }
-        Tab_Marker marker = LitPalUtils.selectsoloWhere(Tab_Marker.class,"id = ?",String.valueOf(endMarkerId));
-        if (marker==null){
+        Tab_Marker marker = LitPalUtils.selectsoloWhere(Tab_Marker.class, "id = ?", String.valueOf(endMarkerId));
+        if (marker == null) {
             return null;
-        }else {
+        } else {
             Zzwh = marker.getWtdh();
             return Zzwh;
         }
@@ -255,6 +288,9 @@ public class Tab_Line extends LitePalSupport {
 
     public void setXx(String xx) {
         this.xx = xx;
+        if (TextUtils.isEmpty(xx)){
+            setToDefault("xx");
+        }
     }
 
     public String getTgcz() {
@@ -263,6 +299,9 @@ public class Tab_Line extends LitePalSupport {
 
     public void setTgcz(String tgcz) {
         this.tgcz = tgcz;
+        if (TextUtils.isEmpty(tgcz)){
+            setToDefault("tgcz");
+        }
     }
 
     public String getSfly() {
@@ -271,25 +310,31 @@ public class Tab_Line extends LitePalSupport {
 
     public void setSfly(String sfly) {
         this.sfly = sfly;
+        if (TextUtils.isEmpty(sfly)){
+            setToDefault("sfly");
+        }
     }
 
     public long getTypeId() {
         return typeId;
     }
 
+    protected Object c1;
+
+    public void setc(Sys_Color c1){
+        this.c1 = c1;
+    }
+
     public int getColor() {
-        if (color>0){
+        if (color > 0) {
             return color;
         }
-        Sys_Table tables = LitPalUtils.selectsoloWhere(Sys_Table.class,"id = ?",String.valueOf(typeId));
-        if (tables!=null){
-            Sys_Color c1 = LitPalUtils.selectsoloWhere(Sys_Color.class,"fatherCode = ?",tables.getCode());
-            if (c1!=null){
-                color = Color.rgb(Integer.valueOf(c1.getR()),Integer.valueOf(c1.getG()),
-                            Integer.valueOf(c1.getB()));
-            }else {
-                color = 0xAAFF0000;
-            }
+        if (c1 != null) {
+            Sys_Color c2 = (Sys_Color) c1;
+            color = Color.rgb(Integer.valueOf(c2.getR()), Integer.valueOf(c2.getG()),
+                    Integer.valueOf(c2.getB()));
+        } else {
+            color = 0xAAFF0000;
         }
         return color;
     }
@@ -300,12 +345,15 @@ public class Tab_Line extends LitePalSupport {
 
     public void setLx(String lx) {
         this.lx = lx;
+        if (TextUtils.isEmpty(lx)){
+            setToDefault("lx");
+        }
     }
-
 
 
     public void setTypeId(long typeId) {
         this.typeId = typeId;
+
     }
 
     public long getId() {
@@ -374,13 +422,15 @@ public class Tab_Line extends LitePalSupport {
     }
 
 
-
     public String getQdms() {
         return Qdms;
     }
 
     public void setQdms(String qdms) {
         Qdms = qdms;
+        if (TextUtils.isEmpty(qdms)){
+            setToDefault("Qdms");
+        }
     }
 
     public String getZzms() {
@@ -389,6 +439,9 @@ public class Tab_Line extends LitePalSupport {
 
     public void setZzms(String zzms) {
         Zzms = zzms;
+        if (TextUtils.isEmpty(zzms)){
+            setToDefault("Zzms");
+        }
     }
 
     public String getMsfs() {
@@ -397,6 +450,9 @@ public class Tab_Line extends LitePalSupport {
 
     public void setMsfs(String msfs) {
         Msfs = msfs;
+        if (TextUtils.isEmpty(msfs)){
+            setToDefault("Msfs");
+        }
     }
 
     public String getGxcl() {
@@ -405,6 +461,9 @@ public class Tab_Line extends LitePalSupport {
 
     public void setGxcl(String gxcl) {
         Gxcl = gxcl;
+        if (TextUtils.isEmpty(gxcl)){
+            setToDefault("Gxcl");
+        }
     }
 
     public String getGjdm() {
@@ -413,6 +472,9 @@ public class Tab_Line extends LitePalSupport {
 
     public void setGjdm(String gjdm) {
         Gjdm = gjdm;
+        if (TextUtils.isEmpty(gjdm)){
+            setToDefault("Gjdm");
+        }
     }
 
     public String getQsdw() {
@@ -421,8 +483,10 @@ public class Tab_Line extends LitePalSupport {
 
     public void setQsdw(String qsdw) {
         Qsdw = qsdw;
+        if (TextUtils.isEmpty(qsdw)){
+            setToDefault("Qsdw");
+        }
     }
-
 
 
     public String getJsnd() {
@@ -431,6 +495,9 @@ public class Tab_Line extends LitePalSupport {
 
     public void setJsnd(String jsnd) {
         Jsnd = jsnd;
+        if (TextUtils.isEmpty(jsnd)){
+            setToDefault("Jsnd");
+        }
     }
 
 
@@ -440,8 +507,10 @@ public class Tab_Line extends LitePalSupport {
 
     public void setRemarks(String remarks) {
         Remarks = remarks;
+        if (TextUtils.isEmpty(remarks)){
+            setToDefault("Remarks");
+        }
     }
-
 
 
     public Date getUpdateTime() {
@@ -461,12 +530,11 @@ public class Tab_Line extends LitePalSupport {
     }
 
 
-
     public String getGxlx() {
 
 
         Sys_Table table = LitPalUtils.selectsoloWhere(Sys_Table.class, "id=?", String.valueOf(typeId));
-        if(table==null) return null;
+        if (table == null) return null;
 
 //        Sys_Type_Child type = LitPalUtils.selectsoloWhere(Sys_Type_Child.class, "value=?", table.getCode());
         if (table != null) {
@@ -478,6 +546,9 @@ public class Tab_Line extends LitePalSupport {
 
     public void setGxlx(String gxlx) {
         Gxlx = gxlx;
+        if (TextUtils.isEmpty(gxlx)){
+            setToDefault("Gxlx");
+        }
     }
 
     public String getQdyj() {
@@ -486,6 +557,9 @@ public class Tab_Line extends LitePalSupport {
 
     public void setQdyj(String qdyj) {
         Qdyj = qdyj;
+        if (TextUtils.isEmpty(qdyj)){
+            setToDefault("Qdyj");
+        }
     }
 
     public String getZdyj() {
@@ -494,6 +568,9 @@ public class Tab_Line extends LitePalSupport {
 
     public void setZdyj(String zdyj) {
         Zdyj = zdyj;
+        if (TextUtils.isEmpty(zdyj)){
+            setToDefault("Zdyj");
+        }
     }
 
     public String getYxzt() {
@@ -502,6 +579,9 @@ public class Tab_Line extends LitePalSupport {
 
     public void setYxzt(String yxzt) {
         Yxzt = yxzt;
+        if (TextUtils.isEmpty(yxzt)){
+            setToDefault("Yxzt");
+        }
     }
 
     public String getDhgd() {
@@ -510,6 +590,9 @@ public class Tab_Line extends LitePalSupport {
 
     public void setDhgd(String dhgd) {
         Dhgd = dhgd;
+        if (TextUtils.isEmpty(dhgd)){
+            setToDefault("Dhgd");
+        }
     }
 
     public String getSzwz() {
@@ -518,6 +601,9 @@ public class Tab_Line extends LitePalSupport {
 
     public void setSzwz(String szwz) {
         Szwz = szwz;
+        if (TextUtils.isEmpty(szwz)){
+            setToDefault("Szwz");
+        }
     }
 
     public String getSyzt() {
@@ -526,6 +612,9 @@ public class Tab_Line extends LitePalSupport {
 
     public void setSyzt(String syzt) {
         Syzt = syzt;
+        if (TextUtils.isEmpty(syzt)){
+            setToDefault("Syzt");
+        }
     }
 
     public String getTcfs() {
@@ -534,5 +623,8 @@ public class Tab_Line extends LitePalSupport {
 
     public void setTcfs(String tcfs) {
         this.tcfs = tcfs;
+        if (TextUtils.isEmpty(tcfs)){
+            setToDefault("tcfs");
+        }
     }
 }

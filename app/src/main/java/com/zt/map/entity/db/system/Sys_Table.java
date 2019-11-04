@@ -28,6 +28,15 @@ public class Sys_Table extends LitePalSupport {
     private List<Sys_TGCL> tgcls = new ArrayList<>();//套管材料
     private List<Sys_LineFC> fvs = new ArrayList<>();//管线范畴
     private List<Sys_Color> colors = new ArrayList<>();
+    private  List<Sys_HQSJ> hqsjs=new ArrayList<>();//获取时机
+
+    public List<Sys_HQSJ> getHqsjs() {
+        return hqsjs;
+    }
+
+    public void setHqsjs(List<Sys_HQSJ> hqsjs) {
+        this.hqsjs = hqsjs;
+    }
 
     public List<Sys_LineFC> getFvs() {
         return fvs;

@@ -38,6 +38,7 @@ public class LineContract {
 
         void queryUseStatus(String[] items);
         void queryCZ(String[] items);
+        void queryTGCZ(String[] items);
         void querySfly(String[] items);
         void queryXX(String[] items);
 

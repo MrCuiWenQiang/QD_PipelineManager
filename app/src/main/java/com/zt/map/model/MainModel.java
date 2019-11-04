@@ -4,6 +4,7 @@ import com.zt.map.contract.MainContract;
 import com.zt.map.entity.db.tab.Tab_Line;
 import com.zt.map.entity.db.tab.Tab_Marker;
 import com.zt.map.entity.db.tab.Tab_Project;
+import com.zt.map.util.db.BatchDBUtil;
 
 import java.util.Date;
 import java.util.List;
@@ -74,7 +75,10 @@ public class MainModel extends BaseMVPModel implements MainContract.Model {
             @Override
             protected Boolean jobContent() throws Exception {
                 boolean status = false;
-                Tab_Marker tb_marker = LitPalUtils.selectsoloWhere(Tab_Marker.class,"id = ?",String.valueOf(makerId));
+
+                status = BatchDBUtil.updateMarker(makerId,latitude,longitude);
+
+               /* Tab_Marker tb_marker = LitPalUtils.selectsoloWhere(Tab_Marker.class,"id = ?",String.valueOf(makerId));
                 if (tb_marker!=null){
                     tb_marker.setLatitude(latitude);
                     tb_marker.setLongitude(longitude);
@@ -95,7 +99,7 @@ public class MainModel extends BaseMVPModel implements MainContract.Model {
                         LitPalUtils.saveAll(lines);
                     }
 
-                }
+                }*/
                 return status;
             }
 

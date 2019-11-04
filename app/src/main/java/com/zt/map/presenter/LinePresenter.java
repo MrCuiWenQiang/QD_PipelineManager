@@ -22,6 +22,7 @@ import com.zt.map.entity.db.system.Sys_UseStatus;
 import com.zt.map.entity.db.tab.Tab_Line;
 import com.zt.map.entity.db.tab.Tab_Marker;
 import com.zt.map.model.SystemQueryModel;
+import com.zt.map.util.EventDrive;
 import com.zt.map.util.MapUtil;
 
 import java.util.ArrayList;
@@ -43,8 +44,8 @@ import cn.faker.repaymodel.util.db.litpal.LitPalUtils;
 public class LinePresenter extends BaseMVPPresenter<LineContract.View> implements LineContract.Presenter {
 
     private String[] remarks = new String[]{"图边点", "出图点"};
-    private String[] sfly ;
-    private String[] xx ;
+    private String[] sfly;
+    private String[] xx;
 
     private SystemQueryModel queryModel = new SystemQueryModel();
     private String[] lineTypes;
@@ -63,7 +64,19 @@ public class LinePresenter extends BaseMVPPresenter<LineContract.View> implement
 
             @Override
             protected Object jobContent() throws Exception {
-                return tab.save();
+                boolean isd = tab.getId() < 0;
+                boolean result;
+                if (isd) {
+                    result = tab.save();
+                } else {
+                    result = tab.update(tab.getId())>0;
+                }
+                if (result && isd) {
+                    List<Long> ids = new ArrayList<>();
+                    ids.add(tab.getId());
+                    EventDrive.addLine(ids);
+                }
+                return result;
             }
 
             @Override
@@ -110,31 +123,61 @@ public class LinePresenter extends BaseMVPPresenter<LineContract.View> implement
             }
         });
     }
+
     private String[] gxfc;
+
     @Override
     public void queryGXFC(long id) {
         if (gxfc != null) {
             getView().queryGXFC(gxfc);
             return;
         }
-            queryModel.queryLinefc(String.valueOf(id), new BaseMVPModel.CommotListener<List<Sys_LineFC>>() {
-                @Override
-                public void result(List<Sys_LineFC> sys_lineFCS) {
-                    if (getView() == null) {
-                        return;
-                    }
-                    if (sys_lineFCS == null || sys_lineFCS.size() <= 0) {
-                        getView().fail("未获取到选择数据");
-                    } else {
-                        List<String> datas = new ArrayList<>();
-                        for (Sys_LineFC item : sys_lineFCS) {
-                            datas.add(item.getName());
-                        }
-                        gxfc = datas.toArray(new String[datas.size()]);
-                        getView().queryGXFC(gxfc);
-                    }
+        queryModel.queryLinefc(String.valueOf(id), new BaseMVPModel.CommotListener<List<Sys_LineFC>>() {
+            @Override
+            public void result(List<Sys_LineFC> sys_lineFCS) {
+                if (getView() == null) {
+                    return;
                 }
-            });
+                if (sys_lineFCS == null || sys_lineFCS.size() <= 0) {
+                    getView().fail("未获取到选择数据");
+                } else {
+                    List<String> datas = new ArrayList<>();
+                    for (Sys_LineFC item : sys_lineFCS) {
+                        datas.add(item.getName());
+                    }
+                    gxfc = datas.toArray(new String[datas.size()]);
+                    getView().queryGXFC(gxfc);
+                }
+            }
+        });
+    }
+
+    private String[] tgcz;
+
+    public void queryTgcz(final long typeid) {
+        if (tgcz != null) {
+            getView().queryTGCZ(tgcz);
+            return;
+        }
+        queryModel.queryTgcz(typeid, new BaseMVPModel.CommotListener<List<Sys_TGCL>>() {
+            @Override
+            public void result(List<Sys_TGCL> tgcls) {
+                if (getView() == null) {
+                    return;
+                }
+                if (tgcls == null || tgcls.size() <= 0) {
+                    getView().fail("未获取到选择数据");
+                } else {
+                    List<String> datas = new ArrayList<>();
+                    for (Sys_TGCL item : tgcls) {
+                        datas.add(item.getName());
+                    }
+                    tgcz = datas.toArray(new String[datas.size()]);
+                    getView().queryTGCZ(tgcz);
+
+                }
+            }
+        });
     }
 
     private String[] czs;
@@ -291,8 +334,9 @@ public class LinePresenter extends BaseMVPPresenter<LineContract.View> implement
 
             @Override
             protected Tab_Line jobContent() throws Exception {
-                List<Tab_Line> tab_line = LitPalUtils.selectorderWhere("updateTime DESC", Tab_Line.class, "projectId=? AND typeId = ?", String.valueOf(project), String.valueOf(type));
+                List<Tab_Line> tab_line = LitPalUtils.selectorderWhere("updateTime DESC  LIMIT 1", Tab_Line.class, "projectId=? AND typeId = ?", String.valueOf(project), String.valueOf(type));
                 if (tab_line != null && tab_line.size() > 0) {
+
                     return tab_line.get(0);
                 }
                 return null;
@@ -479,7 +523,7 @@ public class LinePresenter extends BaseMVPPresenter<LineContract.View> implement
                         String[] ssyxzt = toList(dm.get("设施运行状态"));
                         String[] gxzl = toList(dm.get("管线质量"));
                         String[] gddj = toList(dm.get("管道等级"));
-                        getView().visiblePS(lx, dh,ssyxzt,gxzl,gddj);
+                        getView().visiblePS(lx, dh, ssyxzt, gxzl, gddj);
                     } else if (f.equals("DX")) {
                         getView().visibleDX();
                     } else if (f.equals("RQ")) {
@@ -488,7 +532,7 @@ public class LinePresenter extends BaseMVPPresenter<LineContract.View> implement
                     } else if (f.equals("BM")) {
 //                        getView().visibleBM();
                     }
-                    if (c.equals("GD")) {
+                    if (c.equals("GD") || c.equals("LD") || c.equals("XH")) {
                         String[] dy = toList(dm.get("电压"));
                         getView().visiblegd(dy);
                     }
@@ -496,8 +540,6 @@ public class LinePresenter extends BaseMVPPresenter<LineContract.View> implement
             }
         });
     }
-
-
 
 
     public static Map<Long, Double> sortMapByValue(Map<Long, Double> oriMap) {

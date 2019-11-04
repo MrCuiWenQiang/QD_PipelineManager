@@ -52,8 +52,14 @@
                 <TextView
                     style="@style/edit_title"
                     android:text="管点编号" />
-
+                <TextView
+                    android:id="@+id/tv_lctype"
+                    android:gravity="center_vertical"
+                    android:textSize="18sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" />
                 <EditText
+                    android:layout_marginLeft="2dp"
                     android:id="@+id/tv_wtdh"
                     style="@style/edit_view_edit" />
             </LinearLayout>
@@ -154,7 +160,7 @@
 
                 <TextView
                     style="@style/edit_title"
-                    android:text="埋深" />
+                    android:text="井底深" />
 
                 <EditText
                     android:inputType="numberDecimal"
@@ -173,7 +179,7 @@
                     android:layout_weight="0.6"
                     android:gravity="center_vertical">
 
-                    <EditText
+                    <TextView
                         android:id="@+id/tv_sjly"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
@@ -193,6 +199,35 @@
 
                 <TextView
                     style="@style/edit_title"
+                    android:text="获取时机" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="35dp"
+                    android:layout_weight="0.6"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:id="@+id/tv_hqsj"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/edit_style"
+                        android:textSize="18sp" />
+
+                    <ImageView
+                        android:id="@+id/iv_load_hqsj"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:src="@mipmap/load" />
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout style="@style/edit_ll"
+                android:visibility="gone">
+
+                <TextView
+                    style="@style/edit_title"
                     android:text="测绘横坐标" />
 
                 <EditText
@@ -201,7 +236,8 @@
                     style="@style/edit_view_edit" />
             </LinearLayout>
 
-            <LinearLayout style="@style/edit_ll">
+            <LinearLayout style="@style/edit_ll"
+                android:visibility="gone">
 
                 <TextView
                     style="@style/edit_title"
@@ -236,7 +272,8 @@
                     style="@style/edit_view_edit" />
             </LinearLayout>
 
-            <LinearLayout style="@style/edit_ll">
+            <LinearLayout style="@style/edit_ll"
+                android:visibility="gone">
 
                 <TextView
                     style="@style/edit_title"
@@ -244,6 +281,7 @@
 
                 <EditText
                     android:id="@+id/tv_dmgc"
+                    android:inputType="numberDecimal"
                     style="@style/edit_view_edit" />
             </LinearLayout>
 
@@ -269,7 +307,7 @@
                     android:layout_weight="0.6"
                     android:gravity="center_vertical">
 
-                    <EditText
+                    <TextView
                         android:id="@+id/tv_jglx"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
@@ -292,12 +330,47 @@
                     style="@style/edit_title"
                     android:text="井盖规格" />
 
-                <EditText
-                    android:id="@+id/tv_jggg"
-                    style="@style/edit_view_edit" />
+               <LinearLayout
+                   android:layout_weight="0.7"
+                   android:layout_width="0dp"
+                   android:weightSum="1"
+                   android:layout_height="match_parent">
+                   <EditText
+                       android:id="@+id/tv_jggg"
+                       android:layout_weight="0.25"
+                       android:inputType="numberDecimal"
+                       style="@style/edit_view_edit" />
+                   <TextView
+                       android:text="mm"
+                       android:gravity="center"
+                       android:layout_gravity="center_vertical"
+                       android:layout_width="wrap_content"
+                       android:layout_height="match_parent" />
+                   <TextView
+                       android:id="@+id/tv_wx"
+                       android:text=" X"
+                       android:layout_weight="0.05"
+                       android:gravity="center"
+                       android:layout_gravity="center_vertical"
+                       android:layout_width="wrap_content"
+                       android:layout_height="match_parent" />
+                   <EditText
+                       android:id="@+id/tv_jggg_width"
+                       android:inputType="numberDecimal"
+                       android:layout_weight="0.25"
+                       style="@style/edit_view_edit" />
+                   <TextView
+                       android:id="@+id/tv_mm"
+                       android:text=" mm"
+                       android:gravity="center"
+                       android:layout_gravity="center_vertical"
+                       android:layout_width="wrap_content"
+                       android:layout_height="match_parent" />
+               </LinearLayout>
             </LinearLayout>
 
-            <LinearLayout style="@style/edit_ll">
+            <LinearLayout style="@style/edit_ll"
+                android:visibility="visible">
 
                 <TextView
                     style="@style/edit_title"
@@ -309,7 +382,7 @@
                     android:layout_weight="0.6"
                     android:gravity="center_vertical">
 
-                    <EditText
+                    <TextView
                         android:id="@+id/tv_jgcz"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
@@ -419,7 +492,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout="@layout/vs_marker_ps" />
-            <LinearLayout style="@style/edit_ll">
+            <LinearLayout style="@style/edit_ll"
+                android:visibility="gone">
 
                 <TextView
                     style="@style/edit_title"
@@ -429,7 +503,8 @@
                     android:id="@+id/tv_qsdw"
                     style="@style/edit_view_edit" />
             </LinearLayout>
-            <LinearLayout style="@style/edit_ll">
+            <LinearLayout style="@style/edit_ll"
+                android:visibility="gone">
 
                 <TextView
                     style="@style/edit_title"
@@ -459,6 +534,7 @@
                     android:text="偏距" />
 
                 <EditText
+                    android:inputType="numberDecimal"
                     android:id="@+id/tv_pj"
                     style="@style/edit_view_edit" />
             </LinearLayout>
@@ -466,7 +542,8 @@
 
 
 
-            <LinearLayout style="@style/edit_ll"  >
+            <LinearLayout style="@style/edit_ll"
+                android:visibility="gone">
 
                 <TextView
                     style="@style/edit_title"
@@ -495,7 +572,8 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <LinearLayout style="@style/edit_ll">
+            <LinearLayout style="@style/edit_ll"
+                android:visibility="gone">
 
                 <TextView
                     style="@style/edit_title"
@@ -507,7 +585,8 @@
             </LinearLayout>
 
 
-            <LinearLayout style="@style/edit_ll"  >
+            <LinearLayout style="@style/edit_ll"
+                android:visibility="gone">
 
                 <TextView
                     style="@style/edit_title"
@@ -519,7 +598,7 @@
                     android:layout_weight="0.6"
                     android:gravity="center_vertical">
 
-                    <EditText
+                    <TextView
                         android:id="@+id/tv_sfly"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"

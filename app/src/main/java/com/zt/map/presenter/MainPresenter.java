@@ -21,10 +21,14 @@ import com.zt.map.entity.db.tab.Tab_Marker;
 import com.zt.map.entity.db.tab.Tab_Project;
 import com.zt.map.model.MainModel;
 import com.zt.map.model.SystemQueryModel;
+import com.zt.map.util.EventDrive;
+import com.zt.map.util.db.BatchDBUtil;
 import com.zt.map.util.out.AccessFileOut;
 import com.zt.map.util.out.AccessUtil;
 import com.zt.map.util.out.ExcelName;
 import com.zt.map.util.out.ExcelUtil;
+
+import org.litepal.LitePal;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -58,14 +62,25 @@ public class MainPresenter extends BaseMVPPresenter<MainContract.View> implement
         queryType();
         isregister();
     }
-    @Override
-    public void updateMaker(final Tab_Marker marker) {
+
+    //自动+1
+    public void updateKillMaker(final Tab_Marker marker) {
         DBThreadHelper.startThreadInPool(new DBThreadHelper.ThreadCallback<Boolean>() {
 
             @Override
             protected Boolean jobContent() throws Exception {
+                Tab_Project tab_project = LitPalUtils.selectsoloWhere(Tab_Project.class, "id=?", String.valueOf(marker.getProjectId()));
+                if (tab_project == null) {
+                    return false;
+                }
+                int count = LitPalUtils.selectCount(Tab_Marker.class, "projectid =? AND cldh not null", String.valueOf(marker.getProjectId())) + 1;
+                if (!TextUtils.isEmpty(tab_project.getMeasureName())) {
+                    marker.setCldh(tab_project.getMeasureName() + count);
+                } else {
+                    marker.setCldh(String.valueOf(count));
+                }
                 int c = marker.update(marker.getId());
-                return c>0;
+                return c > 0;
             }
 
             @Override
@@ -74,6 +89,25 @@ public class MainPresenter extends BaseMVPPresenter<MainContract.View> implement
             }
         });
     }
+
+    //手动修改
+    @Override
+    public void updateMaker(final Tab_Marker marker) {
+        DBThreadHelper.startThreadInPool(new DBThreadHelper.ThreadCallback<Boolean>() {
+
+            @Override
+            protected Boolean jobContent() throws Exception {
+                int c = marker.update(marker.getId());
+                return c > 0;
+            }
+
+            @Override
+            protected void jobEnd(Boolean aBoolean) {
+                queryMeasureProject(marker.getProjectId());
+            }
+        });
+    }
+
     @Override
     public void queryType() {
         if (typeNames != null && typeIds != null) {
@@ -115,7 +149,7 @@ public class MainPresenter extends BaseMVPPresenter<MainContract.View> implement
     }
 
     @Override
-    public void queryProjects() {
+    public void queryProjects(final int type) {
         if (mainModel == null) {
             mainModel = new MainModel();
         }
@@ -129,7 +163,7 @@ public class MainPresenter extends BaseMVPPresenter<MainContract.View> implement
                     getView().queryProjects_fail("暂时没有工程");
                     return;
                 }
-                getView().queryProjects(tab_projects);
+                getView().queryProjects(type,tab_projects);
             }
         });
     }
@@ -158,23 +192,114 @@ public class MainPresenter extends BaseMVPPresenter<MainContract.View> implement
         });
     }
 
+    public void updateProject(final long pid, final Editable clName) {
+        DBThreadHelper.startThreadInPool(new DBThreadHelper.ThreadCallback<Tab_Project>() {
+
+            @Override
+            protected Tab_Project jobContent() throws Exception {
+                Tab_Project tab_project = LitPalUtils.selectsoloWhere(Tab_Project.class, "id=?", String.valueOf(pid));
+                if (tab_project == null) {
+                    return null;
+                }
+                if (clName != null) {
+                    tab_project.setMeasureName(clName.toString());
+                } else {
+                    tab_project.setMeasureName(null);
+                }
+                if (tab_project.update(pid) > 0) {
+                    return tab_project;
+                } else {
+                    return null;
+                }
+            }
+
+            @Override
+            protected void jobEnd(Tab_Project project) {
+                getView().updateProject(project);
+            }
+        });
+    }
+
+    // TODO: 2019/10/29 0029 此处在不止一条ID时候会出现查询不到数据错误  目前只有一条ID
+    private String getMarkerSqls(List<Long> ids) {
+        StringBuilder sb = new StringBuilder();
+        for (Long id : ids) {
+            sb.append(" and m.id = " + id);
+        }
+        return sb.toString();
+    }
+
+    private String getlineSqls(List<Long> ids) {
+        StringBuilder sb = new StringBuilder();
+        for (Long id : ids) {
+            sb.append(" and l.id = " + id);
+        }
+        return sb.toString();
+    }
+
     @Override
     public void queryProject(final long projectId) {
+        if (EventDrive.isAddMarker()) {
+
+            DBThreadHelper.startThreadInPool(new DBThreadHelper.ThreadCallback<List<Tab_Marker>>() {
+
+                @Override
+                protected List<Tab_Marker> jobContent() throws Exception {
+                    List<Long> ids = EventDrive.getaddMarker();
+                    List<Tab_Marker> markers = BatchDBUtil.whereMarkers("projectId = "+ String.valueOf(projectId) + getMarkerSqls(ids));
+                    EventDrive.clean();
+                    return markers;
+                }
+
+                @Override
+                protected void jobEnd(List<Tab_Marker> stringObjectMap) {
+                    getView().queryProject(false, stringObjectMap, null, projectId);
+                }
+            });
+            return;
+        } else if (EventDrive.isAddLine()) {
+
+            DBThreadHelper.startThreadInPool(new DBThreadHelper.ThreadCallback<List<Tab_Line>>() {
+
+                @Override
+                protected List<Tab_Line> jobContent() throws Exception {
+                    List<Long> ids = EventDrive.getAddLine();
+                    List<Tab_Line> lines = BatchDBUtil.whereLines("projectId = "+ String.valueOf(projectId) + getlineSqls(ids));
+                    EventDrive.clean();
+                    return lines;
+                }
+
+                @Override
+                protected void jobEnd(List<Tab_Line> stringObjectMap) {
+                    getView().queryProject(false, null, stringObjectMap, projectId);
+                }
+            });
+            return;
+        }
+
+
         DBThreadHelper.startThreadInPool(new DBThreadHelper.ThreadCallback<Map<String, Object>>() {
 
             @Override
             protected Map<String, Object> jobContent() {
                 Map<String, Object> map = new HashMap<>();
-                List<Tab_Marker> markers = LitPalUtils.selectWhere(Tab_Marker.class, "projectId = ? order by updateTime", String.valueOf(projectId));
-                List<Tab_Line> lines = LitPalUtils.selectWhere(Tab_Line.class, "projectId = ?", String.valueOf(projectId));
-                for (Tab_Line item : lines) {
+//                List<Tab_Marker> markers = LitPalUtils.selectWhere(Tab_Marker.class, "projectId = ? order by updateTime", String.valueOf(projectId));
+//                List<Tab_Marker> markers = LitePal.select("id","projectId","typeId","gxlx","wtdh","chlatitude","chlongitude",
+//                        "latitude","longitude","cldh","tzd","fsw").where("projectId = ? ", String.valueOf(projectId)).find(Tab_Marker.class);
+
+                List<Tab_Marker> markers = BatchDBUtil.whereMarkers("projectId = "+ projectId);
+
+//                List<Tab_Marker> markers = LitPalUtils.selectWhere("",Tab_Marker.class, "projectId = ? ", String.valueOf(projectId));
+//                List<Tab_Line> lines = LitPalUtils.selectWhere(Tab_Line.class, "projectId = ?", String.valueOf(projectId));
+                List<Tab_Line> lines =BatchDBUtil.whereLines("projectId = "+ projectId);;
+ /*               for (Tab_Line item : lines) {
                     item.getColor();
                 }
                 for (Tab_Marker item :
                         markers) {
                     item.getIconBase();
                     item.getSys_color();
-                }
+                }*/
                 map.put("Tab_Marker", markers);
                 map.put("Tab_Line", lines);
                 return map;
@@ -195,23 +320,24 @@ public class MainPresenter extends BaseMVPPresenter<MainContract.View> implement
                 if (o_l != null) {
                     lines = (List<Tab_Line>) o_l;
                 }
-                getView().queryProject(markers, lines, projectId);
+                getView().queryProject(true, markers, lines, projectId);
             }
         });
     }
+
     @Override
     public void queryMeasureProject(final long projectId) {
         DBThreadHelper.startThreadInPool(new DBThreadHelper.ThreadCallback<List<Tab_Marker>>() {
 
             @Override
-            protected List<Tab_Marker>  jobContent() {
+            protected List<Tab_Marker> jobContent() {
                 List<Tab_Marker> markers = LitPalUtils.selectWhere(Tab_Marker.class, "projectId = ? order by updateTime", String.valueOf(projectId));
                 for (Tab_Marker item :
                         markers) {
                     item.getIconBase();
-                    if (TextUtils.isEmpty(item.getCldh())){
+                    if (TextUtils.isEmpty(item.getCldh())) {
                         item.getSys_color();
-                    }else {
+                    } else {
                         Sys_Color sys_color = new Sys_Color();
                         sys_color.setR("128");
                         sys_color.setG("128");
@@ -224,12 +350,13 @@ public class MainPresenter extends BaseMVPPresenter<MainContract.View> implement
 
             @Override
             protected void jobEnd(List<Tab_Marker> datas) {
-                if (getView()!=null){
+                if (getView() != null) {
                     getView().queryMeasure(datas);
                 }
             }
         });
     }
+
     @Override
     public void delete(final long id, final int type) {
         if (id < 0) {
@@ -242,15 +369,17 @@ public class MainPresenter extends BaseMVPPresenter<MainContract.View> implement
             protected Boolean jobContent() throws Exception {
                 boolean status = false;
                 if (type == 1) {
-                    Tab_Marker marker = LitPalUtils.selectsoloWhere(Tab_Marker.class, "id = ?", String.valueOf(id));
+                /*    Tab_Marker marker = LitPalUtils.selectsoloWhere(Tab_Marker.class, "id = ?", String.valueOf(id));
                     if (marker != null) {
                         status = marker.delete() > 0;
-                    }
+                    }*/
+                    status =  LitPalUtils.deleteData(Tab_Marker.class, "id = ?", String.valueOf(id))>0;
                 } else if (type == 2) {
-                    Tab_Line line = LitPalUtils.selectsoloWhere(Tab_Line.class, "id = ?", String.valueOf(id));
+                /*    Tab_Line line = LitPalUtils.selectsoloWhere(Tab_Line.class, "id = ?", String.valueOf(id));
                     if (line != null) {
                         status = line.delete() > 0;
-                    }
+                    }*/
+                    status =  LitPalUtils.deleteData(Tab_Line.class, "id = ?", String.valueOf(id))>0;
                 }
                 return status;
             }
@@ -347,6 +476,7 @@ public class MainPresenter extends BaseMVPPresenter<MainContract.View> implement
             }
         });
     }
+
     @Override
     public void queryMarker(final long id) {
         DBThreadHelper.startThreadInPool(new DBThreadHelper.ThreadCallback<Tab_Marker>() {
@@ -363,6 +493,7 @@ public class MainPresenter extends BaseMVPPresenter<MainContract.View> implement
             }
         });
     }
+
     @Override
     public void queryMarker(final long projectId, final String s) {
         DBThreadHelper.startThreadInPool(new DBThreadHelper.ThreadCallback<Tab_Marker>() {
@@ -434,11 +565,7 @@ public class MainPresenter extends BaseMVPPresenter<MainContract.View> implement
         });
     }
 
-    @Deprecated
-    @Override
-    public void outAccess(final Long projectId, final Context mContext) {
 
-    }
 
     @Override
     public void delete_Project(final long id) {
@@ -479,21 +606,21 @@ public class MainPresenter extends BaseMVPPresenter<MainContract.View> implement
                             Response response = call.execute();
 
 
-                        if (response.isSuccessful()) {
-                            String json = response.body().string();
-                            JSONObject jsonObject = JSONObject.parseObject(json);
+                            if (response.isSuccessful()) {
+                                String json = response.body().string();
+                                JSONObject jsonObject = JSONObject.parseObject(json);
 
-                            CheckBean d = JsonUtil.convertJsonToObject(jsonObject.get("data").toString(), CheckBean.class);
-                            isApplen = (d.getType() == 0);
-                            if (!isApplen) {
-                                params.put("msg", d.getMsg());
-                                params.put("type", d.getType());
+                                CheckBean d = JsonUtil.convertJsonToObject(jsonObject.get("data").toString(), CheckBean.class);
+                                isApplen = (d.getType() == 0);
+                                if (!isApplen) {
+                                    params.put("msg", d.getMsg());
+                                    params.put("type", d.getType());
+                                }
+                            } else {
+                                params.put("type", 404);//超时
+                                params.put("msg", "账户校验超时,请保持网络通畅");
                             }
-                        }else {
-                            params.put("type", 404);//超时
-                            params.put("msg", "账户校验超时,请保持网络通畅");
-                        }
-                        }catch (Exception e){
+                        } catch (Exception e) {
                             ErrorUtil.showError(e);
                             isApplen = false;
                             params.put("type", 404);//超时
@@ -514,8 +641,8 @@ public class MainPresenter extends BaseMVPPresenter<MainContract.View> implement
                 } else {
                     String msg = null;
                     int type = 0;
-                    if (aBoolean.containsKey("type")){
-                        type= (int) aBoolean.get("type");
+                    if (aBoolean.containsKey("type")) {
+                        type = (int) aBoolean.get("type");
                     }
                     if (type != 4) {
                         msg = (String) aBoolean.get("msg");

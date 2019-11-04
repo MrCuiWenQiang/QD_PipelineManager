@@ -101,7 +101,7 @@ public class LitPalUtils {
             return list.get(0);
         }
         return null;
-    }*/
+    }
 
     /**
      * 筛选数据 无分页
@@ -115,6 +115,7 @@ public class LitPalUtils {
         List<T> list = LitePal.where(conditions).find(t);
         return list;
     }
+
 
     public static <T> List<T> selectWheres(String column, Class<T> t, String... conditions) {
         List<T> list = LitePal.where(conditions).order(column).find(t);

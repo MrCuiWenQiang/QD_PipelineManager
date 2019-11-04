@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.zt.map">
+    <!-- for mta statistics, not necessary-->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     //获取设备网络状态，禁用后无法获取网络状态
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     //网络权限，当禁用后，无法进行检索等相关业务
@@ -93,6 +97,8 @@
         <activity android:name=".view.SettingActivity" />
         <activity android:name=".view.SettngMakerActivity" />
         <activity android:name=".view.SettingLineActivity" />
+
+
     </application>
 
 </manifest>

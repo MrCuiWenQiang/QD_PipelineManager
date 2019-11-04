@@ -47,6 +47,8 @@ public class MarkerContract {
 
         void visiblePS();
         void queryVisibleSuccess();
+
+        void queryhqsj(String[] hqsj);
     }
 
     public interface Presenter {

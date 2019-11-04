@@ -3,6 +3,7 @@ package com.zt.map.view;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewStub;
 import android.widget.AdapterView;
@@ -24,6 +25,8 @@ import com.zt.map.presenter.LinePresenter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import cn.faker.repaymodel.mvp.BaseMVPAcivity;
 import cn.faker.repaymodel.util.ToastUtility;
@@ -43,16 +46,16 @@ public class LineNowActivity extends BaseMVPAcivity<LineContract.View, LinePrese
     public static final String KEY_ENDLATLNG_X = "KEY_ENDLATLNG_X";
     public static final String KEY_ENDLATLNG_Y = "KEY_ENDLATLNG_Y";
 
-    private EditText tvGxlx;
+    private TextView tvGxlx;
     private ImageView ivLoadGxlx;
-    private EditText tvQswh;
-    private EditText tvZzwh;
+    private TextView tvQswh;
+    private TextView tvZzwh;
     private EditText tvQdms;
     private EditText tvZzms;
-    private EditText tvMsfs;
+    private TextView tvMsfs;
     private ImageView ivLoadMsfs;
     private EditText tvGjdm;
-    private EditText tvGxcl;
+    private TextView tvGxcl;
     private ImageView ivLoadGxcl;
     private ImageView iv_load_tgcz;
 
@@ -63,7 +66,7 @@ public class LineNowActivity extends BaseMVPAcivity<LineContract.View, LinePrese
     private EditText tvQsdw;
     private EditText tvSzwz;
     private ImageView ivLoadSzwz;
-    private EditText tvSyzt;
+    private TextView tvSyzt;
     private ImageView ivLoadSyzt;
     private EditText tvTcfs;
     private ImageView ivLoadTcfs;
@@ -96,9 +99,9 @@ public class LineNowActivity extends BaseMVPAcivity<LineContract.View, LinePrese
     private long start_marker;
     private long end__marker;
 
-    private EditText tvXx;
+    private TextView tvXx;
     private ImageView ivLoadXx;
-    private EditText tvTgcz;
+    private TextView tvTgcz;
     private EditText tvSfly;
     private ImageView ivLoadSfly;
 
@@ -169,7 +172,8 @@ public class LineNowActivity extends BaseMVPAcivity<LineContract.View, LinePrese
     }
 
     @Override
-    public void initData(Bundle savedInstanceState) {
+    public void initData(Bundle savedInstanceState) {}
+    public void initData() {
         setLeftTitle("绘制管线", R.color.white);
         setToolBarBackgroundColor(R.color.blue);
 
@@ -189,7 +193,7 @@ public class LineNowActivity extends BaseMVPAcivity<LineContract.View, LinePrese
 
             showLoading();
             mPresenter.queryTopType(projectId, typeId);
-            mPresenter.queryStartAndEndMarer(projectId, typeId, start_latitude, start_longitude, end_latitude, end_longitude);
+//            mPresenter.queryStartAndEndMarer(projectId, typeId, start_latitude, start_longitude, end_latitude, end_longitude);
 //            mPresenter.queryUncertainData(typeId);
         }
     }
@@ -256,6 +260,7 @@ public class LineNowActivity extends BaseMVPAcivity<LineContract.View, LinePrese
                 break;
             }
             case R.id.iv_load_tgcz: {//套管材质
+                mPresenter.queryTgcz(typeId);
                 break;
             }
         }
@@ -270,7 +275,10 @@ public class LineNowActivity extends BaseMVPAcivity<LineContract.View, LinePrese
         }
         tab_line.setProjectId(projectId);
         tab_line.setTypeId(typeId);
-
+        if (TextUtils.isEmpty(getValue(tvQswh))){
+            ToastUtility.showToast("起点不能为空");
+            return;
+        }
         tab_line.setStartMarkerId(getTAGtoLong(tvQswh));
         tab_line.setEndMarkerId(getTAGtoLong(tvZzwh));
 
@@ -305,7 +313,6 @@ public class LineNowActivity extends BaseMVPAcivity<LineContract.View, LinePrese
 
 
         tab_line.setLx(getValue(tvLx));
-        tab_line.setYl(getValue(tv_yl));
         tab_line.setDhgd(getValue(tvDhgd));
         tab_line.setQdyj(getValue(tvQdyj));
         tab_line.setZdyj(getValue(tvZdyj));
@@ -318,9 +325,14 @@ public class LineNowActivity extends BaseMVPAcivity<LineContract.View, LinePrese
         tab_line.setZks(getValue(tv_zks));
         tab_line.setYyks(getValue(tv_yyks));
         tab_line.setTs(getValue(tv_ts));
+        if (!TextUtils.isEmpty(getValue(tv_yl))){
+            tab_line.setYl(getValue(tv_yl));
+        }else if (!TextUtils.isEmpty(getValue(tv_dy))){
+            tab_line.setYl(getValue(tv_dy));
+        }else {
+            tab_line.setYl(null);
+        }
 
-        tab_line.setYl(getValue(tv_yl));
-        tab_line.setDy(getValue(tv_dy));
 
         tab_line.setXx(getValue(tvXx));
 //        tab_line.setTs(getValue(tvTs));
@@ -335,6 +347,7 @@ public class LineNowActivity extends BaseMVPAcivity<LineContract.View, LinePrese
     @Override
     public void saveSuccess() {
         dimiss();
+        setResult(200);
         finish();
     }
 
@@ -411,6 +424,7 @@ public class LineNowActivity extends BaseMVPAcivity<LineContract.View, LinePrese
 
 
     private Tab_Line topLine;
+    String regEx="[^0-9]";
 
     @Override
     public void queryTopType(Tab_Line tabLine) {
@@ -419,11 +433,35 @@ public class LineNowActivity extends BaseMVPAcivity<LineContract.View, LinePrese
 
         topLine = tabLine;
 
-        if (tabLine == null) return;
 
+        if (tabLine == null){
+            mPresenter.queryStartAndEndMarer(projectId, typeId, start_latitude, start_longitude, end_latitude, end_longitude);
+            return;
+        } ;
         tvGxlx.setText(tabLine.getGxoutlx());
+
+/*        if (!TextUtils.isEmpty(tabLine.getQswh())&&!TextUtils.isEmpty(tabLine.getZzwh())){
+          try {
+              String q = tabLine.getQswh().substring(2,tabLine.getQswh().length());
+              String z = tabLine.getZzwh().substring(2,tabLine.getZzwh().length());
+
+
+              if (q!=null&&z!=null){
+                  int a = Integer.parseInt(q);
+                  int b = Integer.parseInt(z);
+                  if (a>b){
+                      tvZzms.setText(tabLine.getZzms());
+                      isset = false;
+                  }
+              }
+          }catch (Exception e){
+
+          }
+
+        }*/
+
         //上一条线的终点埋深默认为下一条线的起点埋深
-        tvQdms.setText(tabLine.getZzms());
+            tvQdms.setText(tabLine.getZzms());
 //        tvZzms.setText(tabLine.getZzms());
         tvMsfs.setText(tabLine.getMsfs());
         tvGjdm.setText(tabLine.getGjdm());
@@ -440,13 +478,15 @@ public class LineNowActivity extends BaseMVPAcivity<LineContract.View, LinePrese
         tvTgcz.setText(tabLine.getTgcz());
         tvSfly.setText(tabLine.getSfly());
 
+        mPresenter.queryStartAndEndMarer(projectId, typeId, start_latitude, start_longitude, end_latitude, end_longitude);
+
     }
 
     @Override
     public void queryUncertainData(String[] tgcls, String[] pressures, String[] directions) {
     }
 
-    private EditText tvLx;
+    private TextView tvLx;
     private ImageView ivLoadLx;
     private EditText tvQdyj;
     private EditText tvZdyj;
@@ -548,7 +588,7 @@ public class LineNowActivity extends BaseMVPAcivity<LineContract.View, LinePrese
         }
     }
 
-    private EditText tv_yl;
+    private TextView tv_yl;
     private ImageView iv_load_yl;
 
     @Override
@@ -588,7 +628,7 @@ public class LineNowActivity extends BaseMVPAcivity<LineContract.View, LinePrese
         });
         Tab_Line data = topLine == null ? tab_line : topLine;
         if (data != null) {
-            tv_dy.setText(data.getDy());
+            tv_dy.setText(data.getYl());
             tv_zks.setText(data.getZks());
             tv_yyks.setText(data.getYyks());
             tv_ts.setText(data.getTs());
@@ -603,6 +643,11 @@ public class LineNowActivity extends BaseMVPAcivity<LineContract.View, LinePrese
     @Override
     public void queryCZ(String[] items) {
         selectValue(tvGxcl, items);
+    }
+
+    @Override
+    public void queryTGCZ(String[] items) {
+        selectValue(tvTgcz, items);
     }
 
     @Override
@@ -643,22 +688,59 @@ public class LineNowActivity extends BaseMVPAcivity<LineContract.View, LinePrese
             end_latitude = em.getLatitude();
             end_longitude = em.getLongitude();
         }
+
+        if (sm!=null&&em!=null){
+            try {
+                String q = sm.getWtdh().substring(2,sm.getWtdh().length());
+                String z = em.getWtdh().substring(2,em.getWtdh().length());
+
+
+                if (q!=null&&z!=null){
+                    int a = Integer.parseInt(q);
+                    int b = Integer.parseInt(z);
+                    if (a>b){
+                        tvZzms.setText( tvQdms.getText());
+                        tvQdms.setText(null);
+                    }
+                }
+            }catch (Exception e){
+
+            }
+
+        }
     }
 
-
+    String[] newitems = null;
     private void selectValue(final TextView tv, final String[] items) {
         if (items == null || items.length <= 0) {
             ToastUtility.showToast("暂无分类");
             return;
         }
-        ArrayAdapter adapter = new ArrayAdapter<>(getContext(), R.layout.v_tablist, new ArrayList<>(Arrays.asList(items)));
+        if (!TextUtils.isEmpty(tv.getText())&&items!=null){
+            int maxLength = items.length+1;
+            newitems = new String[maxLength];
+            for (int i = 0; i < maxLength; i++) {
+                if (i==0){
+                    newitems[0] = "清除选项";
+                }else {
+                    newitems[i] = items[i-1];
+                }
+            }
+            //增加清除选项
+        }else {
+            newitems = items;
+        }
+        ArrayAdapter adapter = new ArrayAdapter<>(getContext(), R.layout.v_tablist, new ArrayList<>(Arrays.asList(newitems)));
         final QMUIListPopup mListPopup = new QMUIListPopup(getContext(), QMUIPopup.DIRECTION_BOTTOM, adapter);
         mListPopup.create(tv.getWidth(), QMUIDisplayHelper.dp2px(getContext(), 200),
                 new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        tv.setText(items[position]);
+                        tv.setText(newitems[position]);
                         mListPopup.dismiss();
+                        if (newitems[position].equals("清除选项")){
+                            tv.setText(null);
+                        }
                     }
                 });
         mListPopup.setAnimStyle(QMUIPopup.ANIM_GROW_FROM_CENTER);

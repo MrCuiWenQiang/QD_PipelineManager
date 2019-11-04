@@ -7,6 +7,8 @@ import android.os.StrictMode;
 import com.baidu.mapapi.CoordType;
 import com.baidu.mapapi.SDKInitializer;
 import com.tencent.bugly.Bugly;
+import com.zt.map.util.db.BatchDBUtil;
+import com.zt.map.util.share.WXShareUtil;
 
 import org.litepal.LitePal;
 
@@ -32,6 +34,11 @@ public class MyApplication extends BasicApplication {
         setting();
         initBaiduMap();
         initPhoto();
+        initShare();
+    }
+
+    private void initShare() {
+        WXShareUtil.regToWx(getContext());
     }
 
     private void setting() {
@@ -42,6 +49,7 @@ public class MyApplication extends BasicApplication {
         LocImageUtility.setImageUtility(this);
 //        HttpHelper.setOnFailedAll(new OnFileClass());
         Bugly.init(getApplicationContext(), "d0a0192266", false);
+        BatchDBUtil.init(getContext());
     }
 
     private void initBaiduMap() {

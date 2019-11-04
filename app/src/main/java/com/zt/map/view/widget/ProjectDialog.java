@@ -84,7 +84,7 @@ public class ProjectDialog extends BasicDialog {
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    onItemListener.onClick(project.getId());
+                    onItemListener.onClick(project);
                 }
             });
 
@@ -119,6 +119,6 @@ public class ProjectDialog extends BasicDialog {
     public interface OnItemListener {
         void onDelete(long id);
 
-        void onClick(long id);
+        void onClick(Tab_Project tabProject);
     }
 }

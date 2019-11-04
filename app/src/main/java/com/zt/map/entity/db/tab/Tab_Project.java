@@ -8,6 +8,7 @@ import java.util.Date;
 public class Tab_Project extends LitePalSupport {
     private long id;
     private String name;
+    private String measureName;//测量前置名称
     private boolean isCreatePhoto = false;
     private Date createTime;
 
@@ -41,5 +42,13 @@ public class Tab_Project extends LitePalSupport {
 
     public void setCreatePhoto(boolean createPhoto) {
         isCreatePhoto = createPhoto;
+    }
+
+    public String getMeasureName() {
+        return measureName;
+    }
+
+    public void setMeasureName(String measureName) {
+        this.measureName = measureName;
     }
 }

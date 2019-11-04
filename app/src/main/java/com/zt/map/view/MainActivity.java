@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -46,7 +47,6 @@ import com.baidu.mapapi.map.Polyline;
 import com.baidu.mapapi.map.PolylineOptions;
 import com.baidu.mapapi.map.TextOptions;
 import com.baidu.mapapi.model.LatLng;
-import com.baidu.mapapi.model.LatLngBounds;
 import com.baidu.mapapi.utils.DistanceUtil;
 import com.qmuiteam.qmui.widget.dialog.QMUIBottomSheet;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
@@ -62,12 +62,14 @@ import com.zt.map.entity.db.tab.Tab_Project;
 import com.zt.map.presenter.MainPresenter;
 import com.zt.map.util.Base64Util;
 import com.zt.map.util.BitmapUtil;
+import com.zt.map.util.EventDrive;
 import com.zt.map.util.LocalUtil;
 import com.zt.map.util.LocalUtils;
 import com.zt.map.util.MapUtil;
 import com.zt.map.view.widget.AutoCaseTransformationMethod;
 import com.zt.map.view.widget.CreateDialog;
 import com.zt.map.view.widget.MeasureDialog;
+import com.zt.map.view.widget.MeasureNameDialog;
 import com.zt.map.view.widget.ProjectDialog;
 import com.zt.map.view.widget.RegistDialog;
 
@@ -90,6 +92,7 @@ public class MainActivity extends BaseMVPAcivity<MainContract.View, MainPresente
         BaiduMap.OnMapTouchListener {
 
     private final int TO_MARKER_CREATE_CODE = 112;
+    private final int TO_MARKER_CREATE_CODE_INFO = 1132;
 
     private MapView bmapView;
 
@@ -169,6 +172,7 @@ public class MainActivity extends BaseMVPAcivity<MainContract.View, MainPresente
     public void initData(Bundle savedInstanceState) {
 
     }
+    Overlay mText;
 
     @Override
     protected void initListener() {
@@ -214,7 +218,6 @@ public class MainActivity extends BaseMVPAcivity<MainContract.View, MainPresente
                 startActivityForResult(intent, 520);
             }
 
-            Overlay mText;
 
             @Override
             public void onMoven(float start_x, float start_y, MotionEvent moven_Event) {
@@ -291,6 +294,7 @@ public class MainActivity extends BaseMVPAcivity<MainContract.View, MainPresente
     @Override
     public void onTouch(MotionEvent motionEvent) {
     }
+    private Marker onClickMarker;
 
     @Override
     public boolean onMarkerClick(Marker marker) {
@@ -299,6 +303,7 @@ public class MainActivity extends BaseMVPAcivity<MainContract.View, MainPresente
             MarkerNowActivity.newInstance(this, makerId, 230);
         } else if (isDelete()) {
             showLoading();
+            onClickMarker = marker;
             mPresenter.delete(makerId, 1);
         } else if (isMeasure()) {
             showLoading();
@@ -325,7 +330,7 @@ public class MainActivity extends BaseMVPAcivity<MainContract.View, MainPresente
     public void onMarkerDragStart(Marker marker) {
 
     }
-
+    private Polyline onClickPolyline;
     @Override
     public boolean onPolylineClick(Polyline polyline) {
         long lineId = polyline.getExtraInfo().getLong(KEY_LINE_ID);
@@ -333,6 +338,7 @@ public class MainActivity extends BaseMVPAcivity<MainContract.View, MainPresente
             LineNowActivity.newInstance(this, lineId, 240);
         } else if (isDelete()) {
             showLoading();
+            onClickPolyline = polyline;
             mPresenter.delete(lineId, 2);
         } else if (isInsert()) {
             List<LatLng> lats = polyline.getPoints();
@@ -340,7 +346,7 @@ public class MainActivity extends BaseMVPAcivity<MainContract.View, MainPresente
             LatLng e = lats.get(1);
             double m_latitude = (s.latitude + e.latitude) / 2;
             double m_longitude = (s.longitude + e.longitude) / 2;
-            MarkerNowActivity.newInstance(this, projectId, getTypeId(), m_latitude, m_longitude, lineId, TO_MARKER_CREATE_CODE);
+            MarkerNowActivity.newInstance(this, projectId, getTypeId(), m_latitude, m_longitude, lineId, TO_MARKER_CREATE_CODE_INFO);
         }
         return false;
     }
@@ -615,45 +621,74 @@ public class MainActivity extends BaseMVPAcivity<MainContract.View, MainPresente
         tv_type.setTag(typeIds[0]);
         typeColor = colors[0];
     }
-
+    private Tab_Project tab_project;
     @Override
-    public void queryProjects(List<Tab_Project> tab_projects) {
-        final ProjectDialog pdialog = new ProjectDialog().setTab_projects(tab_projects);
-        pdialog.setOnItemListener(new ProjectDialog.OnItemListener() {
-            @Override
-            public void onDelete(final long id) {
-                new QMUIDialog.MessageDialogBuilder(getContext()).setMessage("是否删除该项目?").addAction(0, "删除", QMUIDialogAction.ACTION_PROP_NEGATIVE, new QMUIDialogAction.ActionListener() {
-                    @Override
-                    public void onClick(QMUIDialog dialog, int index) {
-                        dialog.dismiss();
-                        pdialog.dismiss();
-                        showLoading();
-                        mPresenter.delete_Project(id);
-                    }
-                }).addAction("取消", new QMUIDialogAction.ActionListener() {
-                    @Override
-                    public void onClick(QMUIDialog dialog, int index) {
-                        dialog.dismiss();
-                    }
-                }).show();
+    public void queryProjects(final int type, List<Tab_Project> tab_projects) {
 
-            }
+        if (type==0){
+            final ProjectDialog pdialog = new ProjectDialog().setTab_projects(tab_projects);
+            pdialog.setOnItemListener(new ProjectDialog.OnItemListener() {
+                @Override
+                public void onDelete(final long id) {
 
-            @Override
-            public void onClick(long id) {
-                pdialog.dismiss();
-                mPresenter.queryProject(id);
-            }
-        }).show(getSupportFragmentManager(), "gg");
-/*        new QMUIDialog.CheckableDialogBuilder(getContext())
-                .addItems(projects, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                        showLoading();
-                    }
-                }).setTitle("工程列表")
-                .show();*/
+                    new QMUIDialog.MessageDialogBuilder(getContext()).setMessage("是否删除该项目?").addAction(0, "删除", QMUIDialogAction.ACTION_PROP_NEGATIVE, new QMUIDialogAction.ActionListener() {
+                        @Override
+                        public void onClick(QMUIDialog dialog, int index) {
+                            dialog.dismiss();
+                            pdialog.dismiss();
+                            showLoading();
+                            mPresenter.delete_Project(id);
+                        }
+                    }).addAction("取消", new QMUIDialogAction.ActionListener() {
+                        @Override
+                        public void onClick(QMUIDialog dialog, int index) {
+                            dialog.dismiss();
+                        }
+                    }).show();
+
+                }
+
+                @Override
+                public void onClick(Tab_Project tabProject) {
+                    tab_project = tabProject;
+                    pdialog.dismiss();
+                    showLoading();
+                    mPresenter.queryProject(tabProject.getId());
+                }
+            }).show(getSupportFragmentManager(), "gg");
+        }else if (type ==1){
+            final ProjectDialog pdialog = new ProjectDialog().setTab_projects(tab_projects);
+            pdialog.setOnItemListener(new ProjectDialog.OnItemListener() {
+                @Override
+                public void onDelete(final long id) {
+
+                    new QMUIDialog.MessageDialogBuilder(getContext()).setMessage("是否删除该项目?").addAction(0, "删除", QMUIDialogAction.ACTION_PROP_NEGATIVE, new QMUIDialogAction.ActionListener() {
+                        @Override
+                        public void onClick(QMUIDialog dialog, int index) {
+                            dialog.dismiss();
+                            pdialog.dismiss();
+                            showLoading();
+                            mPresenter.delete_Project(id);
+                        }
+                    }).addAction("取消", new QMUIDialogAction.ActionListener() {
+                        @Override
+                        public void onClick(QMUIDialog dialog, int index) {
+                            dialog.dismiss();
+                        }
+                    }).show();
+
+                }
+
+                @Override
+                public void onClick(Tab_Project tabProject) {
+                    pdialog.dismiss();
+                    showLoading();
+                    mPresenter.outExcel(tabProject.getId(), getContext());
+                }
+            }).show(getSupportFragmentManager(), "cc");
+
+        }
+
     }
 
     @Override
@@ -664,6 +699,9 @@ public class MainActivity extends BaseMVPAcivity<MainContract.View, MainPresente
     @Override
     public void createProject_success(String msg, long projectId) {
         this.projectId = projectId;
+        tab_project = new Tab_Project();
+        tab_project.setId(projectId);
+
         isOneLoad = true;
         baiduMap.clear();
         v_canval.clean();
@@ -677,9 +715,11 @@ public class MainActivity extends BaseMVPAcivity<MainContract.View, MainPresente
     }
 
     @Override
-    public void queryProject(List<Tab_Marker> markers, List<Tab_Line> lines, long projectId) {
-        baiduMap.clear();
-        v_canval.clean();
+    public void queryProject(boolean isclean,List<Tab_Marker> markers, List<Tab_Line> lines, long projectId) {
+        if (isclean){
+            baiduMap.clear();
+            v_canval.clean();
+        }
 
         this.projectId = projectId;
         if (lines != null) {
@@ -722,7 +762,13 @@ public class MainActivity extends BaseMVPAcivity<MainContract.View, MainPresente
 
     @Override
     public void delete_success(String msg, int type) {
-        mPresenter.queryProject(projectId);
+//        mPresenter.queryProject(projectId);
+        dimiss();
+        if (type == 1){
+            onClickMarker.remove();
+        }else if (type==2){
+            onClickPolyline.remove();
+        }
     }
 
     @Override
@@ -744,23 +790,26 @@ public class MainActivity extends BaseMVPAcivity<MainContract.View, MainPresente
             ToastUtility.showToast("未查询到该点号");
             return;
         } else if (isMeasure()) {
-            final MeasureDialog dialog = new MeasureDialog();
-            dialog.setListener(new MeasureDialog.onIconListener() {
-                @Override
-                public void onIntext(Editable name) {
-                    if (name != null) {
-                        data.setCldh(name.toString());
-                    } else {
-                        data.setCldh(null);
+            if (TextUtils.isEmpty(data.getCldh())){
+                mPresenter.updateKillMaker(data);
+            }else {
+                final MeasureDialog dialog = new MeasureDialog();
+                dialog.setListener(new MeasureDialog.onIconListener() {
+                    @Override
+                    public void onIntext(Editable name) {
+                        if (name != null) {
+                            data.setCldh(name.toString());
+                        } else {
+                            data.setCldh(null);
+                        }
+                        mPresenter.updateMaker(data);
+                        dialog.dismiss();
                     }
-                    mPresenter.updateMaker(data);
-                    dialog.dismiss();
-                }
-
-            });
-            dialog.setDH(data.getWtdh());
-            dialog.setCL(data.getCldh());
-            dialog.show(getSupportFragmentManager(), "ds");
+                });
+                dialog.setDH(data.getWtdh());
+                dialog.setCL(data.getCldh());
+                dialog.show(getSupportFragmentManager(), "ds");
+            }
             return;
         }
 
@@ -835,7 +884,7 @@ public class MainActivity extends BaseMVPAcivity<MainContract.View, MainPresente
         baiduMap.clear();
         projectId = -1;
         isOneLoad = true;
-        mPresenter.queryProjects();
+        mPresenter.queryProjects(0);
     }
 
     private RegistDialog registDialog;
@@ -896,7 +945,7 @@ public class MainActivity extends BaseMVPAcivity<MainContract.View, MainPresente
     private void drawMarker(double latitude, double longitude, long marerId, Bitmap icon, String name) {
         drawMarker(latitude, longitude, marerId, typeColor, icon, name);
     }
-
+    List<Marker> markers = new ArrayList<>();
     private void drawMarker(double latitude, double longitude, long marerId, int color, Bitmap icon, String name) {
         // TODO: 2019/5/31 显示名称
         Bundle bundle = new Bundle();
@@ -910,7 +959,8 @@ public class MainActivity extends BaseMVPAcivity<MainContract.View, MainPresente
         OverlayOptions option = new MarkerOptions()
                 .position(latLng).draggable(true).flat(true)
                 .icon(bitmap).extraInfo(bundle);
-        baiduMap.addOverlay(option);
+        Marker marker = (Marker) baiduMap.addOverlay(option);
+        markers.add(marker);
     }
 
     private View getMyMarker(Bitmap image, int color, String name) {
@@ -921,7 +971,12 @@ public class MainActivity extends BaseMVPAcivity<MainContract.View, MainPresente
         if (color == -1) {
             color = 0xAAFF0000;
         }
-        image = BitmapUtil.replaceBitmapColor(image, color);
+
+        if (image!=null){
+            image = BitmapUtil.replaceBitmapColor(image, color);
+        }else {
+            image =  BitmapFactory.decodeResource(getResources(), R.mipmap.makericon, null);
+        }
         tv.setTextColor(color);
         iv.setImageBitmap(image);
         return ll;
@@ -983,6 +1038,17 @@ public class MainActivity extends BaseMVPAcivity<MainContract.View, MainPresente
             }
         }
     }
+
+    @Override
+    public void updateProject(Tab_Project project) {
+        dimiss();
+        if (project!=null){
+            tab_project = project;
+        }else {
+            showDialog("设置测量点号失败");
+        }
+    }
+
     /**
      * 底部菜单
      */
@@ -995,6 +1061,7 @@ public class MainActivity extends BaseMVPAcivity<MainContract.View, MainPresente
     final int TAG_SELECT_INT = 6;
     final int TAG_SELECT_OUT_QUERY = 7;
     final int TAG_SELECT_SETTING = 8;
+    final int TAG_SELECT_MARKER_NAME = 9;
 
     private void showBottomDialog() {
         QMUIBottomSheet.BottomGridSheetBuilder builder = new QMUIBottomSheet.BottomGridSheetBuilder(getContext());
@@ -1010,6 +1077,7 @@ public class MainActivity extends BaseMVPAcivity<MainContract.View, MainPresente
         builder.addItem(R.mipmap.photo, "工程相册", TAG_SELECT_PHOTO, QMUIBottomSheet.BottomGridSheetBuilder.SECOND_LINE);
         builder.addItem(R.mipmap.input, "导入工程", TAG_SELECT_INT, QMUIBottomSheet.BottomGridSheetBuilder.SECOND_LINE);
         builder.addItem(R.mipmap.setting, "系统设置", TAG_SELECT_SETTING, QMUIBottomSheet.BottomGridSheetBuilder.SECOND_LINE);
+        builder.addItem(R.mipmap.toolmark, "测量设置", TAG_SELECT_MARKER_NAME, QMUIBottomSheet.BottomGridSheetBuilder.SECOND_LINE);
 
         builder.setOnSheetItemClickListener(new QMUIBottomSheet.BottomGridSheetBuilder.OnSheetItemClickListener() {
             @Override
@@ -1022,11 +1090,13 @@ public class MainActivity extends BaseMVPAcivity<MainContract.View, MainPresente
                     }
                     case TAG_SELECT_OPEN: {
                         isOneLoad = true;
-                        mPresenter.queryProjects();
+                        markers.clear();
+                        mPresenter.queryProjects(0);
                         break;
                     }
                     case TAG_SELECT_CLONE: {
                         baiduMap.clear();
+                        markers.clear();
                         projectId = -1;
                         isOneLoad = true;
                         break;
@@ -1049,7 +1119,6 @@ public class MainActivity extends BaseMVPAcivity<MainContract.View, MainPresente
                         } else {
                             ToastUtility.showToast("请选择工程");
                         }
-
                         break;
                     }
                     case TAG_SELECT_OUT_QUERY: {
@@ -1060,31 +1129,13 @@ public class MainActivity extends BaseMVPAcivity<MainContract.View, MainPresente
                         if (!permissionFile()) {
                             return;
                         }
-                        if (projectId >= 0) {
+                      /*  if (projectId >= 0) {
                             showLoading();
                             mPresenter.outExcel(projectId, getContext());
-
-                            /*showListDialog(new String[]{"导出为Excel","导出为mdb"}, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                    if (which==0){
-                                        showLoading();
-                                        mPresenter.outExcel(projectId,getContext());
-                                        return;
-                                    }else  if (which==1){
-                                        showLoading();
-                                        mPresenter.outAccess(projectId,getContext());
-                                        return;
-                                    }
-                                    ToastUtility.showToast("功能正在完善");
-                                }
-                            });*/
-
                         } else {
                             ToastUtility.showToast("请选择工程");
-                        }
-
+                        }*/
+                        mPresenter.queryProjects(1);
                         break;
                     }
                     case TAG_SELECT_INT: {
@@ -1100,6 +1151,23 @@ public class MainActivity extends BaseMVPAcivity<MainContract.View, MainPresente
                     case TAG_SELECT_SETTING: {
                         toAcitvity(SettingActivity.class);
                         break;
+                    }
+                    case TAG_SELECT_MARKER_NAME:{
+                        if (projectId >= 0&&tab_project!=null) {
+                            final MeasureNameDialog dialog1 = new MeasureNameDialog();
+                            dialog1.setListener(new MeasureNameDialog.onIconListener() {
+                                @Override
+                                public void onIntext(Editable name) {
+                                    showLoading();
+                                    dialog1.dismiss();
+                                    mPresenter.updateProject(projectId,name);
+                                }
+                            });
+                            dialog1.setCl(tab_project.getMeasureName());
+                            dialog1.show(getSupportFragmentManager(),"d");
+                        } else {
+                            ToastUtility.showToast("请选择工程");
+                        }
                     }
                 }
                 dialog.dismiss();
@@ -1144,8 +1212,56 @@ public class MainActivity extends BaseMVPAcivity<MainContract.View, MainPresente
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        showLoading();
-        mPresenter.queryProject(projectId);
+        switch (requestCode){//只有增加点线
+            case TO_MARKER_CREATE_CODE:{
+                if (resultCode==200){
+                    showLoading();
+                    mPresenter.queryProject(projectId);
+                }
+                break;
+            }
+            case 520:{
+                if (resultCode==200){
+                    showLoading();
+                    mPresenter.queryProject(projectId);
+                }
+                v_canval.clean();
+                if (mText!=null){
+                    mText.remove();
+                }
+                break;
+            }
+            case 230:{
+                if (resultCode==200){
+                    if (EventDrive.isAddMarker()){
+                        List<Long> ids = EventDrive.getaddMarker();
+                        if (ids!=null&&ids.size()>0&&markers.size()>0){
+                            long id = ids.get(0);
+                            for (Marker m:markers) {
+                                Bundle bundle = m.getExtraInfo();
+                                long mid = bundle.getLong(KEY_MARKER_ID);
+                                if (mid==id){
+                                    m.remove();
+                                    markers.remove(m);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
+                    showLoading();
+                    mPresenter.queryProject(projectId);
+                }
+                break;
+            }
+            case TO_MARKER_CREATE_CODE_INFO:{
+                if (resultCode==200){
+                    showLoading();
+                    mPresenter.queryProject(projectId);
+                }
+                break;
+            }
+        }
         super.onActivityResult(requestCode, resultCode, data);
     }
 

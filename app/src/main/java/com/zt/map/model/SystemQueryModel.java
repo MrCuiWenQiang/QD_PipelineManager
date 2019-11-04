@@ -4,6 +4,7 @@ import com.zt.map.entity.db.system.Sys_Appendages;
 import com.zt.map.entity.db.system.Sys_Direction;
 import com.zt.map.entity.db.system.Sys_Embedding;
 import com.zt.map.entity.db.system.Sys_Features;
+import com.zt.map.entity.db.system.Sys_HQSJ;
 import com.zt.map.entity.db.system.Sys_LineFC;
 import com.zt.map.entity.db.system.Sys_LineType;
 import com.zt.map.entity.db.system.Sys_Line_Manhole;
@@ -307,6 +308,57 @@ public class SystemQueryModel extends BaseMVPModel {
         });
     }
 
+    /**
+     * 套管材质
+     * @param code
+     * @param listener
+     */
+    public void queryTgcz(final long code, final CommotListener<List<Sys_TGCL>> listener) {
+        DBThreadHelper.startThreadInPool(new DBThreadHelper.ThreadCallback<List<Sys_TGCL>>() {
+
+            @Override
+            protected List<Sys_TGCL> jobContent() throws Exception {
+                Sys_Table tables = LitPalUtils.selectsoloWhere(Sys_Table.class,"id = ?",String.valueOf(code));
+                if (tables!=null){
+                    List<Sys_TGCL> datas = LitPalUtils.selectWhere(Sys_TGCL.class,"fatherCode = ?",tables.getCode());
+                    return datas;
+                }
+                return null;
+
+            }
+
+            @Override
+            protected void jobEnd(List<Sys_TGCL> sysQualityTables) {
+                listener.result(sysQualityTables);
+            }
+        });
+    }
+
+    /**
+     * 获取时机
+     * @param code
+     * @param listener
+     */
+    public void queryHQSJ(final long code, final CommotListener<List<Sys_HQSJ>> listener) {
+        DBThreadHelper.startThreadInPool(new DBThreadHelper.ThreadCallback<List<Sys_HQSJ>>() {
+
+            @Override
+            protected List<Sys_HQSJ> jobContent() throws Exception {
+                Sys_Table tables = LitPalUtils.selectsoloWhere(Sys_Table.class,"id = ?",String.valueOf(code));
+                if (tables!=null){
+                    List<Sys_HQSJ> datas = LitPalUtils.selectWhere(Sys_HQSJ.class,"fatherCode = ?",tables.getCode());
+                    return datas;
+                }
+                return null;
+
+            }
+
+            @Override
+            protected void jobEnd(List<Sys_HQSJ> sysQualityTables) {
+                listener.result(sysQualityTables);
+            }
+        });
+    }
 
     /**
      * 查询不一定有的数据

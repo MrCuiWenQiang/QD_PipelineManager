@@ -129,7 +129,7 @@ public class ExcelUtil {
             }
             workbook = Workbook.createWorkbook(file);
             //设置表格的名字
-            WritableSheet sheet = workbook.createSheet(tableName, 0);
+            WritableSheet sheet = workbook.createSheet("sheet1", 0);
             //创建标题栏
             sheet.addCell((WritableCell) new Label(0, 0, fileName, arial14format));
             for (int col = 0; col < colName.length; col++) {
