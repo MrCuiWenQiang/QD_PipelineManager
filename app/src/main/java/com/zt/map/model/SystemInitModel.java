@@ -354,7 +354,6 @@ public class SystemInitModel extends BaseMVPModel {
                 }
                 int txcount = LitPalUtils.selectCount(Sys_Type_Child.class,"value = 'TV'");
                 if (txcount<=0){
-
                     try {
                         InputStream inputStream = MyApplication.getContext().getResources().openRawResource(R.raw.setting);
                         FileReadOpen.Data d = null;
@@ -381,7 +380,7 @@ public class SystemInitModel extends BaseMVPModel {
 
                     Sys_Type_Child child = new Sys_Type_Child();
                     child.setName("电视");
-                    child.setValue("TX");
+                    child.setValue("TV");
                     child.setFatherCode("DX");
                     child.save();
 
