@@ -61,7 +61,8 @@ public class BatchDBUtil {
         this.mContext = context;
         this.dbName = name;
     }
-    public static boolean updateMarker(final long makerId, final double latitude, final double longitude ){
+    public static  List<Long> updateMarker(final long makerId, final double latitude, final double longitude ){
+        List<Long> ids = new ArrayList<>();
         int a=0,b=0,c = 0;
         SQLiteDatabase db = Connector.getDatabase();
         String sql_marker = " update tab_marker set latitude = "+latitude+",longitude="+longitude+"  where id = "+makerId;
@@ -75,11 +76,17 @@ public class BatchDBUtil {
                 "           end_latitude =" +latitude+
                 "           ,end_longitude = " +longitude+
                 "       where endmarkerid = "+makerId;
+
+        String sql_count = "select id from tab_line where startmarkerid = "+makerId+" or endmarkerid = "+makerId;
         try {
             db.beginTransaction();
               db.execSQL(sql_marker);
               db.execSQL(sql_line_start);
               db.execSQL(sql_line_end);
+              Cursor cursor =db.rawQuery(sql_count,null);
+            while (cursor.moveToNext()){
+                ids.add(cursor.getLong(cursor.getColumnIndex("id")));
+            }
             db.setTransactionSuccessful();
         }catch (Exception e) {
             ErrorUtil.showError(e);
@@ -87,7 +94,7 @@ public class BatchDBUtil {
             db.endTransaction();
             db.close();
         }
-        return b>0||c>0;
+        return ids;
     }
     public static List<Tab_Line> whereLines(String wq){
         SQLiteDatabase db = Connector.getDatabase();

@@ -231,8 +231,14 @@ public class MainPresenter extends BaseMVPPresenter<MainContract.View> implement
 
     private String getlineSqls(List<Long> ids) {
         StringBuilder sb = new StringBuilder();
+        int i = 0;
         for (Long id : ids) {
-            sb.append(" and l.id = " + id);
+            if (i==0){
+                sb.append(" and l.id = " + id);
+            }else {
+                sb.append(" OR l.id = " + id);
+            }
+            i++;
         }
         return sb.toString();
     }

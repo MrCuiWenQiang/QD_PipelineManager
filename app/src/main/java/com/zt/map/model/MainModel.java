@@ -4,6 +4,7 @@ import com.zt.map.contract.MainContract;
 import com.zt.map.entity.db.tab.Tab_Line;
 import com.zt.map.entity.db.tab.Tab_Marker;
 import com.zt.map.entity.db.tab.Tab_Project;
+import com.zt.map.util.EventDrive;
 import com.zt.map.util.db.BatchDBUtil;
 
 import java.util.Date;
@@ -70,13 +71,12 @@ public class MainModel extends BaseMVPModel implements MainContract.Model {
 
     @Override
     public void update_MakerLocal(final long makerId, final double latitude, final double longitude, final CommotListener<Boolean> listener) {
-        DBThreadHelper.startThreadInPool(new DBThreadHelper.ThreadCallback<Boolean>() {
+        DBThreadHelper.startThreadInPool(new DBThreadHelper.ThreadCallback< List<Long>>() {
 
             @Override
-            protected Boolean jobContent() throws Exception {
-                boolean status = false;
+            protected  List<Long> jobContent() throws Exception {
 
-                status = BatchDBUtil.updateMarker(makerId,latitude,longitude);
+                List<Long> ids = BatchDBUtil.updateMarker(makerId,latitude,longitude);
 
                /* Tab_Marker tb_marker = LitPalUtils.selectsoloWhere(Tab_Marker.class,"id = ?",String.valueOf(makerId));
                 if (tb_marker!=null){
@@ -100,12 +100,15 @@ public class MainModel extends BaseMVPModel implements MainContract.Model {
                     }
 
                 }*/
-                return status;
+               if (ids!=null&&ids.size()>0){
+                   EventDrive.addLine(ids);
+               }
+                return ids;
             }
 
             @Override
-            protected void jobEnd(Boolean aBoolean) {
-                listener.result(aBoolean);
+            protected void jobEnd( List<Long> ids) {
+                listener.result(true);
             }
         });
     }

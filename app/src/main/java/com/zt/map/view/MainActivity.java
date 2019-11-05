@@ -75,7 +75,9 @@ import com.zt.map.view.widget.RegistDialog;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import cn.faker.repaymodel.activity.manager.ActivityManager;
 import cn.faker.repaymodel.mvp.BaseMVPAcivity;
@@ -724,6 +726,9 @@ public class MainActivity extends BaseMVPAcivity<MainContract.View, MainPresente
         this.projectId = projectId;
         if (lines != null) {
             for (Tab_Line item : lines) {
+                if (opMap.containsKey(item.getId())){
+                    opMap.get(item.getId()).remove();
+                }
                 drawLine(item.getStart_latitude(), item.getStart_longitude(), item.getEnd_latitude(), item.getEnd_longitude(), item.getColor(), item.getId());
             }
         }
@@ -985,7 +990,7 @@ public class MainActivity extends BaseMVPAcivity<MainContract.View, MainPresente
     private void drawLine(double start_latitude, double start_longitude, double end_latitude, double end_longitude, long lineId) {
         drawLine(start_latitude, start_longitude, end_latitude, end_longitude, typeColor, lineId);
     }
-
+    private Map<Long,Polyline> opMap = new LinkedHashMap<>();
     private void drawLine(double start_latitude, double start_longitude, double end_latitude, double end_longitude, int color, long lineId) {
         List<LatLng> points = new ArrayList<>();
         LatLng p1 = new LatLng(start_latitude, start_longitude);
@@ -999,7 +1004,9 @@ public class MainActivity extends BaseMVPAcivity<MainContract.View, MainPresente
                 .width(5)
                 .color(color)
                 .points(points).extraInfo(opbundle);
-        baiduMap.addOverlay(mOverlayOptions);
+
+        Polyline line = (Polyline) baiduMap.addOverlay(mOverlayOptions);
+        opMap.put(lineId,line);
     }
 
     private void showTypeList() {
