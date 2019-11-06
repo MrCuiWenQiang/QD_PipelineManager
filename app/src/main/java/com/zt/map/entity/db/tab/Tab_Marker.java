@@ -199,6 +199,10 @@ public class Tab_Marker extends LitePalSupport {
     public void setColor(Sys_Color sys_color){
         this.sys_color = sys_color;
     }
+    public String getGxlxValue(){
+        return gxlx;
+    }
+
     public String getGxlx() {
 
 

@@ -97,6 +97,7 @@
         <activity android:name=".view.SettingActivity" />
         <activity android:name=".view.SettngMakerActivity" />
         <activity android:name=".view.SettingLineActivity" />
+        <activity android:name=".view.InputActivity" />
 
 
     </application>

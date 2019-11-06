@@ -529,7 +529,9 @@ public class Tab_Line extends LitePalSupport {
         this.createTime = createTime;
     }
 
-
+    public String getGxlxValue(){
+        return Gxlx;
+    }
     public String getGxlx() {
 
 

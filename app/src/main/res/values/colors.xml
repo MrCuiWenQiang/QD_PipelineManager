@@ -83,7 +83,7 @@
     <color name="silver">#ff8c8c8c</color>
     <color name="white_gray">#ffd9d9d9</color>
     <color name="white_half">#80ffffff</color>
-    <color name="white_download_path">#ffb2b2b2</color>
+    <color name="white_download_path">#bfbfbf</color>
     <color name="black_half">#80000000</color>
     <color name="black_half_seven">#b2000000</color>
     <color name="ppsplayer_list_text_orange">#ffffa21d</color>

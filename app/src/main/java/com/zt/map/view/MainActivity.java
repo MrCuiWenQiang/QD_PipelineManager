@@ -21,15 +21,12 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.baidu.location.BDAbstractLocationListener;
 import com.baidu.location.BDLocation;
 import com.baidu.location.LocationClient;
-import com.baidu.location.LocationClientOption;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptor;
 import com.baidu.mapapi.map.BitmapDescriptorFactory;
@@ -174,6 +171,7 @@ public class MainActivity extends BaseMVPAcivity<MainContract.View, MainPresente
     public void initData(Bundle savedInstanceState) {
 
     }
+
     Overlay mText;
 
     @Override
@@ -296,6 +294,7 @@ public class MainActivity extends BaseMVPAcivity<MainContract.View, MainPresente
     @Override
     public void onTouch(MotionEvent motionEvent) {
     }
+
     private Marker onClickMarker;
 
     @Override
@@ -332,7 +331,9 @@ public class MainActivity extends BaseMVPAcivity<MainContract.View, MainPresente
     public void onMarkerDragStart(Marker marker) {
 
     }
+
     private Polyline onClickPolyline;
+
     @Override
     public boolean onPolylineClick(Polyline polyline) {
         long lineId = polyline.getExtraInfo().getLong(KEY_LINE_ID);
@@ -434,6 +435,7 @@ public class MainActivity extends BaseMVPAcivity<MainContract.View, MainPresente
 
         }
     }
+
     private boolean isMeasure() {
         if (projectId <= 0) {
             ToastUtility.showToast("请选择工程");
@@ -445,6 +447,7 @@ public class MainActivity extends BaseMVPAcivity<MainContract.View, MainPresente
             return (boolean) ib_draw_measure.getTag();
         }
     }
+
     private final String[] taggings = new String[]{"不使用标注", "埋深", "管线材质", "管径断面"};
 
     /**
@@ -623,11 +626,13 @@ public class MainActivity extends BaseMVPAcivity<MainContract.View, MainPresente
         tv_type.setTag(typeIds[0]);
         typeColor = colors[0];
     }
+
     private Tab_Project tab_project;
+
     @Override
     public void queryProjects(final int type, List<Tab_Project> tab_projects) {
 
-        if (type==0){
+        if (type == 0) {
             final ProjectDialog pdialog = new ProjectDialog().setTab_projects(tab_projects);
             pdialog.setOnItemListener(new ProjectDialog.OnItemListener() {
                 @Override
@@ -658,7 +663,7 @@ public class MainActivity extends BaseMVPAcivity<MainContract.View, MainPresente
                     mPresenter.queryProject(tabProject.getId());
                 }
             }).show(getSupportFragmentManager(), "gg");
-        }else if (type ==1){
+        } else if (type == 1) {
             final ProjectDialog pdialog = new ProjectDialog().setTab_projects(tab_projects);
             pdialog.setOnItemListener(new ProjectDialog.OnItemListener() {
                 @Override
@@ -717,8 +722,8 @@ public class MainActivity extends BaseMVPAcivity<MainContract.View, MainPresente
     }
 
     @Override
-    public void queryProject(boolean isclean,List<Tab_Marker> markers, List<Tab_Line> lines, long projectId) {
-        if (isclean){
+    public void queryProject(boolean isclean, List<Tab_Marker> markers, List<Tab_Line> lines, long projectId) {
+        if (isclean) {
             baiduMap.clear();
             v_canval.clean();
         }
@@ -726,7 +731,7 @@ public class MainActivity extends BaseMVPAcivity<MainContract.View, MainPresente
         this.projectId = projectId;
         if (lines != null) {
             for (Tab_Line item : lines) {
-                if (opMap.containsKey(item.getId())){
+                if (opMap.containsKey(item.getId())) {
                     opMap.get(item.getId()).remove();
                 }
                 drawLine(item.getStart_latitude(), item.getStart_longitude(), item.getEnd_latitude(), item.getEnd_longitude(), item.getColor(), item.getId());
@@ -769,9 +774,9 @@ public class MainActivity extends BaseMVPAcivity<MainContract.View, MainPresente
     public void delete_success(String msg, int type) {
 //        mPresenter.queryProject(projectId);
         dimiss();
-        if (type == 1){
+        if (type == 1) {
             onClickMarker.remove();
-        }else if (type==2){
+        } else if (type == 2) {
             onClickPolyline.remove();
         }
     }
@@ -795,9 +800,9 @@ public class MainActivity extends BaseMVPAcivity<MainContract.View, MainPresente
             ToastUtility.showToast("未查询到该点号");
             return;
         } else if (isMeasure()) {
-            if (TextUtils.isEmpty(data.getCldh())){
+            if (TextUtils.isEmpty(data.getCldh())) {
                 mPresenter.updateKillMaker(data);
-            }else {
+            } else {
                 final MeasureDialog dialog = new MeasureDialog();
                 dialog.setListener(new MeasureDialog.onIconListener() {
                     @Override
@@ -897,8 +902,8 @@ public class MainActivity extends BaseMVPAcivity<MainContract.View, MainPresente
     //显示注册
     @Override
     public void shoWregister(String msg) {
-        if (!TextUtils.isEmpty(msg)){//显示审核中
-            showDialog(msg, false,new QMUIDialogAction.ActionListener() {
+        if (!TextUtils.isEmpty(msg)) {//显示审核中
+            showDialog(msg, false, new QMUIDialogAction.ActionListener() {
                 @Override
                 public void onClick(QMUIDialog dialog, int index) {
                     dialog.dismiss();
@@ -929,7 +934,7 @@ public class MainActivity extends BaseMVPAcivity<MainContract.View, MainPresente
         dimiss();
         registDialog.dismiss();
         registDialog = null;
-        showDialog(msg, false,new QMUIDialogAction.ActionListener() {
+        showDialog(msg, false, new QMUIDialogAction.ActionListener() {
             @Override
             public void onClick(QMUIDialog dialog, int index) {
                 dialog.dismiss();
@@ -950,7 +955,9 @@ public class MainActivity extends BaseMVPAcivity<MainContract.View, MainPresente
     private void drawMarker(double latitude, double longitude, long marerId, Bitmap icon, String name) {
         drawMarker(latitude, longitude, marerId, typeColor, icon, name);
     }
+
     List<Marker> markers = new ArrayList<>();
+
     private void drawMarker(double latitude, double longitude, long marerId, int color, Bitmap icon, String name) {
         // TODO: 2019/5/31 显示名称
         Bundle bundle = new Bundle();
@@ -977,10 +984,10 @@ public class MainActivity extends BaseMVPAcivity<MainContract.View, MainPresente
             color = 0xAAFF0000;
         }
 
-        if (image!=null){
+        if (image != null) {
             image = BitmapUtil.replaceBitmapColor(image, color);
-        }else {
-            image =  BitmapFactory.decodeResource(getResources(), R.mipmap.makericon, null);
+        } else {
+            image = BitmapFactory.decodeResource(getResources(), R.mipmap.makericon, null);
         }
         tv.setTextColor(color);
         iv.setImageBitmap(image);
@@ -990,7 +997,9 @@ public class MainActivity extends BaseMVPAcivity<MainContract.View, MainPresente
     private void drawLine(double start_latitude, double start_longitude, double end_latitude, double end_longitude, long lineId) {
         drawLine(start_latitude, start_longitude, end_latitude, end_longitude, typeColor, lineId);
     }
-    private Map<Long,Polyline> opMap = new LinkedHashMap<>();
+
+    private Map<Long, Polyline> opMap = new LinkedHashMap<>();
+
     private void drawLine(double start_latitude, double start_longitude, double end_latitude, double end_longitude, int color, long lineId) {
         List<LatLng> points = new ArrayList<>();
         LatLng p1 = new LatLng(start_latitude, start_longitude);
@@ -1006,7 +1015,7 @@ public class MainActivity extends BaseMVPAcivity<MainContract.View, MainPresente
                 .points(points).extraInfo(opbundle);
 
         Polyline line = (Polyline) baiduMap.addOverlay(mOverlayOptions);
-        opMap.put(lineId,line);
+        opMap.put(lineId, line);
     }
 
     private void showTypeList() {
@@ -1022,6 +1031,7 @@ public class MainActivity extends BaseMVPAcivity<MainContract.View, MainPresente
             }
         });
     }
+
     @Override
     public void queryMeasure(List<Tab_Marker> markers) {
         dimiss();
@@ -1049,9 +1059,9 @@ public class MainActivity extends BaseMVPAcivity<MainContract.View, MainPresente
     @Override
     public void updateProject(Tab_Project project) {
         dimiss();
-        if (project!=null){
+        if (project != null) {
             tab_project = project;
-        }else {
+        } else {
             showDialog("设置测量点号失败");
         }
     }
@@ -1096,6 +1106,13 @@ public class MainActivity extends BaseMVPAcivity<MainContract.View, MainPresente
                         break;
                     }
                     case TAG_SELECT_OPEN: {
+                        markers.clear();
+                        if (opMap != null) {
+                            opMap.clear();
+                        }
+                        if (baiduMap != null) {
+                            baiduMap.clear();
+                        }
                         isOneLoad = true;
                         markers.clear();
                         mPresenter.queryProjects(0);
@@ -1104,6 +1121,9 @@ public class MainActivity extends BaseMVPAcivity<MainContract.View, MainPresente
                     case TAG_SELECT_CLONE: {
                         baiduMap.clear();
                         markers.clear();
+                        if (opMap != null) {
+                            opMap.clear();
+                        }
                         projectId = -1;
                         isOneLoad = true;
                         break;
@@ -1146,32 +1166,26 @@ public class MainActivity extends BaseMVPAcivity<MainContract.View, MainPresente
                         break;
                     }
                     case TAG_SELECT_INT: {
-                        if (projectId >= 0) {
-                            // TODO: 2019/6/6 导入
-
-                        } else {
-                            ToastUtility.showToast("请选择工程");
-                        }
-
+                        toAcitvity(InputActivity.class);
                         break;
                     }
                     case TAG_SELECT_SETTING: {
                         toAcitvity(SettingActivity.class);
                         break;
                     }
-                    case TAG_SELECT_MARKER_NAME:{
-                        if (projectId >= 0&&tab_project!=null) {
+                    case TAG_SELECT_MARKER_NAME: {
+                        if (projectId >= 0 && tab_project != null) {
                             final MeasureNameDialog dialog1 = new MeasureNameDialog();
                             dialog1.setListener(new MeasureNameDialog.onIconListener() {
                                 @Override
                                 public void onIntext(Editable name) {
                                     showLoading();
                                     dialog1.dismiss();
-                                    mPresenter.updateProject(projectId,name);
+                                    mPresenter.updateProject(projectId, name);
                                 }
                             });
                             dialog1.setCl(tab_project.getMeasureName());
-                            dialog1.show(getSupportFragmentManager(),"d");
+                            dialog1.show(getSupportFragmentManager(), "d");
                         } else {
                             ToastUtility.showToast("请选择工程");
                         }
@@ -1181,6 +1195,7 @@ public class MainActivity extends BaseMVPAcivity<MainContract.View, MainPresente
             }
         }).build().show();
     }
+
 
     private void showQueryMarker() {
         final QMUIDialog.EditTextDialogBuilder builder = new QMUIDialog.EditTextDialogBuilder(getContext());
@@ -1219,35 +1234,35 @@ public class MainActivity extends BaseMVPAcivity<MainContract.View, MainPresente
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode){//只有增加点线
-            case TO_MARKER_CREATE_CODE:{
-                if (resultCode==200){
+        switch (requestCode) {//只有增加点线
+            case TO_MARKER_CREATE_CODE: {
+                if (resultCode == 200) {
                     showLoading();
                     mPresenter.queryProject(projectId);
                 }
                 break;
             }
-            case 520:{
-                if (resultCode==200){
+            case 520: {
+                if (resultCode == 200) {
                     showLoading();
                     mPresenter.queryProject(projectId);
                 }
                 v_canval.clean();
-                if (mText!=null){
+                if (mText != null) {
                     mText.remove();
                 }
                 break;
             }
-            case 230:{
-                if (resultCode==200){
-                    if (EventDrive.isAddMarker()){
+            case 230: {
+                if (resultCode == 200) {
+                    if (EventDrive.isAddMarker()) {
                         List<Long> ids = EventDrive.getaddMarker();
-                        if (ids!=null&&ids.size()>0&&markers.size()>0){
+                        if (ids != null && ids.size() > 0 && markers.size() > 0) {
                             long id = ids.get(0);
-                            for (Marker m:markers) {
+                            for (Marker m : markers) {
                                 Bundle bundle = m.getExtraInfo();
                                 long mid = bundle.getLong(KEY_MARKER_ID);
-                                if (mid==id){
+                                if (mid == id) {
                                     m.remove();
                                     markers.remove(m);
                                     break;
@@ -1261,8 +1276,8 @@ public class MainActivity extends BaseMVPAcivity<MainContract.View, MainPresente
                 }
                 break;
             }
-            case TO_MARKER_CREATE_CODE_INFO:{
-                if (resultCode==200){
+            case TO_MARKER_CREATE_CODE_INFO: {
+                if (resultCode == 200) {
                     showLoading();
                     mPresenter.queryProject(projectId);
                 }

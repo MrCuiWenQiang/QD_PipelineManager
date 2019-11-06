@@ -66,6 +66,7 @@ public class MainContract {
 
         void isregister();//检测是否注册
         void toregister(Sys_RegisterInfo sys_registerInfo);//发生注册 1.单独发送注册码 2.发送注册信息
+
     }
 
     public interface Model {

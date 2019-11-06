@@ -43,6 +43,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginTop">5dp</item>
     </style>
+
     <style name="edit_title">
         <item name="android:layout_weight">0.3</item>
         <item name="android:layout_height">match_parent</item>
@@ -116,5 +117,8 @@
         <item name="android:paddingRight">8dp</item>
         <item name="android:background">@color/white</item>
     </style>
-
+    <style name="input_txt">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/white_download_path</item>
+    </style>
 </resources>
