@@ -386,7 +386,13 @@ public class SystemInitModel extends BaseMVPModel {
 
 
                 }
-
+                List<Sys_Appendages> appendages = LitPalUtils.selectWhere(Sys_Appendages.class,"name = '检修井' and icon = 'iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAMAAAAMCGV4AAAAAXNSR0ICQMB9xQAAASZQTFRFAAAAHBwcFBgZFA4JAw0RDAMAHx4cAQAAAwUFCAgIBQMDCgoQCgoKBQYHAAICHRwgHR4hAAA0Ozk2NDIwMjQ0ICEkISAgMDY3NjIvPjo2KysrOTtOKj1cOj5JMkhcPE5VTDIeTjcrRjo6Xl5eX1lQVVBDTlVYWV9kX3B2ZVtXcF9cfXl4bWtmbG9vfX12e357YGhqfX19dnZ2eX2AhYJ9ioqTl5eWnpWUl5eVk5OTl5eXhISAg4SHmZudmZWNhYeImpiTmJqbl5eolZ6mvL6+vbq519TT1NfZ0c3FzdLT1dPQ1NXZ3+fw49vO5t7f8PDu8PDw6+vr/P3//fz74+jo+vv79vb2+/r6/P////z88uzr5+jo7PL0+PXw9fj76unl6uvr////0oDBcQAAAAlwSFlzAAAOxAAADsQBlSsOGwAAABl0RVh0U29mdHdhcmUATWljcm9zb2Z0IE9mZmljZX/tNXEAAACtSURBVBjTY0gEAjdtHWVdY3cQkyEx0V+FgV/aVIiRQT0AxA8UZnIKAsoEmzGLBAL5qiwhiRDgy6qWyODB4JwIA+YMngx6ookIIKbPoCBgYQkDVmwyDOwcnAjAJcigKB4aBgPhEnIM1tw+cO1+PDYMXgwGcL4mgzdDohaDbQSYF2nHoAF0T5Qkg7xLdGK0qxKDbAzI/bEmDAy8UrwMfPZxYP8kJsY7GBoZOiaAmABemDiD9+IKnAAAAABJRU5ErkJggg=='");
+                if (appendages!=null&&appendages.size()>0){
+                    for (Sys_Appendages sys_appendages:appendages) {
+                        sys_appendages.setIcon("iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAMAAAAMCGV4AAAAAXNSR0ICQMB9xQAAASZQTFRFAAAAHBwcFBgZFA4JAw0RDAMAHx4cAQAAAwUFCAgIBQMDCgoQCgoKBQYHAAICHRwgHR4hAAA0Ozk2NDIwMjQ0ICEkISAgMDY3NjIvPjo2KysrOTtOKj1cOj5JMkhcPE5VTDIeTjcrRjo6Xl5eX1lQVVBDTlVYWV9kX3B2ZVtXcF9cfXl4bWtmbG9vfX12e357YGhqfX19dnZ2eX2AhYJ9ioqTl5eWnpWUl5eVk5OTl5eXhISAg4SHmZudmZWNhYeImpiTmJqbl5eolZ6mvL6+vbq519TT1NfZ0c3FzdLT1dPQ1NXZ3+fw49vO5t7f8PDu8PDw6+vr/P3//fz74+jo+vv79vb2+/r6/P////z88uzr5+jo7PL0+PXw9fj76unl6uvr////0oDBcQAAAAlwSFlzAAAOxAAADsQBlSsOGwAAABl0RVh0U29mdHdhcmUATWljcm9zb2Z0IE9mZmljZX/tNXEAAACtSURBVBjTY0gEAjdtHWVdY3cQkyEx0V+FgV/aVIiRQT0AxA8UZnIKAsoEmzGLBAL5qiwhiRDgy6qWyODB4JwIA+YMngx6ookIIKbPoCBgYQkDVmwyDOwcnAjAJcigKB4aBgPhEnIM1tw+cO1+PDYMXgwGcL4mgzdDohaDbQSYF2nHoAF0T5Qkg7xLdGK0qxKDbAzI/bEmDAy8UrwMfPZxYP8kJsY7GBoZOiaAmABemDiD9+IKnAAAAABJRU5ErkJggg==");
+                    }
+                    LitPalUtils.saveAll(appendages);
+                }
                 int llcount = LitPalUtils.selectCount(Sys_Features.class,"name = '非普查区'");
                 if (llcount<=0){
                     Sys_Features s1 = new Sys_Features();

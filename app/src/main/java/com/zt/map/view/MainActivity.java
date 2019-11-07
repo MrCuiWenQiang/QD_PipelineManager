@@ -921,7 +921,7 @@ public class MainActivity extends BaseMVPAcivity<MainContract.View, MainPresente
         });
         registDialog.setCancelable(false);
         // TODO: 2019/8/16  测试中不显示此对话
-//        registDialog.show(getSupportFragmentManager(), "4");
+        registDialog.show(getSupportFragmentManager(), "4");
     }
 
     @Override

@@ -1,8 +1,12 @@
 package com.zt.map.view;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.Button;
@@ -87,6 +91,9 @@ public class InputActivity extends BaseMVPAcivity<InputContract.View, InputPrese
 
 
     private void showFileChooser(int code) {
+        if (!permissionFile()){
+            return;
+        }
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("*/*");
         intent.addCategory(Intent.CATEGORY_OPENABLE);
@@ -149,5 +156,22 @@ public class InputActivity extends BaseMVPAcivity<InputContract.View, InputPrese
                 finish();
             }
         });
+    }
+
+    private boolean permissionFile() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            //获取权限（如果没有开启权限，会弹出对话框，询问是否开启权限）
+            int perm = checkCallingOrSelfPermission("android.permission.WRITE_EXTERNAL_STORAGE");
+            boolean permision = (perm == PackageManager.PERMISSION_GRANTED);
+            int rperm = checkCallingOrSelfPermission("android.permission.READ_EXTERNAL_STORAGE");
+            boolean rpermision = (rperm == PackageManager.PERMISSION_GRANTED);
+            if (!rpermision || !permision || ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
+                    ) {
+                //请求权限
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}, 63);
+                return false;
+            }
+        }
+        return true;
     }
 }
