@@ -180,6 +180,7 @@ public class MainActivity extends BaseMVPAcivity<MainContract.View, MainPresente
 
         baiduMap = bmapView.getMap();
         baiduMap.setMapStatus(MapStatusUpdateFactory.zoomBy(4));
+        baiduMap.setIndoorEnable(true);//打开室内图，默认为关闭状态
 
         baiduMap.setOnMapClickListener(this);
         baiduMap.setOnMarkerClickListener(this);
@@ -921,7 +922,7 @@ public class MainActivity extends BaseMVPAcivity<MainContract.View, MainPresente
         });
         registDialog.setCancelable(false);
         // TODO: 2019/8/16  测试中不显示此对话
-        registDialog.show(getSupportFragmentManager(), "4");
+//        registDialog.show(getSupportFragmentManager(), "4");
     }
 
     @Override
