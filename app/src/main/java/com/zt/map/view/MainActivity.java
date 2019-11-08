@@ -74,6 +74,7 @@ import com.zt.map.view.widget.RegistDialog;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -732,15 +733,30 @@ public class MainActivity extends BaseMVPAcivity<MainContract.View, MainPresente
 
         this.projectId = projectId;
         if (lines != null) {
+            List<OverlayOptions> overlayOptions = new ArrayList<>();
             for (Tab_Line item : lines) {
-                if (opMap.containsKey(item.getId())) {
-                    opMap.get(item.getId()).remove();
+
+                int length = lineOvers.size();
+                for (int i =0;i<length;i++){
+                    Overlay ov =lineOvers.get(i);
+                    Bundle bundle = ov.getExtraInfo();
+                    long lid = bundle.getLong(KEY_LINE_ID);
+                    if (lid == item.getId()) {
+                        ov.remove();
+                        lineOvers.remove(ov);
+                        --length;
+                        --i;
+                    }
                 }
-                drawLine(item.getStart_latitude(), item.getStart_longitude(), item.getEnd_latitude(), item.getEnd_longitude(), item.getColor(), item.getId());
+
+                OverlayOptions options= drawLine(item.getStart_latitude(), item.getStart_longitude(), item.getEnd_latitude(), item.getEnd_longitude(), item.getColor(), item.getId());
+                overlayOptions.add(options);
             }
+            List<Overlay> ovs = baiduMap.addOverlays(overlayOptions);
+            lineOvers.addAll(ovs);
         }
         if (markers != null && markers.size() > 0) {
-
+            List<OverlayOptions> overlayOptions = new ArrayList<>();
             for (Tab_Marker item : markers) {
                 int color = -1;
                 Sys_Color c1 = item.getSys_color();
@@ -750,14 +766,16 @@ public class MainActivity extends BaseMVPAcivity<MainContract.View, MainPresente
                 }
 
                 String base64 = item.getIconBase();
+                Bitmap icon = null;
                 if (!TextUtils.isEmpty(base64)) {
-                    Bitmap icon = Base64Util.stringtoBitmap(base64);
-                    drawMarker(item.getLatitude(), item.getLongitude(), item.getId(), color, icon, item.getWtdh());
+                     icon = Base64Util.stringtoBitmap(base64);
                 } else {
                     BitmapDescriptor bitmap = BitmapDescriptorFactory.fromResource(R.mipmap.makericon);
-                    drawMarker(item.getLatitude(), item.getLongitude(), item.getId(), color, bitmap.getBitmap(), item.getWtdh());
+                    icon = bitmap.getBitmap();
                 }
+                overlayOptions.add(drawMarker(item.getLatitude(), item.getLongitude(), item.getId(), color, icon, item.getWtdh()));
             }
+            baiduMap.addOverlays(overlayOptions);
             if (markers.size() > 0 && isOneLoad) {
                 isOneLoad = false;
                 Tab_Marker mk = markers.get(markers.size() - 1);
@@ -956,32 +974,38 @@ public class MainActivity extends BaseMVPAcivity<MainContract.View, MainPresente
 
 
 
-    private void drawMarker(double latitude, double longitude, long marerId, int color, Bitmap icon, String name) {
+    private OverlayOptions drawMarker(double latitude, double longitude, long marerId, int color, Bitmap icon, String name) {
         // TODO: 2019/5/31 显示名称
         Bundle bundle = new Bundle();
         bundle.putLong(KEY_MARKER_ID, marerId);
         LatLng latLng = new LatLng(latitude, longitude);
-//        BitmapDescriptor bitmap = BitmapDescriptorFactory.fromResource(R.mipmap.makericon);
         View ll = getMyMarker(icon, color, name);
-//        int height = ll.findViewById(R.id.iv_icon).getHeight();
         BitmapDescriptor bitmap = BitmapDescriptorFactory.fromView(ll);
-        //构建MarkerOption，用于在地图上添加Marker
+
         OverlayOptions option = new MarkerOptions()
                 .position(latLng).draggable(true).flat(true)
                 .icon(bitmap).extraInfo(bundle);
-        Marker marker = (Marker) baiduMap.addOverlay(option);
+        return option;
     }
-
+    LinearLayout ll;
     private View getMyMarker(Bitmap image, int color, String name) {
 /*        View ll = LayoutInflater.from(getContext()).inflate(R.layout.v_marker, null, false);
         TextView tv = ll.findViewById(R.id.tv_name);
         ImageView iv = ll.findViewById(R.id.iv_icon);*/
+        TextView tv ;
+        ImageView iv;
+        if (ll==null){
+            ll = new LinearLayout(getContext(),null);
+            ll.setOrientation(LinearLayout.VERTICAL);
+             tv = new TextView(getContext());
+             iv = new ImageView(getContext());
+            ll.addView(tv);
+            ll.addView(iv);
+        }else {
+            tv = (TextView) ll.getChildAt(0);
+            iv = (ImageView) ll.getChildAt(1);
+        }
 
-        LinearLayout ll = new LinearLayout(getContext(),null,LinearLayout.VERTICAL);
-        TextView tv = new TextView(getContext());
-        ImageView iv = new ImageView(getContext());
-        ll.addView(tv);
-        ll.addView(iv);
 
         tv.setText(name);
         if (color == -1) {
@@ -998,13 +1022,10 @@ public class MainActivity extends BaseMVPAcivity<MainContract.View, MainPresente
         return ll;
     }
 
-    private void drawLine(double start_latitude, double start_longitude, double end_latitude, double end_longitude, long lineId) {
-        drawLine(start_latitude, start_longitude, end_latitude, end_longitude, typeColor, lineId);
-    }
 
-    private Map<Long, Polyline> opMap = new LinkedHashMap<>();
+    private List<Overlay> lineOvers = new ArrayList<>();
 
-    private void drawLine(double start_latitude, double start_longitude, double end_latitude, double end_longitude, int color, long lineId) {
+    private OverlayOptions drawLine(double start_latitude, double start_longitude, double end_latitude, double end_longitude, int color, long lineId) {
         List<LatLng> points = new ArrayList<>();
         LatLng p1 = new LatLng(start_latitude, start_longitude);
         LatLng p2 = new LatLng(end_latitude, end_longitude);
@@ -1018,8 +1039,9 @@ public class MainActivity extends BaseMVPAcivity<MainContract.View, MainPresente
                 .color(color)
                 .points(points).extraInfo(opbundle);
 
-        Polyline line = (Polyline) baiduMap.addOverlay(mOverlayOptions);
-        opMap.put(lineId, line);
+     /*   Polyline line = (Polyline) baiduMap.addOverlay(mOverlayOptions);
+        opMap.put(lineId, line);*/
+        return mOverlayOptions;
     }
 
     private void showTypeList() {
@@ -1110,8 +1132,8 @@ public class MainActivity extends BaseMVPAcivity<MainContract.View, MainPresente
                         break;
                     }
                     case TAG_SELECT_OPEN: {
-                        if (opMap != null) {
-                            opMap.clear();
+                        if (lineOvers != null) {
+                            lineOvers.clear();
                         }
                         if (baiduMap != null) {
                             baiduMap.clear();
@@ -1122,8 +1144,8 @@ public class MainActivity extends BaseMVPAcivity<MainContract.View, MainPresente
                     }
                     case TAG_SELECT_CLONE: {
                         baiduMap.clear();
-                        if (opMap != null) {
-                            opMap.clear();
+                        if (lineOvers != null) {
+                            lineOvers.clear();
                         }
                         projectId = -1;
                         isOneLoad = true;
