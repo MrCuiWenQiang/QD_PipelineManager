@@ -23,6 +23,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.baidu.location.BDLocation;
@@ -300,12 +301,12 @@ public class MainActivity extends BaseMVPAcivity<MainContract.View, MainPresente
 
     @Override
     public boolean onMarkerClick(Marker marker) {
+        onClickMarker = marker;
         long makerId = marker.getExtraInfo().getLong(KEY_MARKER_ID);
         if (isMarkerInfo()) {
             MarkerNowActivity.newInstance(this, makerId, 230);
         } else if (isDelete()) {
             showLoading();
-            onClickMarker = marker;
             mPresenter.delete(makerId, 1);
         } else if (isMeasure()) {
             showLoading();
@@ -953,11 +954,7 @@ public class MainActivity extends BaseMVPAcivity<MainContract.View, MainPresente
 //        finish();
     }
 
-    private void drawMarker(double latitude, double longitude, long marerId, Bitmap icon, String name) {
-        drawMarker(latitude, longitude, marerId, typeColor, icon, name);
-    }
 
-    List<Marker> markers = new ArrayList<>();
 
     private void drawMarker(double latitude, double longitude, long marerId, int color, Bitmap icon, String name) {
         // TODO: 2019/5/31 显示名称
@@ -966,20 +963,26 @@ public class MainActivity extends BaseMVPAcivity<MainContract.View, MainPresente
         LatLng latLng = new LatLng(latitude, longitude);
 //        BitmapDescriptor bitmap = BitmapDescriptorFactory.fromResource(R.mipmap.makericon);
         View ll = getMyMarker(icon, color, name);
-        int height = ll.findViewById(R.id.iv_icon).getHeight();
+//        int height = ll.findViewById(R.id.iv_icon).getHeight();
         BitmapDescriptor bitmap = BitmapDescriptorFactory.fromView(ll);
         //构建MarkerOption，用于在地图上添加Marker
         OverlayOptions option = new MarkerOptions()
                 .position(latLng).draggable(true).flat(true)
                 .icon(bitmap).extraInfo(bundle);
         Marker marker = (Marker) baiduMap.addOverlay(option);
-        markers.add(marker);
     }
 
     private View getMyMarker(Bitmap image, int color, String name) {
-        View ll = LayoutInflater.from(getContext()).inflate(R.layout.v_marker, null, false);
+/*        View ll = LayoutInflater.from(getContext()).inflate(R.layout.v_marker, null, false);
         TextView tv = ll.findViewById(R.id.tv_name);
-        ImageView iv = ll.findViewById(R.id.iv_icon);
+        ImageView iv = ll.findViewById(R.id.iv_icon);*/
+
+        LinearLayout ll = new LinearLayout(getContext(),null,LinearLayout.VERTICAL);
+        TextView tv = new TextView(getContext());
+        ImageView iv = new ImageView(getContext());
+        ll.addView(tv);
+        ll.addView(iv);
+
         tv.setText(name);
         if (color == -1) {
             color = 0xAAFF0000;
@@ -1107,7 +1110,6 @@ public class MainActivity extends BaseMVPAcivity<MainContract.View, MainPresente
                         break;
                     }
                     case TAG_SELECT_OPEN: {
-                        markers.clear();
                         if (opMap != null) {
                             opMap.clear();
                         }
@@ -1115,13 +1117,11 @@ public class MainActivity extends BaseMVPAcivity<MainContract.View, MainPresente
                             baiduMap.clear();
                         }
                         isOneLoad = true;
-                        markers.clear();
                         mPresenter.queryProjects(0);
                         break;
                     }
                     case TAG_SELECT_CLONE: {
                         baiduMap.clear();
-                        markers.clear();
                         if (opMap != null) {
                             opMap.clear();
                         }
@@ -1257,7 +1257,8 @@ public class MainActivity extends BaseMVPAcivity<MainContract.View, MainPresente
             case 230: {
                 if (resultCode == 200) {
                     if (EventDrive.isAddMarker()) {
-                        List<Long> ids = EventDrive.getaddMarker();
+                        onClickMarker.remove();
+              /*          List<Long> ids = EventDrive.getaddMarker();
                         if (ids != null && ids.size() > 0 && markers.size() > 0) {
                             long id = ids.get(0);
                             for (Marker m : markers) {
@@ -1269,7 +1270,7 @@ public class MainActivity extends BaseMVPAcivity<MainContract.View, MainPresente
                                     break;
                                 }
                             }
-                        }
+                        }*/
                     }
 
                     showLoading();
